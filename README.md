@@ -28,4 +28,4 @@ An application that allow users to create buy lists with provided prices communa
 ## Authors
 - Bernardo Tavares [BernardoTM](https://github.com/BernardoTM)
 - Marcos Fonseca [marcosfons](https://github.com/marcosfons)
-- Priscila Melo []()
+- Priscila Melo [PriMelo](https://github.com/PriMelo)
