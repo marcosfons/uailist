@@ -1,0 +1,6 @@
+- "!include public_buy_list.yaml"
+- "!include public_price.yaml"
+- "!include public_product.yaml"
+- "!include public_product_buy_list.yaml"
+- "!include public_supermarket.yaml"
+- "!include public_user.yaml"

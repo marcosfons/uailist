@@ -1,0 +1,11 @@
+table:
+  name: user
+  schema: public
+array_relationships:
+  - name: buy_lists
+    using:
+      foreign_key_constraint_on:
+        column: user_uuid
+        table:
+          name: buy_list
+          schema: public

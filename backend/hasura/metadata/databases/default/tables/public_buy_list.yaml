@@ -1,0 +1,15 @@
+table:
+  name: buy_list
+  schema: public
+object_relationships:
+  - name: user
+    using:
+      foreign_key_constraint_on: user_uuid
+array_relationships:
+  - name: product_buy_lists
+    using:
+      foreign_key_constraint_on:
+        column: buy_list_uuid
+        table:
+          name: product_buy_list
+          schema: public
