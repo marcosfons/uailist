@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uailist/src/screens/login/login_screen.dart';
+import 'package:uailist/src/screens/register_name/register_name_screen.dart';
 
 void main() {
   runApp(const App());
@@ -11,12 +12,13 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Uailist',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: const LoginScreen(),
-      // home: RegisterNameScreen(),
+      //home: RegisterNameScreen(),
     );
   }
 }
