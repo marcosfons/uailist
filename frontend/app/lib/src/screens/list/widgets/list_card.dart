@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
 class ListCard extends StatelessWidget {
-  const ListCard({super.key});
+  final String listName;
+  final String listDate;
+  final double totalItems;
+  final double itemsTaken;
+
+  ListCard(
+      {super.key,
+      required this.totalItems,
+      required this.itemsTaken,
+      required this.listName,
+      required this.listDate});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +27,7 @@ class ListCard extends StatelessWidget {
             padding:
                 const EdgeInsets.only(left: 10, top: 10, right: 0, bottom: 5),
             child: Text(
-              'oii',
+              listName,
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -30,7 +39,7 @@ class ListCard extends StatelessWidget {
             padding:
                 const EdgeInsets.only(left: 10, top: 0, right: 0, bottom: 0),
             child: Text(
-              '22/08/22',
+              listDate,
               style: TextStyle(
                 fontSize: 14,
                 color: Color(0xff8D8D8D),
@@ -38,35 +47,46 @@ class ListCard extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 10,
+            height: 8,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                flex: 5,
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 0, top: 5, right: 0, bottom: 15),
-                  child: LinearPercentIndicator(
-                    alignment: MainAxisAlignment.start,
-                    width: MediaQuery.of(context).size.width -
-                        100, //como colocar o maximo posivel
-                    animation: true,
-                    lineHeight: 12.0,
-                    animationDuration: 500,
-                    percent: 1.0,
-                    barRadius: const Radius.circular(16),
-                    progressColor: theme.colorScheme.primary,
-                    backgroundColor: Colors.red,
-                  ),
-                ),
+                    padding: const EdgeInsets.only(
+                        left: 15, top: 5, right: 0, bottom: 15),
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 10,
+                          constraints:
+                              BoxConstraints(maxWidth: double.infinity),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                            color: Colors.red,
+                          ),
+                        ),
+                        Container(
+                          height: 10,
+                          constraints: BoxConstraints(
+                            maxWidth: 228 *
+                                itemsTaken /
+                                totalItems, /* MediaQuery.of(context).size.width * percent*/
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                            color: theme.colorScheme.primary,
+                          ),
+                        ),
+                      ],
+                    )),
               ),
-              const Padding(
+              Padding(
                 padding:
-                    EdgeInsets.only(left: 0, top: 0, right: 15, bottom: 14),
+                    EdgeInsets.only(left: 5, top: 0, right: 15, bottom: 14),
                 child: Text(
-                  '14/18',
+                  '${itemsTaken.toInt()}/${totalItems.toInt()}',
                 ),
               ),
             ],

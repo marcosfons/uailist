@@ -37,9 +37,24 @@ class ListScreen extends StatelessWidget {
               ],
             ),
           ),
-          ListCard(),
-          ListCard(),
-          ListCard(),
+          ListCard(
+            itemsTaken: 14.8,
+            totalItems: 18,
+            listDate: '01/08/22',
+            listName: 'Supermercado',
+          ),
+          ListCard(
+            itemsTaken: 5,
+            totalItems: 18,
+            listDate: '01/08/22',
+            listName: 'Supermercado',
+          ),
+          ListCard(
+            itemsTaken: 9,
+            totalItems: 18,
+            listDate: '01/08/22',
+            listName: 'Supermercado',
+          ),
         ],
       ),
     );
