@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uailist/src/screens/auth/widgets/google_button.dart';
 import 'package:uailist/src/shared/widgets/email_text_form_field.dart';
 import 'package:uailist/src/shared/widgets/password_text_form_field.dart';
 
@@ -53,6 +54,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
           ),
         ),
+        GoogleButton(),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [

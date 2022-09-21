@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uailist/src/core/themes/light_theme.dart';
+import 'package:uailist/src/screens/auth/auth_screen.dart';
 import 'package:uailist/src/screens/list/list_screen.dart';
 
 void main() {
@@ -15,8 +16,8 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Uailist',
       theme: lightTheme,
-      // home: const AuthScreen(),
-      home: ListScreen(),
+      home: const AuthScreen(),
+      //home: ListScreen(),
     );
   }
 }
