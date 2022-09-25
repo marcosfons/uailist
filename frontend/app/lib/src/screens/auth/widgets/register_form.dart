@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uailist/src/shared/widgets/email_text_form_field.dart';
 import 'package:uailist/src/shared/widgets/password_text_form_field.dart';
 
-class RegisterForm extends StatefulWidget {
-  const RegisterForm({super.key, required this.onLogin});
-
-  final Function() onLogin;
-
-  @override
-  State<RegisterForm> createState() => _RegisterFormState();
-}
-
-class _RegisterFormState extends State<RegisterForm> {
-  final bool _showPassword = false;
+class RegisterForm extends StatelessWidget {
+  const RegisterForm({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +49,12 @@ class _RegisterFormState extends State<RegisterForm> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text('Já possui uma conta?'),
-            TextButton(onPressed: widget.onLogin, child: const Text('Entre'))
+            TextButton(
+              onPressed: () {
+                GoRouter.of(context).go('/login');
+              },
+              child: const Text('Entre'),
+            )
           ],
         )
       ],

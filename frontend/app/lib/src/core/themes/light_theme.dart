@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 const _primaryColor = Color(0xff0EB400);
 
@@ -27,13 +28,20 @@ final lightTheme = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: _primaryColor,
       padding: const EdgeInsets.symmetric(vertical: 16),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(8),
         ),
       ),
+    ).copyWith(
+      backgroundColor: MaterialStateProperty.resolveWith((states) {
+        if (states.contains(MaterialState.disabled)) {
+          return _primaryColor.withOpacity(0.5);
+        }
+        return _primaryColor;
+      }),
     ),
   ),
+  textTheme: GoogleFonts.robotoTextTheme(),
 );

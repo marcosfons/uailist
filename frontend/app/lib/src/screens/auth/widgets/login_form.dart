@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uailist/src/shared/widgets/email_text_form_field.dart';
+import 'package:uailist/src/shared/widgets/future_load_elevated_button.dart';
 import 'package:uailist/src/shared/widgets/password_text_form_field.dart';
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({super.key, required this.onRegister});
-
-  final Function() onRegister;
-
-  @override
-  State<LoginForm> createState() => _LoginFormState();
-}
-
-class _LoginFormState extends State<LoginForm> {
-  final bool _showPassword = false;
+class LoginForm extends StatelessWidget {
+  const LoginForm({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +40,10 @@ class _LoginFormState extends State<LoginForm> {
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.all(15.0),
-            child: ElevatedButton(
-              onPressed: () => {},
+            child: FutureLoadElevatedButton(
+              onPressed: () async {
+                await Future.delayed(const Duration(seconds: 1));
+              },
               child: const Text('Entrar'),
             ),
           ),
@@ -58,7 +53,9 @@ class _LoginFormState extends State<LoginForm> {
           children: [
             const Text('Não possui uma conta?'),
             TextButton(
-              onPressed: widget.onRegister,
+              onPressed: () {
+                GoRouter.of(context).go('/register');
+              },
               child: const Text('Registre-se'),
             )
           ],
