@@ -4,7 +4,7 @@ import 'package:uailist/src/screens/auth/models/user_auth.dart';
 
 abstract class AuthRepository {
   /// Login the user using it's already registered email and password
-  Future<Either<Failure, UserAuth?>> loginUserWithEmailAndPassword(
+  Future<Either<Failure, UserAuth?>> signInWithEmailAndPassword(
     String email,
     String password,
   );

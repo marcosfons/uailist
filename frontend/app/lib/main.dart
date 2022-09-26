@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uailist/firebase_options.dart';
 import 'package:uailist/src/core/themes/light_theme.dart';
 import 'package:uailist/src/screens/auth/auth_route.dart';
@@ -16,7 +17,11 @@ void main() async {
 
   FlutterNativeSplash.remove();
 
-  runApp(App());
+  runApp(
+    ProviderScope(
+      child: App(),
+    ),
+  );
 }
 
 class App extends StatelessWidget {

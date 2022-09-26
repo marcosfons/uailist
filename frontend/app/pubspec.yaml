@@ -33,7 +33,8 @@ dependencies:
 
   dartz: ^0.10.1
 
-
+  riverpod: ^2.0.0-dev.9
+  hooks_riverpod: ^2.0.0-dev.9
 
 dev_dependencies:
   flutter_test:

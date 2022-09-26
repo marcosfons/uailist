@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uailist/src/core/failures/failure.dart';
+import 'package:uailist/src/core/repositories/auth_repository.dart';
 import 'package:uailist/src/screens/auth/models/user_auth.dart';
-import 'package:uailist/src/screens/auth/repositories/auth_repository.dart';
 
 class FirebaseAuthRepository implements AuthRepository {
   final FirebaseAuth _auth;
@@ -20,7 +20,7 @@ class FirebaseAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, UserAuth?>> loginUserWithEmailAndPassword(
+  Future<Either<Failure, UserAuth?>> signInWithEmailAndPassword(
     String email,
     String password,
   ) async {
@@ -37,6 +37,7 @@ class FirebaseAuthRepository implements AuthRepository {
         id: result.user!.uid,
         email: result.user!.email!,
         name: result.user!.displayName,
+        image: result.user!.photoURL,
       ));
     } catch (e) {
       print(e.toString());
@@ -65,6 +66,7 @@ class FirebaseAuthRepository implements AuthRepository {
         id: result.user!.uid,
         email: result.user!.email!,
         name: result.user!.displayName,
+        image: result.user!.photoURL,
       ));
     } catch (e) {
       print(e.toString());
@@ -99,6 +101,7 @@ class FirebaseAuthRepository implements AuthRepository {
         id: result.user!.uid,
         email: result.user!.email!,
         name: result.user!.displayName,
+        image: result.user!.photoURL,
       ));
     } catch (e) {
       print(e.toString());
