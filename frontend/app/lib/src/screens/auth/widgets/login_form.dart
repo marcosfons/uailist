@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:uailist/src/screens/auth/widgets/google_button.dart';
 import 'package:uailist/src/shared/widgets/email_text_form_field.dart';
 import 'package:uailist/src/shared/widgets/future_load_elevated_button.dart';
 import 'package:uailist/src/shared/widgets/password_text_form_field.dart';
@@ -48,6 +49,7 @@ class LoginForm extends StatelessWidget {
             ),
           ),
         ),
+        const GoogleButton(),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [

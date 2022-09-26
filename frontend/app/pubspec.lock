@@ -326,6 +326,7 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+<<<<<<< HEAD
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -445,11 +446,16 @@ packages:
     version: "3.2.0"
   intl:
     dependency: transitive
+=======
+  intl:
+    dependency: "direct main"
+>>>>>>> 7ae5e8671b9949dd597bc9011d7d789d4564bfe6
     description:
       name: intl
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.17.0"
+<<<<<<< HEAD
   io:
     dependency: transitive
     description:
@@ -478,6 +484,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.10.0"
+=======
+>>>>>>> 7ae5e8671b9949dd597bc9011d7d789d4564bfe6
   lints:
     dependency: transitive
     description:
@@ -534,6 +542,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.2"
+<<<<<<< HEAD
   path_provider:
     dependency: "direct main"
     description:
@@ -667,6 +676,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
+=======
+>>>>>>> 7ae5e8671b9949dd597bc9011d7d789d4564bfe6
   sky_engine:
     dependency: transitive
     description: flutter

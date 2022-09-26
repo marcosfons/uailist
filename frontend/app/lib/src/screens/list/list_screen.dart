@@ -7,6 +7,7 @@ class ListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final DateTime date = DateTime.now();
 
     return Scaffold(
       body: Column(
@@ -38,21 +39,24 @@ class ListScreen extends StatelessWidget {
             ),
           ),
           ListCard(
+            fun: () {},
             itemsTaken: 14.8,
             totalItems: 18,
-            listDate: '01/08/22',
+            listDate: date,
             listName: 'Supermercado',
           ),
           ListCard(
+            fun: () {},
             itemsTaken: 5,
             totalItems: 18,
-            listDate: '01/08/22',
+            listDate: date,
             listName: 'Supermercado',
           ),
           ListCard(
+            fun: () {},
             itemsTaken: 9,
             totalItems: 18,
-            listDate: '01/08/22',
+            listDate: date,
             listName: 'Supermercado',
           ),
         ],
