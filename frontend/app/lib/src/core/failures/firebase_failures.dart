@@ -1,5 +1,6 @@
 import 'package:uailist/src/core/failures/failure.dart';
 
+// TODO(marcosfons): Translate every firebase failure
 class EmailAlreadyUsedFailure extends Failure {
   const EmailAlreadyUsedFailure()
       : super('Email already used with a different authentication method');

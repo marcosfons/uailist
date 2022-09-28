@@ -40,12 +40,12 @@ class App extends StatelessWidget {
   }
 
   late final GoRouter _router = GoRouter(
-    initialLocation: '/home',
+    initialLocation: '/',
     routes: [
       GoRoute(
         path: '/',
         builder: (_, __) => const Scaffold(),
-        redirect: (context, state) async => '/auth',
+        redirect: (context, state) async => '/login',
         // redirect: (state) => '/auth',
       ),
       ShellRoute(

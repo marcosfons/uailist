@@ -17,9 +17,9 @@ dependencies:
   animations: ^2.0.5
   google_fonts: ^3.0.1
 
-  go_router: ^5.0.1
+  go_router: ^5.0.2
 
-  flutter_native_splash: ^2.2.9
+  flutter_native_splash: ^2.2.10+1
 
   # firebase
   firebase_core: ^1.23.0
