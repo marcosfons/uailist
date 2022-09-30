@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uailist/src/screens/list/widgets/list_card.dart';
 
 class ListScreen extends StatelessWidget {
@@ -15,12 +16,12 @@ class ListScreen extends StatelessWidget {
         children: [
           Padding(
             padding:
-                const EdgeInsets.only(left: 15, top: 15, right: 15, bottom: 0),
+                const EdgeInsets.only(left: 15, top: 35, right: 15, bottom: 0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Minhas Listas",
+                const Text(
+                  'Minhas Listas',
                   style: TextStyle(
                     color: Color(0xff717171),
                     fontSize: 32,
@@ -33,7 +34,9 @@ class ListScreen extends StatelessWidget {
                     Icons.add,
                     color: theme.colorScheme.primary,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    GoRouter.of(context).go('/lists/new');
+                  },
                 ),
               ],
             ),

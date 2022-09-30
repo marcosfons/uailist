@@ -7,6 +7,10 @@ import 'package:uailist/firebase_options.dart';
 import 'package:uailist/src/core/themes/light_theme.dart';
 import 'package:uailist/src/screens/auth/auth_route.dart';
 import 'package:uailist/src/screens/home/home_screen.dart';
+import 'package:uailist/src/screens/list/list_route.dart';
+import 'package:uailist/src/screens/list/list_screen.dart';
+import 'package:uailist/src/screens/list/widgets/new_list.dart';
+import 'package:uailist/src/screens/profile/profile_route.dart';
 import 'package:uailist/src/screens/profile/profile_screen.dart';
 import 'package:uailist/src/shared/widgets/dashboard_scaffold.dart';
 import 'package:uailist/src/shared/widgets/shared_axis_transition_page.dart';
@@ -40,7 +44,7 @@ class App extends StatelessWidget {
   }
 
   late final GoRouter _router = GoRouter(
-    initialLocation: '/',
+    initialLocation: '/lists',
     routes: [
       GoRoute(
         path: '/',
@@ -53,38 +57,17 @@ class App extends StatelessWidget {
           return DashboardScaffold(page: child);
         },
         routes: [
-          GoRoute(
-            path: '/home',
-            builder: (context, state) {
-              return const HomeScreen();
-            },
-            pageBuilder: (context, state) {
-              return const SharedAxisTransitionPage(
-                key: ValueKey('Home'),
-                transitionDuration: Duration(seconds: 2),
-                child: HomeScreen(),
-              );
-            },
-          ),
-          GoRoute(
-            path: '/profile',
-            pageBuilder: (context, state) {
-              return const SharedAxisTransitionPage(
-                key: ValueKey('Profile'),
-                transitionDuration: Duration(seconds: 2),
-                child: ProfileScreen(),
-              );
-            },
-          ),
+          listRoute,
+          profileRoute,
         ],
       ),
       authRoute,
-      GoRoute(
-        path: '/lists',
-        builder: (BuildContext context, GoRouterState state) {
-          return const HomeScreen();
-        },
-      ),
+      // GoRoute(
+      //   path: '/lists',
+      //   builder: (BuildContext context, GoRouterState state) {
+      //     return const HomeScreen();
+      //   },
+      // ),
     ],
   );
 }

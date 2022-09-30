@@ -7,7 +7,7 @@ import 'package:uailist/src/core/repositories/auth_repository.dart';
 import 'package:uailist/src/core/repositories/firebase_auth_repository.dart';
 import 'package:uailist/src/core/repositories/google_sign_in_repository.dart';
 
-import 'models/user_auth.dart';
+import 'package:uailist/src/core/models/user_auth.dart';
 
 final firebaseAuthProvider = Provider<AuthRepository>(
     (ref) => FirebaseAuthRepository(FirebaseAuth.instance));
