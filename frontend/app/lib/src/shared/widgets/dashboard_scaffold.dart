@@ -14,10 +14,10 @@ class DashboardScaffold extends StatelessWidget {
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
         type: BottomNavigationBarType.fixed,
-        currentIndex: GoRouter.of(context).location == '/home' ? 0 : 3,
+        currentIndex: GoRouter.of(context).location == '/lists' ? 0 : 3,
         onTap: (index) {
           if (index == 0) {
-            GoRouter.of(context).go('/home');
+            GoRouter.of(context).go('/lists');
           } else if (index == 3) {
             GoRouter.of(context).go('/profile');
           }
