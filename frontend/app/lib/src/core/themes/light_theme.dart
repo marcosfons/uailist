@@ -43,5 +43,12 @@ final lightTheme = ThemeData(
       }),
     ),
   ),
-  textTheme: GoogleFonts.robotoTextTheme(),
+  textTheme: GoogleFonts.robotoTextTheme(
+    TextTheme(
+        headline6: TextStyle(
+      color: Color(0xff717171),
+      fontSize: 32,
+      fontWeight: FontWeight.bold,
+    )),
+  ),
 );
