@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:uailist/src/core/failures/failure.dart';
+import 'package:uailist/src/core/logger/logger.dart';
 
 class GoogleSignInRepository {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -16,7 +17,7 @@ class GoogleSignInRepository {
 
       return right(authenticationResult);
     } catch (e) {
-      print(e.toString());
+      getLogger().e('unknown_google_signin_error', e);
       return left(const UnknownFailure());
     }
   }

@@ -19,8 +19,8 @@ class ListScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Minhas Listas",
+                const Text(
+                  'Minhas Listas',
                   style: TextStyle(
                     color: Color(0xff717171),
                     fontSize: 32,

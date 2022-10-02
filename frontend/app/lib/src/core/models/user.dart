@@ -1,10 +1,10 @@
-class UserAuth {
+class User {
   final String id;
   final String email;
   final String? name;
   final String? image;
 
-  UserAuth({
+  User({
     required this.id,
     required this.email,
     required this.name,

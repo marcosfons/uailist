@@ -1,40 +1,59 @@
-// import 'dart:async';
+import 'dart:async';
 
-// import 'package:uailist/src/core/models/user_auth.dart';
-// import 'package:uailist/src/core/repositories/auth_repository.dart';
-// import 'package:uailist/src/core/repositories/local_user_repository.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:uailist/src/core/models/user.dart';
+import 'package:uailist/src/core/repositories/auth_repository.dart';
+import 'package:uailist/src/screens/auth/auth_controller.dart';
 
-// // final userController = Provider.autoDispose((ref) {
-// //   final userController = UserController(
-// //     ref.read(firebaseAuthProvider),
-// //   );
+final userController = Provider.autoDispose((ref) {
+  final userController = UserController(
+    ref.read(nhostAuthProvider),
+  );
 
-// //   ref.onDispose(userController.dispose);
+  ref.onDispose(userController.dispose);
 
-// //   return userController;
-// // });
+  return userController;
+});
 
-// class UserController {
-//   final AuthRepository _authRepository;
-//   final LocalUserRepository _localUserRepository;
+class UserController {
+  final AuthRepository _authRepository;
+  // final LocalUserRepository _localUserRepository;
 
-//   late final StreamSubscription<UserAuth?> _subscriptionUserAuthData;
+  late final StreamSubscription<User?> _subscriptionUserAuthData;
+  final _firstSignedInCompleter = Completer<bool>();
 
-//   UserController(this._authRepository, this._localUserRepository) {
+  User? _currentUser;
 
-//     Stream.
+  /// Returns if the user is currently signed in
+  bool get signedIn => _currentUser != null;
 
-//     _subscriptionUserAuthData =
-//         _authRepository.watchCurrentUserAuth().listen((userAuthData) {
-//       if (userAuthData != null) {
-//         print('Has user');
-//       } else {
-//         print('Not signed in');
-//       }
-//     });
-//   }
+  /// Returns the current user signedIn, can't be null
+  User get currentUser => _currentUser!;
 
-//   void dispose() {
-//     _subscriptionUserAuthData.cancel();
-//   }
-// }
+  /// Returns the current user signedIn or null if not signedIn
+  User? get nullableUser => _currentUser;
+
+  Future<bool> get firstSignedIn => _firstSignedInCompleter.future;
+
+  UserController(this._authRepository) {
+    _authRepository.getCurrentUser().then(_setUser);
+    _subscriptionUserAuthData =
+        _authRepository.watchCurrentUserAuth().listen(_setUser);
+  }
+
+  void _setUser(User? user) {
+    _currentUser = user;
+
+    if (!_firstSignedInCompleter.isCompleted) {
+      _firstSignedInCompleter.complete(_currentUser != null);
+    }
+  }
+
+  Future<void> signOut() async {
+    await _authRepository.signOut();
+  }
+
+  void dispose() {
+    _subscriptionUserAuthData.cancel();
+  }
+}

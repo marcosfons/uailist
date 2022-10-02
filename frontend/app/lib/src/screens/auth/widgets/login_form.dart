@@ -2,17 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uailist/src/screens/auth/auth_controller.dart';
-import 'package:uailist/src/screens/auth/widgets/google_button.dart';
 import 'package:uailist/src/shared/widgets/email_text_form_field.dart';
 import 'package:uailist/src/shared/widgets/future_load_elevated_button.dart';
 import 'package:uailist/src/shared/widgets/password_text_form_field.dart';
 
-class LoginForm extends HookConsumerWidget {
+class LoginForm extends StatefulHookConsumerWidget {
   const LoginForm({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(authController);
+  LoginFormState createState() => LoginFormState();
+}
+
+class LoginFormState extends ConsumerState<LoginForm> {
+  late final AuthController controller = ref.read(authController);
+
+  @override
+  Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
+    final router = GoRouter.of(context);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -21,7 +28,10 @@ class LoginForm extends HookConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Form(
+              key: formKey,
+              autovalidateMode: AutovalidateMode.disabled,
               child: AutofillGroup(
+                onDisposeAction: AutofillContextAction.cancel,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -68,22 +78,27 @@ class LoginForm extends HookConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: FutureLoadElevatedButton(
-              onPressed: controller.signInWithEmailAndPassword,
+              onPressed: () async {
+                if (formKey.currentState?.validate() ?? false) {
+                  final result = await controller.signInWithEmailAndPassword();
+                  if (result && mounted) {
+                    router.go('/lists');
+                  }
+                }
+              },
               child: const Text('Entrar'),
             ),
           ),
         ),
-        GoogleButton(
-          onPressed: controller.signInWithGoogle,
-        ),
+        // GoogleButton(
+        //   onPressed: controller.signInWithGoogle,
+        // ),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text('Não possui uma conta?'),
             TextButton(
-              onPressed: () {
-                GoRouter.of(context).go('/register');
-              },
+              onPressed: () => router.go('/register'),
               child: const Text('Registre-se'),
             )
           ],

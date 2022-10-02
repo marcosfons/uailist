@@ -1,10 +1,12 @@
-import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:uailist/firebase_options.dart';
+import 'package:logger/logger.dart';
+import 'package:uailist/src/core/controllers/user_controller.dart';
 import 'package:uailist/src/core/themes/light_theme.dart';
+import 'package:uailist/src/screens/auth/auth_controller.dart';
 import 'package:uailist/src/screens/auth/auth_route.dart';
 import 'package:uailist/src/screens/home/home_screen.dart';
 import 'package:uailist/src/screens/profile/profile_screen.dart';
@@ -12,20 +14,42 @@ import 'package:uailist/src/shared/widgets/dashboard_scaffold.dart';
 import 'package:uailist/src/shared/widgets/shared_axis_transition_page.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  Logger.level = kDebugMode ? Level.verbose : Level.info;
 
-  FlutterNativeSplash.remove();
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   runApp(
-    ProviderScope(
-      child: App(),
-    ),
+    const ProviderScope(child: App()),
   );
 }
 
-class App extends StatelessWidget {
-  App({super.key});
+class App extends StatefulHookConsumerWidget {
+  const App({super.key});
+
+  @override
+  AppState createState() => AppState();
+}
+
+class AppState extends ConsumerState<App> {
+  late final _userController = ref.read(userController);
+  late final _nhost = ref.read(nhostProvider);
+
+  @override
+  void initState() {
+    super.initState();
+    firstSignIn();
+  }
+
+  void firstSignIn() async {
+    await _nhost.auth.signInWithStoredCredentials().catchError((_) {});
+    final newRoute = await _userController.firstSignedIn ? '/lists' : '/login';
+    FlutterNativeSplash.remove();
+
+    if (mounted) {
+      router.go(newRoute);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,20 +57,18 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Uailist',
       theme: lightTheme,
-      routeInformationProvider: _router.routeInformationProvider,
-      routeInformationParser: _router.routeInformationParser,
-      routerDelegate: _router.routerDelegate,
+      routeInformationProvider: router.routeInformationProvider,
+      routeInformationParser: router.routeInformationParser,
+      routerDelegate: router.routerDelegate,
     );
   }
 
-  late final GoRouter _router = GoRouter(
+  late final GoRouter router = GoRouter(
     initialLocation: '/',
     routes: [
       GoRoute(
         path: '/',
         builder: (_, __) => const Scaffold(),
-        redirect: (context, state) async => '/login',
-        // redirect: (state) => '/auth',
       ),
       ShellRoute(
         builder: (context, state, child) {
@@ -54,7 +76,7 @@ class App extends StatelessWidget {
         },
         routes: [
           GoRoute(
-            path: '/home',
+            path: '/lists',
             builder: (context, state) {
               return const HomeScreen();
             },
