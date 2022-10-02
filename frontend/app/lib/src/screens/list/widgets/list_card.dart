@@ -8,7 +8,7 @@ class ListCard extends StatelessWidget {
   final double itemsTaken;
   final void Function() fun;
 
-  ListCard({
+  const ListCard({
     super.key,
     required this.totalItems,
     required this.itemsTaken,
@@ -23,9 +23,9 @@ class ListCard extends StatelessWidget {
 
     return Card(
       margin: const EdgeInsets.only(left: 15, top: 15, right: 15, bottom: 0),
-      color: Color(0xfff5f5f5),
-      shape: RoundedRectangleBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
+      color: const Color(0xfff5f5f5),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(12)),
         side: BorderSide.none,
       ),
       child: InkWell(
@@ -39,7 +39,7 @@ class ListCard extends StatelessWidget {
                   const EdgeInsets.only(left: 10, top: 10, right: 0, bottom: 5),
               child: Text(
                 listName,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Color(0xff717171),
@@ -51,13 +51,13 @@ class ListCard extends StatelessWidget {
                   const EdgeInsets.only(left: 10, top: 0, right: 0, bottom: 0),
               child: Text(
                 DateFormat.yMd().format(listDate),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   color: Color(0xff8D8D8D),
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             Row(
@@ -72,8 +72,8 @@ class ListCard extends StatelessWidget {
                           Container(
                             height: 10,
                             constraints:
-                                BoxConstraints(maxWidth: double.infinity),
-                            decoration: BoxDecoration(
+                                const BoxConstraints(maxWidth: double.infinity),
+                            decoration: const BoxDecoration(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12)),
                               color: Color(0xffd9d9d9),
@@ -88,7 +88,7 @@ class ListCard extends StatelessWidget {
                             ),
                             decoration: BoxDecoration(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
+                                  const BorderRadius.all(Radius.circular(12)),
                               color: theme.colorScheme.primary,
                             ),
                           ),
@@ -96,8 +96,8 @@ class ListCard extends StatelessWidget {
                       )),
                 ),
                 Padding(
-                  padding:
-                      EdgeInsets.only(left: 5, top: 0, right: 15, bottom: 14),
+                  padding: const EdgeInsets.only(
+                      left: 5, top: 0, right: 15, bottom: 14),
                   child: Text(
                     '${itemsTaken.toInt()}/${totalItems.toInt()}',
                   ),

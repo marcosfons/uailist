@@ -8,14 +8,9 @@ import 'package:uailist/src/core/controllers/user_controller.dart';
 import 'package:uailist/src/core/themes/light_theme.dart';
 import 'package:uailist/src/screens/auth/auth_controller.dart';
 import 'package:uailist/src/screens/auth/auth_route.dart';
-import 'package:uailist/src/screens/home/home_screen.dart';
 import 'package:uailist/src/screens/list/list_route.dart';
-import 'package:uailist/src/screens/list/list_screen.dart';
-import 'package:uailist/src/screens/list/widgets/new_list.dart';
 import 'package:uailist/src/screens/profile/profile_route.dart';
-import 'package:uailist/src/screens/profile/profile_screen.dart';
 import 'package:uailist/src/shared/widgets/dashboard_scaffold.dart';
-import 'package:uailist/src/shared/widgets/shared_axis_transition_page.dart';
 
 void main() async {
   Logger.level = kDebugMode ? Level.verbose : Level.info;
@@ -46,7 +41,9 @@ class AppState extends ConsumerState<App> {
   }
 
   void firstSignIn() async {
-    await _nhost.auth.signInWithStoredCredentials().catchError((_) {});
+    try {
+      await _nhost.auth.signInWithStoredCredentials();
+    } catch (e) {}
     final newRoute = await _userController.firstSignedIn ? '/lists' : '/login';
     FlutterNativeSplash.remove();
 
@@ -67,13 +64,8 @@ class AppState extends ConsumerState<App> {
     );
   }
 
-<<<<<<< HEAD
   late final GoRouter router = GoRouter(
     initialLocation: '/',
-=======
-  late final GoRouter _router = GoRouter(
-    initialLocation: '/lists',
->>>>>>> 15e0e35da385e3257f38b0786d5872d8765d842c
     routes: [
       GoRoute(
         path: '/',
@@ -84,43 +76,11 @@ class AppState extends ConsumerState<App> {
           return DashboardScaffold(page: child);
         },
         routes: [
-<<<<<<< HEAD
-          GoRoute(
-            path: '/lists',
-            builder: (context, state) {
-              return const HomeScreen();
-            },
-            pageBuilder: (context, state) {
-              return const SharedAxisTransitionPage(
-                key: ValueKey('Home'),
-                transitionDuration: Duration(seconds: 2),
-                child: HomeScreen(),
-              );
-            },
-          ),
-          GoRoute(
-            path: '/profile',
-            pageBuilder: (context, state) {
-              return const SharedAxisTransitionPage(
-                key: ValueKey('Profile'),
-                transitionDuration: Duration(seconds: 2),
-                child: ProfileScreen(),
-              );
-            },
-          ),
-=======
           listRoute,
           profileRoute,
->>>>>>> 15e0e35da385e3257f38b0786d5872d8765d842c
         ],
       ),
       authRoute,
-      // GoRoute(
-      //   path: '/lists',
-      //   builder: (BuildContext context, GoRouterState state) {
-      //     return const HomeScreen();
-      //   },
-      // ),
     ],
   );
 }
