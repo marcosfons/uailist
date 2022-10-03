@@ -1,0 +1,13 @@
+table:
+  name: product_buy_list
+  schema: public
+object_relationships:
+  - name: buy_list
+    using:
+      foreign_key_constraint_on: buy_list_uuid
+  - name: price
+    using:
+      foreign_key_constraint_on: price_uuid
+  - name: product
+    using:
+      foreign_key_constraint_on: product_uuid

@@ -1,0 +1,11 @@
+table:
+  name: supermarket
+  schema: public
+array_relationships:
+  - name: prices
+    using:
+      foreign_key_constraint_on:
+        column: supermarket_uuid
+        table:
+          name: price
+          schema: public
