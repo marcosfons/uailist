@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:dartz/dartz.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:uailist/src/core/database/app_database.dart' as u;
 import 'package:uailist/src/core/failures/failure.dart';
 import 'package:uailist/src/core/failures/firebase_failures.dart';
 import 'package:uailist/src/core/logger/logger.dart';
-import 'package:uailist/src/core/models/user.dart' as u;
 import 'package:uailist/src/core/repositories/auth_repository.dart';
 
 class NhostAuthRepository extends AuthRepository {
@@ -36,14 +36,12 @@ class NhostAuthRepository extends AuthRepository {
     String displayName,
   ) async {
     try {
-      // AuthClient().
       final response = await _client.auth.signUp(
         email: email,
         password: password,
         displayName: displayName,
       );
-      // response.session
-// response.session
+
       final user = response.user;
       if (user == null) {
         return left(const UnknownFailure());
@@ -135,9 +133,20 @@ class NhostAuthRepository extends AuthRepository {
     return u.User(
       email: user.email ?? '',
       id: user.id,
-      image: user.avatarUrl.toString(),
-      name: user.displayName,
+      avatarUrl: user.avatarUrl.toString(),
+      displayName: user.displayName,
     );
+  }
+
+  @override
+  Future<Failure?> deleteCurrentUser() async {
+    try {
+      await signOut();
+      return null;
+    } catch (e) {
+      getLogger().e(e);
+      return const UnknownFailure();
+    }
   }
 
   @override

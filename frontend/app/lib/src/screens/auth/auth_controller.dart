@@ -10,7 +10,7 @@ final nhostProvider = Provider<NhostClient>((ref) {
   final database = ref.read(databaseProvider);
   return NhostClient(
     backendUrl: 'https://xjdqpodncbmiwuowptdo.nhost.run/',
-    authStore: database.authStoreDAO,
+    authStore: database.authDAO,
   );
 });
 

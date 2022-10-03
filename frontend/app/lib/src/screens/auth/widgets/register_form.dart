@@ -41,6 +41,7 @@ class RegisterFormState extends ConsumerState<RegisterForm> {
                       decoration: const InputDecoration(
                         label: Text('Nome'),
                       ),
+                      onChanged: _controller.changeName,
                       textInputAction: TextInputAction.next,
                       autocorrect: false,
                       keyboardType: TextInputType.name,
@@ -80,7 +81,8 @@ class RegisterFormState extends ConsumerState<RegisterForm> {
               onPressed: () async {
                 if (formKey.currentState?.validate() ?? false) {
                   final router = GoRouter.of(context);
-                  final result = await _controller.signInWithEmailAndPassword();
+                  final result =
+                      await _controller.registerWithEmailAndPassword();
 
                   if (result && mounted) {
                     router.go('/lists');

@@ -7,30 +7,30 @@ class AuthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            flex: 4,
-            child: Center(
-              child: Text(
-                'UaiList',
-                style: TextStyle(
-                  color: theme.colorScheme.primary,
-                  fontSize: 50,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              flex: 4,
+              child: Center(
+                child: Text(
+                  'UaiList',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 50,
+                  ),
                 ),
               ),
             ),
-          ),
-          IntrinsicHeight(
-            child: form,
-          ),
-          const Spacer(
-            flex: 1,
-          ),
-        ],
+            IntrinsicHeight(
+              child: form,
+            ),
+            const Spacer(
+              flex: 1,
+            ),
+          ],
+        ),
       ),
     );
   }

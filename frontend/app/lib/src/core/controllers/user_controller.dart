@@ -1,25 +1,27 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:uailist/src/core/models/user.dart';
+import 'package:uailist/src/core/database/app_database.dart';
 import 'package:uailist/src/core/repositories/auth_repository.dart';
 import 'package:uailist/src/screens/auth/auth_controller.dart';
 
-final userController = Provider.autoDispose((ref) {
+final userController = ChangeNotifierProvider((ref) {
   final userController = UserController(
     ref.read(nhostAuthProvider),
+    ref.read(databaseProvider),
   );
-
-  ref.onDispose(userController.dispose);
 
   return userController;
 });
 
-class UserController {
+class UserController extends ChangeNotifier {
   final AuthRepository _authRepository;
+  final AppDatabase _appDatabase;
   // final LocalUserRepository _localUserRepository;
 
-  late final StreamSubscription<User?> _subscriptionUserAuthData;
+  late final StreamSubscription<User?> _subscriptionUserLocal;
+  late final StreamSubscription<User?> _subscriptionUserAuthRepository;
   final _firstSignedInCompleter = Completer<bool>();
 
   User? _currentUser;
@@ -35,25 +37,45 @@ class UserController {
 
   Future<bool> get firstSignedIn => _firstSignedInCompleter.future;
 
-  UserController(this._authRepository) {
-    _authRepository.getCurrentUser().then(_setUser);
-    _subscriptionUserAuthData =
-        _authRepository.watchCurrentUserAuth().listen(_setUser);
+  UserController(this._authRepository, this._appDatabase) {
+    // Drift Local storage
+    _subscriptionUserLocal =
+        _appDatabase.authDAO.watchCurrentUser().listen(_setUser);
+
+    // authRepository
+    _authRepository.getCurrentUser().then(_saveUserInStorage);
+    _subscriptionUserAuthRepository =
+        _authRepository.watchCurrentUserAuth().listen(_saveUserInStorage);
   }
 
-  void _setUser(User? user) {
+  // Set _currentUser with the user from localStorage
+  Future<void> _setUser(User? user) async {
     _currentUser = user;
+    notifyListeners();
 
     if (!_firstSignedInCompleter.isCompleted) {
       _firstSignedInCompleter.complete(_currentUser != null);
     }
   }
 
-  Future<void> signOut() async {
-    await _authRepository.signOut();
+  // Set _currentUser with the user from authRepository
+  Future<void> _saveUserInStorage(User? user) async {
+    if (user != null) {
+      await _appDatabase.authDAO.insertOrUpdateUser(user.toCompanion(true));
+    } else {
+      await signOut();
+    }
   }
 
+  Future<void> signOut() async {
+    await _authRepository.signOut();
+    await _appDatabase.deleteEverything();
+  }
+
+  @override
   void dispose() {
-    _subscriptionUserAuthData.cancel();
+    _subscriptionUserLocal.cancel();
+    _subscriptionUserAuthRepository.cancel();
+    super.dispose();
   }
 }

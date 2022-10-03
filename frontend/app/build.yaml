@@ -1,0 +1,27 @@
+
+targets:
+  $default:
+    sources:
+      - lib/**
+      - lib/schema.graphql
+      - $package$
+    builders:
+      artemis:
+        options:
+          schema_mapping:
+            - output: lib/src/core/services/hasura/graphql_api.graphql.dart
+              schema: lib/schema.graphql
+              queries_glob: lib/src/**.graphql
+
+          scalar_mapping:
+            - custom_parser_import: 'package:uailist/src/core/services/hasura/parsers/custom_date_parser.dart'
+              graphql_type: Date
+              dart_type: DateTime
+
+            - custom_parser_import: 'package:uailist/src/core/services/hasura/parsers/custom_timestamptz_parser.dart'
+              graphql_type: timestamptz
+              dart_type: DateTime
+            
+            - custom_parser_import: 'package:uailist/src/core/services/hasura/parsers/custom_uuid_parser.dart'
+              graphql_type: uuid
+              dart_type: String

@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
+import 'package:uailist/src/core/database/app_database.dart';
 import 'package:uailist/src/core/failures/failure.dart';
-import 'package:uailist/src/core/models/user.dart';
+// import 'package:uailist/src/core/models/user.dart';
 
 abstract class AuthRepository {
   /// Login the user using it's already registered email and password
@@ -29,6 +30,10 @@ abstract class AuthRepository {
     String? idToken,
   );
 
+  /// Deletes the current user and signOut from the account
+  Future<Failure?> deleteCurrentUser();
+
+  /// Returns the currentUser or null if it's not signedIn
   Future<User?> getCurrentUser();
 
   /// Returns the user JWT token.

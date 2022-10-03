@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:uailist/src/core/controllers/user_controller.dart';
+import 'package:uailist/src/core/logger/logger.dart';
+import 'package:uailist/src/screens/profile/profile_controller.dart';
 import 'package:uailist/src/screens/profile/widgets/delete_account_confirm_dialog.dart';
+import 'package:uailist/src/screens/profile/widgets/select_image_dialog.dart';
+import 'package:uailist/src/screens/profile/widgets/user_profile_image.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends StatefulHookConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  ProfileScreenState createState() => ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    final controllerProfile = ref.read(profileController);
+    final controllerUser = ref.read(userController);
     final themeData = Theme.of(context);
+    final user = controllerUser.currentUser;
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -24,17 +35,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 bottom: 40,
               ),
               child: Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Opacity(
                     opacity: 0,
                     child: IgnorePointer(
                       child: PopupMenuButton(
-                        itemBuilder: (context) => [
-                          const PopupMenuItem(
-                            child: Text('Escluir conta'),
-                          ),
-                        ],
+                        itemBuilder: (context) => [],
                       ),
                     ),
                   ),
@@ -49,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     position: PopupMenuPosition.over,
                     itemBuilder: (context) => [
                       PopupMenuItem(
-                        child: const Text('Escluir conta'),
+                        child: const Text('Excluir conta'),
                         onTap: () {
                           showDialog(
                             context: context,
@@ -67,18 +73,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Stack(
               alignment: AlignmentDirectional.bottomEnd,
               children: [
-                CircleAvatar(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  radius: 80,
-                  child: const Icon(
-                    Icons.person,
-                    size: 80,
+                const UserProfileImage(radius: 80),
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: themeData.colorScheme.primary,
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.photo_camera),
-                  iconSize: 40,
-                  onPressed: () {},
+                  child: IconButton(
+                    icon: const Icon(Icons.photo_camera, size: 32),
+                    color: Colors.white,
+                    iconSize: 40,
+                    onPressed: () {
+                      showDialog<String?>(
+                        context: context,
+                        builder: (context) {
+                          return const SelectImageDialog();
+                        },
+                      ).then((value) {
+                        if (value != null) {
+                          controllerProfile.changeImage(user.id, value);
+                        }
+                      });
+                    },
+                  ),
                 )
               ],
             ),
@@ -87,19 +104,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  top: 35, right: 10, left: 20, bottom: 0),
+                top: 35,
+                right: 10,
+                left: 20,
+                bottom: 0,
+              ),
               child: ListTile(
                 leading: const Icon(
                   Icons.person,
                   size: 30,
                 ),
-                title: const Text(
-                  'Nome',
-                  style: TextStyle(fontSize: 20),
-                ),
-                subtitle: const Text(
-                  'João',
-                  style: TextStyle(fontSize: 20),
+                title: TextFormField(
+                  initialValue: user.displayName,
+                  readOnly: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Nome',
+                  ),
                 ),
                 trailing: IconButton(
                   icon: const Icon(Icons.edit),
@@ -112,14 +132,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: 80,
             ),
             ElevatedButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                  Theme.of(context).colorScheme.primary,
-                ),
-                fixedSize: MaterialStateProperty.all(
-                  const Size(150, 50),
-                ),
+              onPressed: () async {
+                try {
+                  GoRouter.of(context).go('/signOut');
+                } catch (e) {
+                  getLogger().e(e);
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: themeData.colorScheme.primary,
+                fixedSize: const Size(150, 50),
               ),
               child: const Text(
                 'Sair',
