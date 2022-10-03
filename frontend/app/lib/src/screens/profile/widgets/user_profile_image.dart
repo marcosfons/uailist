@@ -26,6 +26,7 @@ class UserProfileImage extends HookConsumerWidget {
       imageUrl: user.avatarUrl,
       width: size,
       height: size,
+      fit: BoxFit.cover,
       fadeInDuration: Duration(milliseconds: image == null ? 250 : 150),
       progressIndicatorBuilder: (context, _, __) {
         return _FrameMemoryImageWidget(

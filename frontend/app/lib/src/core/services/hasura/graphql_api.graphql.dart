@@ -93,6 +93,52 @@ class AppChangeAvatarUrl$MutationRoot extends JsonSerializable
 }
 
 @JsonSerializable(explicitToJson: true)
+class AppChangeUserName$MutationRoot$Users extends JsonSerializable
+    with EquatableMixin {
+  AppChangeUserName$MutationRoot$Users();
+
+  factory AppChangeUserName$MutationRoot$Users.fromJson(
+          Map<String, dynamic> json) =>
+      _$AppChangeUserName$MutationRoot$UsersFromJson(json);
+
+  @JsonKey(
+      fromJson: fromGraphQLUuidToDartString,
+      toJson: fromDartStringToGraphQLUuid)
+  late String id;
+
+  late String displayName;
+
+  late String avatarUrl;
+
+  @JsonKey(
+      fromJson: fromGraphQLTimestamptzToDartDateTime,
+      toJson: fromDartDateTimeToGraphQLTimestamptz)
+  late DateTime updatedAt;
+
+  @override
+  List<Object?> get props => [id, displayName, avatarUrl, updatedAt];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$AppChangeUserName$MutationRoot$UsersToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class AppChangeUserName$MutationRoot extends JsonSerializable
+    with EquatableMixin {
+  AppChangeUserName$MutationRoot();
+
+  factory AppChangeUserName$MutationRoot.fromJson(Map<String, dynamic> json) =>
+      _$AppChangeUserName$MutationRootFromJson(json);
+
+  AppChangeUserName$MutationRoot$Users? updateUser;
+
+  @override
+  List<Object?> get props => [updateUser];
+  @override
+  Map<String, dynamic> toJson() => _$AppChangeUserName$MutationRootToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
 class AppDeleteUserArguments extends JsonSerializable with EquatableMixin {
   AppDeleteUserArguments({required this.userId});
 
@@ -303,4 +349,136 @@ class AppChangeAvatarUrlMutation extends GraphQLQuery<
   @override
   AppChangeAvatarUrl$MutationRoot parse(Map<String, dynamic> json) =>
       AppChangeAvatarUrl$MutationRoot.fromJson(json);
+}
+
+@JsonSerializable(explicitToJson: true)
+class AppChangeUserNameArguments extends JsonSerializable with EquatableMixin {
+  AppChangeUserNameArguments({
+    required this.userId,
+    required this.name,
+  });
+
+  @override
+  factory AppChangeUserNameArguments.fromJson(Map<String, dynamic> json) =>
+      _$AppChangeUserNameArgumentsFromJson(json);
+
+  @JsonKey(
+      fromJson: fromGraphQLUuidToDartString,
+      toJson: fromDartStringToGraphQLUuid)
+  late String userId;
+
+  late String name;
+
+  @override
+  List<Object?> get props => [userId, name];
+  @override
+  Map<String, dynamic> toJson() => _$AppChangeUserNameArgumentsToJson(this);
+}
+
+final APP_CHANGE_USER_NAME_MUTATION_DOCUMENT_OPERATION_NAME =
+    'AppChangeUserName';
+final APP_CHANGE_USER_NAME_MUTATION_DOCUMENT = DocumentNode(definitions: [
+  OperationDefinitionNode(
+    type: OperationType.mutation,
+    name: NameNode(value: 'AppChangeUserName'),
+    variableDefinitions: [
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'userId')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'uuid'),
+          isNonNull: true,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      ),
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'name')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'String'),
+          isNonNull: true,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      ),
+    ],
+    directives: [],
+    selectionSet: SelectionSetNode(selections: [
+      FieldNode(
+        name: NameNode(value: 'updateUser'),
+        alias: null,
+        arguments: [
+          ArgumentNode(
+            name: NameNode(value: 'pk_columns'),
+            value: ObjectValueNode(fields: [
+              ObjectFieldNode(
+                name: NameNode(value: 'id'),
+                value: VariableNode(name: NameNode(value: 'userId')),
+              )
+            ]),
+          ),
+          ArgumentNode(
+            name: NameNode(value: '_set'),
+            value: ObjectValueNode(fields: [
+              ObjectFieldNode(
+                name: NameNode(value: 'displayName'),
+                value: VariableNode(name: NameNode(value: 'name')),
+              )
+            ]),
+          ),
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+            name: NameNode(value: 'id'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'displayName'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'avatarUrl'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'updatedAt'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+        ]),
+      )
+    ]),
+  )
+]);
+
+class AppChangeUserNameMutation extends GraphQLQuery<
+    AppChangeUserName$MutationRoot, AppChangeUserNameArguments> {
+  AppChangeUserNameMutation({required this.variables});
+
+  @override
+  final DocumentNode document = APP_CHANGE_USER_NAME_MUTATION_DOCUMENT;
+
+  @override
+  final String operationName =
+      APP_CHANGE_USER_NAME_MUTATION_DOCUMENT_OPERATION_NAME;
+
+  @override
+  final AppChangeUserNameArguments variables;
+
+  @override
+  List<Object?> get props => [document, operationName, variables];
+  @override
+  AppChangeUserName$MutationRoot parse(Map<String, dynamic> json) =>
+      AppChangeUserName$MutationRoot.fromJson(json);
 }

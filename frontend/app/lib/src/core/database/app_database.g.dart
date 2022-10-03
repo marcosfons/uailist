@@ -424,14 +424,544 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   }
 }
 
+class BuyList extends DataClass implements Insertable<BuyList> {
+  final String uuid;
+  final String name;
+  final DateTime createdAt;
+  const BuyList(
+      {required this.uuid, required this.name, required this.createdAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['uuid'] = Variable<String>(uuid);
+    map['name'] = Variable<String>(name);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  BuyListsCompanion toCompanion(bool nullToAbsent) {
+    return BuyListsCompanion(
+      uuid: Value(uuid),
+      name: Value(name),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory BuyList.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return BuyList(
+      uuid: serializer.fromJson<String>(json['uuid']),
+      name: serializer.fromJson<String>(json['name']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'uuid': serializer.toJson<String>(uuid),
+      'name': serializer.toJson<String>(name),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  BuyList copyWith({String? uuid, String? name, DateTime? createdAt}) =>
+      BuyList(
+        uuid: uuid ?? this.uuid,
+        name: name ?? this.name,
+        createdAt: createdAt ?? this.createdAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('BuyList(')
+          ..write('uuid: $uuid, ')
+          ..write('name: $name, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(uuid, name, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is BuyList &&
+          other.uuid == this.uuid &&
+          other.name == this.name &&
+          other.createdAt == this.createdAt);
+}
+
+class BuyListsCompanion extends UpdateCompanion<BuyList> {
+  final Value<String> uuid;
+  final Value<String> name;
+  final Value<DateTime> createdAt;
+  const BuyListsCompanion({
+    this.uuid = const Value.absent(),
+    this.name = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  BuyListsCompanion.insert({
+    this.uuid = const Value.absent(),
+    required String name,
+    this.createdAt = const Value.absent(),
+  }) : name = Value(name);
+  static Insertable<BuyList> custom({
+    Expression<String>? uuid,
+    Expression<String>? name,
+    Expression<DateTime>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (uuid != null) 'uuid': uuid,
+      if (name != null) 'name': name,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  BuyListsCompanion copyWith(
+      {Value<String>? uuid, Value<String>? name, Value<DateTime>? createdAt}) {
+    return BuyListsCompanion(
+      uuid: uuid ?? this.uuid,
+      name: name ?? this.name,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(uuid.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BuyListsCompanion(')
+          ..write('uuid: $uuid, ')
+          ..write('name: $name, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $BuyListsTable extends BuyLists with TableInfo<$BuyListsTable, BuyList> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $BuyListsTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  @override
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
+      'uuid', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      clientDefault: () => uuidClass.v4());
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  @override
+  List<GeneratedColumn> get $columns => [uuid, name, createdAt];
+  @override
+  String get aliasedName => _alias ?? 'buy_lists';
+  @override
+  String get actualTableName => 'buy_lists';
+  @override
+  VerificationContext validateIntegrity(Insertable<BuyList> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('uuid')) {
+      context.handle(
+          _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {uuid};
+  @override
+  BuyList map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return BuyList(
+      uuid: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!,
+      name: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      createdAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+    );
+  }
+
+  @override
+  $BuyListsTable createAlias(String alias) {
+    return $BuyListsTable(attachedDatabase, alias);
+  }
+}
+
+class ProductBuyList extends DataClass implements Insertable<ProductBuyList> {
+  final String uuid;
+  final String buyListUuid;
+  final String name;
+  final int quantity;
+  final bool bought;
+  final DateTime createdAt;
+  const ProductBuyList(
+      {required this.uuid,
+      required this.buyListUuid,
+      required this.name,
+      required this.quantity,
+      required this.bought,
+      required this.createdAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['uuid'] = Variable<String>(uuid);
+    map['buy_list_uuid'] = Variable<String>(buyListUuid);
+    map['name'] = Variable<String>(name);
+    map['quantity'] = Variable<int>(quantity);
+    map['bought'] = Variable<bool>(bought);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  ProductsBuyListCompanion toCompanion(bool nullToAbsent) {
+    return ProductsBuyListCompanion(
+      uuid: Value(uuid),
+      buyListUuid: Value(buyListUuid),
+      name: Value(name),
+      quantity: Value(quantity),
+      bought: Value(bought),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory ProductBuyList.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ProductBuyList(
+      uuid: serializer.fromJson<String>(json['uuid']),
+      buyListUuid: serializer.fromJson<String>(json['buyListUuid']),
+      name: serializer.fromJson<String>(json['name']),
+      quantity: serializer.fromJson<int>(json['quantity']),
+      bought: serializer.fromJson<bool>(json['bought']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'uuid': serializer.toJson<String>(uuid),
+      'buyListUuid': serializer.toJson<String>(buyListUuid),
+      'name': serializer.toJson<String>(name),
+      'quantity': serializer.toJson<int>(quantity),
+      'bought': serializer.toJson<bool>(bought),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  ProductBuyList copyWith(
+          {String? uuid,
+          String? buyListUuid,
+          String? name,
+          int? quantity,
+          bool? bought,
+          DateTime? createdAt}) =>
+      ProductBuyList(
+        uuid: uuid ?? this.uuid,
+        buyListUuid: buyListUuid ?? this.buyListUuid,
+        name: name ?? this.name,
+        quantity: quantity ?? this.quantity,
+        bought: bought ?? this.bought,
+        createdAt: createdAt ?? this.createdAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('ProductBuyList(')
+          ..write('uuid: $uuid, ')
+          ..write('buyListUuid: $buyListUuid, ')
+          ..write('name: $name, ')
+          ..write('quantity: $quantity, ')
+          ..write('bought: $bought, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(uuid, buyListUuid, name, quantity, bought, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ProductBuyList &&
+          other.uuid == this.uuid &&
+          other.buyListUuid == this.buyListUuid &&
+          other.name == this.name &&
+          other.quantity == this.quantity &&
+          other.bought == this.bought &&
+          other.createdAt == this.createdAt);
+}
+
+class ProductsBuyListCompanion extends UpdateCompanion<ProductBuyList> {
+  final Value<String> uuid;
+  final Value<String> buyListUuid;
+  final Value<String> name;
+  final Value<int> quantity;
+  final Value<bool> bought;
+  final Value<DateTime> createdAt;
+  const ProductsBuyListCompanion({
+    this.uuid = const Value.absent(),
+    this.buyListUuid = const Value.absent(),
+    this.name = const Value.absent(),
+    this.quantity = const Value.absent(),
+    this.bought = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  ProductsBuyListCompanion.insert({
+    this.uuid = const Value.absent(),
+    required String buyListUuid,
+    required String name,
+    this.quantity = const Value.absent(),
+    this.bought = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  })  : buyListUuid = Value(buyListUuid),
+        name = Value(name);
+  static Insertable<ProductBuyList> custom({
+    Expression<String>? uuid,
+    Expression<String>? buyListUuid,
+    Expression<String>? name,
+    Expression<int>? quantity,
+    Expression<bool>? bought,
+    Expression<DateTime>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (uuid != null) 'uuid': uuid,
+      if (buyListUuid != null) 'buy_list_uuid': buyListUuid,
+      if (name != null) 'name': name,
+      if (quantity != null) 'quantity': quantity,
+      if (bought != null) 'bought': bought,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  ProductsBuyListCompanion copyWith(
+      {Value<String>? uuid,
+      Value<String>? buyListUuid,
+      Value<String>? name,
+      Value<int>? quantity,
+      Value<bool>? bought,
+      Value<DateTime>? createdAt}) {
+    return ProductsBuyListCompanion(
+      uuid: uuid ?? this.uuid,
+      buyListUuid: buyListUuid ?? this.buyListUuid,
+      name: name ?? this.name,
+      quantity: quantity ?? this.quantity,
+      bought: bought ?? this.bought,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(uuid.value);
+    }
+    if (buyListUuid.present) {
+      map['buy_list_uuid'] = Variable<String>(buyListUuid.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (quantity.present) {
+      map['quantity'] = Variable<int>(quantity.value);
+    }
+    if (bought.present) {
+      map['bought'] = Variable<bool>(bought.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProductsBuyListCompanion(')
+          ..write('uuid: $uuid, ')
+          ..write('buyListUuid: $buyListUuid, ')
+          ..write('name: $name, ')
+          ..write('quantity: $quantity, ')
+          ..write('bought: $bought, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ProductsBuyListTable extends ProductsBuyList
+    with TableInfo<$ProductsBuyListTable, ProductBuyList> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ProductsBuyListTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  @override
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
+      'uuid', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      clientDefault: () => uuidClass.v4());
+  final VerificationMeta _buyListUuidMeta =
+      const VerificationMeta('buyListUuid');
+  @override
+  late final GeneratedColumn<String> buyListUuid = GeneratedColumn<String>(
+      'buy_list_uuid', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: 'REFERENCES buy_lists (uuid)');
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  final VerificationMeta _quantityMeta = const VerificationMeta('quantity');
+  @override
+  late final GeneratedColumn<int> quantity = GeneratedColumn<int>(
+      'quantity', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  final VerificationMeta _boughtMeta = const VerificationMeta('bought');
+  @override
+  late final GeneratedColumn<bool> bought = GeneratedColumn<bool>(
+      'bought', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (bought IN (0, 1))',
+      defaultValue: const Constant(false));
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [uuid, buyListUuid, name, quantity, bought, createdAt];
+  @override
+  String get aliasedName => _alias ?? 'products_buy_list';
+  @override
+  String get actualTableName => 'products_buy_list';
+  @override
+  VerificationContext validateIntegrity(Insertable<ProductBuyList> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('uuid')) {
+      context.handle(
+          _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
+    }
+    if (data.containsKey('buy_list_uuid')) {
+      context.handle(
+          _buyListUuidMeta,
+          buyListUuid.isAcceptableOrUnknown(
+              data['buy_list_uuid']!, _buyListUuidMeta));
+    } else if (isInserting) {
+      context.missing(_buyListUuidMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('quantity')) {
+      context.handle(_quantityMeta,
+          quantity.isAcceptableOrUnknown(data['quantity']!, _quantityMeta));
+    }
+    if (data.containsKey('bought')) {
+      context.handle(_boughtMeta,
+          bought.isAcceptableOrUnknown(data['bought']!, _boughtMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {uuid};
+  @override
+  ProductBuyList map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ProductBuyList(
+      uuid: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!,
+      buyListUuid: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}buy_list_uuid'])!,
+      name: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      quantity: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}quantity'])!,
+      bought: attachedDatabase.options.types
+          .read(DriftSqlType.bool, data['${effectivePrefix}bought'])!,
+      createdAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+    );
+  }
+
+  @override
+  $ProductsBuyListTable createAlias(String alias) {
+    return $ProductsBuyListTable(attachedDatabase, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   late final $SessionsTable sessions = $SessionsTable(this);
   late final $UsersTable users = $UsersTable(this);
+  late final $BuyListsTable buyLists = $BuyListsTable(this);
+  late final $ProductsBuyListTable productsBuyList =
+      $ProductsBuyListTable(this);
   late final AuthDAO authDAO = AuthDAO(this as AppDatabase);
+  late final BuyListDAO buyListDAO = BuyListDAO(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, dynamic>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [sessions, users];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [sessions, users, buyLists, productsBuyList];
 }

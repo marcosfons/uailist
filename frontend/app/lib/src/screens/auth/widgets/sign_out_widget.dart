@@ -17,7 +17,7 @@ class SignOutWidgetState extends ConsumerState<SignOutWidget> {
   void initState() {
     super.initState();
 
-    Future.delayed(const Duration(milliseconds: 250), () {
+    Future.delayed(const Duration(milliseconds: 200), () {
       controller.signOut().whenComplete(() {
         GoRouter.of(context).go('/login');
       });

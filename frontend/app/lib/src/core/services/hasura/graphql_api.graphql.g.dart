@@ -65,6 +65,38 @@ Map<String, dynamic> _$AppChangeAvatarUrl$MutationRootToJson(
       'updateUser': instance.updateUser?.toJson(),
     };
 
+AppChangeUserName$MutationRoot$Users
+    _$AppChangeUserName$MutationRoot$UsersFromJson(Map<String, dynamic> json) =>
+        AppChangeUserName$MutationRoot$Users()
+          ..id = fromGraphQLUuidToDartString(json['id'] as String)
+          ..displayName = json['displayName'] as String
+          ..avatarUrl = json['avatarUrl'] as String
+          ..updatedAt =
+              fromGraphQLTimestamptzToDartDateTime(json['updatedAt'] as String);
+
+Map<String, dynamic> _$AppChangeUserName$MutationRoot$UsersToJson(
+        AppChangeUserName$MutationRoot$Users instance) =>
+    <String, dynamic>{
+      'id': fromDartStringToGraphQLUuid(instance.id),
+      'displayName': instance.displayName,
+      'avatarUrl': instance.avatarUrl,
+      'updatedAt': fromDartDateTimeToGraphQLTimestamptz(instance.updatedAt),
+    };
+
+AppChangeUserName$MutationRoot _$AppChangeUserName$MutationRootFromJson(
+        Map<String, dynamic> json) =>
+    AppChangeUserName$MutationRoot()
+      ..updateUser = json['updateUser'] == null
+          ? null
+          : AppChangeUserName$MutationRoot$Users.fromJson(
+              json['updateUser'] as Map<String, dynamic>);
+
+Map<String, dynamic> _$AppChangeUserName$MutationRootToJson(
+        AppChangeUserName$MutationRoot instance) =>
+    <String, dynamic>{
+      'updateUser': instance.updateUser?.toJson(),
+    };
+
 AppDeleteUserArguments _$AppDeleteUserArgumentsFromJson(
         Map<String, dynamic> json) =>
     AppDeleteUserArguments(
@@ -89,4 +121,18 @@ Map<String, dynamic> _$AppChangeAvatarUrlArgumentsToJson(
     <String, dynamic>{
       'userId': fromDartStringToGraphQLUuid(instance.userId),
       'avatarUrl': instance.avatarUrl,
+    };
+
+AppChangeUserNameArguments _$AppChangeUserNameArgumentsFromJson(
+        Map<String, dynamic> json) =>
+    AppChangeUserNameArguments(
+      userId: fromGraphQLUuidToDartString(json['userId'] as String),
+      name: json['name'] as String,
+    );
+
+Map<String, dynamic> _$AppChangeUserNameArgumentsToJson(
+        AppChangeUserNameArguments instance) =>
+    <String, dynamic>{
+      'userId': fromDartStringToGraphQLUuid(instance.userId),
+      'name': instance.name,
     };

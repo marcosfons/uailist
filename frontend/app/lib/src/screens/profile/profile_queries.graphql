@@ -12,3 +12,12 @@ mutation AppChangeAvatarUrl($userId: uuid!, $avatarUrl: String!) {
     updatedAt
   }
 }
+
+mutation AppChangeUserName($userId: uuid!, $name: String!) {
+  updateUser(pk_columns: {id: $userId}, _set: {displayName: $name}) {
+    id
+    displayName
+    avatarUrl
+    updatedAt
+  }
+}

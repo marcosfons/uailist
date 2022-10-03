@@ -96,4 +96,27 @@ class ProfileService {
       return const UnknownFailure();
     }
   }
+
+  Future<Failure?> changeUserName(String newUsername) async {
+    try {
+      final userId = _nhostClient.auth.currentUser!.id;
+      final response = await _hasuraClient.execute(AppChangeUserNameMutation(
+        variables: AppChangeUserNameArguments(
+          userId: userId,
+          name: newUsername,
+        ),
+      ));
+      if (response.data?.updateUser?.displayName == newUsername) {
+        return null;
+      }
+
+      if (response.errors != null) {
+        getLogger().e(response.errors);
+      }
+      return const UnknownFailure();
+    } catch (e) {
+      getLogger().e(e);
+      return const UnknownFailure();
+    }
+  }
 }
