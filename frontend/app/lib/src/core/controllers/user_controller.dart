@@ -21,7 +21,7 @@ class UserController extends ChangeNotifier {
   // final LocalUserRepository _localUserRepository;
 
   late final StreamSubscription<User?> _subscriptionUserLocal;
-  late final StreamSubscription<User?> _subscriptionUserAuthRepository;
+  StreamSubscription<User?>? _subscriptionUserAuthRepository;
   final _firstSignedInCompleter = Completer<bool>();
 
   User? _currentUser;
@@ -42,10 +42,7 @@ class UserController extends ChangeNotifier {
     _subscriptionUserLocal =
         _appDatabase.authDAO.watchCurrentUser().listen(_setUser);
 
-    // authRepository
-    _authRepository.getCurrentUser().then(_saveUserInStorage);
-    _subscriptionUserAuthRepository =
-        _authRepository.watchCurrentUserAuth().listen(_saveUserInStorage);
+    _initAuthRepository();
   }
 
   // Set _currentUser with the user from localStorage
@@ -56,6 +53,13 @@ class UserController extends ChangeNotifier {
     if (!_firstSignedInCompleter.isCompleted) {
       _firstSignedInCompleter.complete(_currentUser != null);
     }
+  }
+
+  Future<void> _initAuthRepository() async {
+    await _authRepository.init();
+    _authRepository.getCurrentUser().then(_saveUserInStorage);
+    _subscriptionUserAuthRepository =
+        _authRepository.watchCurrentUserAuth().listen(_saveUserInStorage);
   }
 
   // Set _currentUser with the user from authRepository
@@ -75,7 +79,7 @@ class UserController extends ChangeNotifier {
   @override
   void dispose() {
     _subscriptionUserLocal.cancel();
-    _subscriptionUserAuthRepository.cancel();
+    _subscriptionUserAuthRepository?.cancel();
     super.dispose();
   }
 }

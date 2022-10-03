@@ -4,6 +4,9 @@ import 'package:uailist/src/core/failures/failure.dart';
 // import 'package:uailist/src/core/models/user.dart';
 
 abstract class AuthRepository {
+  /// An optional function to run every time to initialize the auth service
+  Future<void> init() async {}
+
   /// Login the user using it's already registered email and password
   Future<Either<Failure, User>> signInWithEmailAndPassword(
     String email,
@@ -16,7 +19,6 @@ abstract class AuthRepository {
     String? idToken,
   );
 
-  /// TODO(marcosfons): Check if here it will use the userName
   /// Register a new user with the given email and password and name
   Future<Either<Failure, User>> registerUserWithEmailAndPassword(
     String email,
@@ -43,6 +45,7 @@ abstract class AuthRepository {
   /// user claims
   Future<String?> getCurrentUserToken({bool refresh = false});
 
+  /// Watches the currently signedIn user or null if not signedIn
   Stream<User?> watchCurrentUserAuth();
 
   /// SignOut the user if failure is not null some error occurred

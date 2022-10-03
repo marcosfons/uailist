@@ -7,6 +7,7 @@ import 'package:uailist/src/screens/profile/profile_controller.dart';
 import 'package:uailist/src/screens/profile/widgets/delete_account_confirm_dialog.dart';
 import 'package:uailist/src/screens/profile/widgets/select_image_dialog.dart';
 import 'package:uailist/src/screens/profile/widgets/user_profile_image.dart';
+import 'package:uailist/src/shared/widgets/main_screen_title.dart';
 
 class ProfileScreen extends StatefulHookConsumerWidget {
   const ProfileScreen({super.key});
@@ -25,78 +26,56 @@ class ProfileScreenState extends ConsumerState<ProfileScreen> {
 
     return Scaffold(
       body: SafeArea(
+        bottom: false,
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 35,
-                right: 10,
-                left: 0,
-                bottom: 40,
-              ),
-              child: Row(
-                children: [
-                  Opacity(
-                    opacity: 0,
-                    child: IgnorePointer(
-                      child: PopupMenuButton(
-                        itemBuilder: (context) => [],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      'Perfil',
-                      textAlign: TextAlign.center,
-                      style: themeData.textTheme.headline6,
-                    ),
-                  ),
-                  PopupMenuButton(
-                    position: PopupMenuPosition.over,
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                        child: const Text('Excluir conta'),
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return const DeleteAccoutnConfirmeDialog();
-                            },
-                          );
+            MainScreenTitle(
+              title: 'Perfil',
+              trailing: PopupMenuButton(
+                position: PopupMenuPosition.over,
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    child: const Text('Excluir conta'),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return const DeleteAccoutnConfirmeDialog();
                         },
-                      ),
-                    ],
-                  )
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
+            const SizedBox(height: 35),
             Stack(
               alignment: AlignmentDirectional.bottomEnd,
               children: [
                 const UserProfileImage(radius: 80),
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: themeData.colorScheme.primary,
-                  ),
-                  child: IconButton(
-                    icon: const Icon(Icons.photo_camera, size: 32),
-                    color: Colors.white,
-                    iconSize: 40,
-                    onPressed: () {
-                      showDialog<String?>(
-                        context: context,
-                        builder: (context) {
-                          return const SelectImageDialog();
-                        },
-                      ).then((value) {
-                        if (value != null) {
-                          controllerProfile.changeImage(user.id, value);
-                        }
-                      });
-                    },
-                  ),
-                )
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 100),
+                  switchInCurve: Curves.easeIn,
+                  child: controllerProfile.uploadProgress == null
+                      ? FloatingActionButton(
+                          onPressed: () {
+                            showDialog<String?>(
+                              context: context,
+                              builder: (context) {
+                                return const SelectImageDialog();
+                              },
+                            ).then((value) {
+                              if (value != null) {
+                                controllerProfile.changeImage(user.id, value);
+                              }
+                            });
+                          },
+                          tooltip: 'Trocar imagem de perfil',
+                          backgroundColor: themeData.colorScheme.primary,
+                          child: const Icon(Icons.photo_camera, size: 32),
+                        )
+                      : const SizedBox(),
+                ),
               ],
             ),
             const SizedBox(

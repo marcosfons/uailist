@@ -16,6 +16,13 @@ class NhostAuthRepository extends AuthRepository {
   StreamController<u.User?>? _currentUser;
 
   @override
+  Future<void> init() async {
+    try {
+      await _client.auth.signInWithStoredCredentials();
+    } catch (e) {}
+  }
+
+  @override
   Future<String?> getCurrentUserToken({bool refresh = false}) {
     throw UnimplementedError();
   }
@@ -91,28 +98,6 @@ class NhostAuthRepository extends AuthRepository {
     String? idToken,
   ) async {
     throw UnimplementedError();
-    // try {
-    //   final response = await _client.auth.completeOAuthProviderSignIn(
-    //     Uri(queryParameters: {refreshTokenQueryParamName: idToken}),
-    //   );
-
-    //   print(_client.auth.currentUser);
-    //   return left(const UnknownFailure());
-    // } on ApiException catch (e, st) {
-    //   print('API EXCEPTION');
-    //   debugPrint(e.toString());
-
-    //   for (int i = 0; i < e.toString().length; i += 500) {
-    //     print(e.toString().substring(i, i + 500));
-    //   }
-
-    //   print(st.toString());
-    //   return left(const UnknownFailure());
-    // } catch (e, st) {
-    //   print(e.toString());
-    //   print(st.toString());
-    //   return left(const UnknownFailure());
-    // }
   }
 
   @override
@@ -170,6 +155,5 @@ class NhostAuthRepository extends AuthRepository {
   @override
   Future<void> dispose() async {
     await _currentUser?.close();
-    // _client.auth.close();
   }
 }

@@ -14,8 +14,8 @@ class DeleteAccoutnConfirmeDialog extends ConsumerWidget {
     final controllerUser = ref.read(userController);
 
     return AlertDialog(
-      title: const Text('Tem Certeza'),
-      content: const Text('Isso ira apagar todos os seus dados'),
+      title: const Text('Tem certeza?'),
+      content: const Text('Isso irá apagar todos os seus dados'),
       actions: [
         TextButton(
           onPressed: () {
@@ -31,19 +31,11 @@ class DeleteAccoutnConfirmeDialog extends ConsumerWidget {
             final result =
                 await controller.deleteUser(controllerUser.currentUser.id);
             if (result) {
-              await controllerUser.signOut();
-              GoRouter.of(context).go('/login');
+              GoRouter.of(context).go('/signOut');
             }
           },
           child: const Text('Deletar'),
         ),
-        // ElevatedButton(
-        //   onPressed: () {},
-        //   style: ButtonStyle(
-        //     backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-        //   ),
-        //   child: const Text('Deletar'),
-        // ),
       ],
     );
   }

@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:uailist/src/core/database/app_database.dart';
 import 'package:uailist/src/core/repositories/auth_repository.dart';
-import 'package:uailist/src/core/repositories/google_sign_in_repository.dart';
 import 'package:uailist/src/core/repositories/nhost_auth_repository.dart';
 
 final nhostProvider = Provider<NhostClient>((ref) {
@@ -21,12 +20,10 @@ final nhostAuthProvider = Provider<NhostAuthRepository>(
 final authController = Provider.autoDispose((ref) {
   return AuthController(
     ref.read(nhostAuthProvider),
-    GoogleSignInRepository(),
   );
 });
 
 class AuthController {
-  final GoogleSignInRepository _googleSignInRepository;
   final AuthRepository _authRepository;
 
   String _email = '';
@@ -35,7 +32,7 @@ class AuthController {
 
   final ValueNotifier<String?> _errorNotifier = ValueNotifier(null);
 
-  AuthController(this._authRepository, this._googleSignInRepository);
+  AuthController(this._authRepository);
 
   String get name => _name;
   String get email => _email;

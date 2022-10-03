@@ -1,22 +1,25 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:uailist/src/core/controllers/user_controller.dart';
 import 'package:uailist/src/core/themes/light_theme.dart';
-import 'package:uailist/src/screens/auth/auth_controller.dart';
 import 'package:uailist/src/screens/auth/auth_route.dart';
-import 'package:uailist/src/screens/list/list_route.dart';
+import 'package:uailist/src/screens/lists/lists_route.dart';
+import 'package:uailist/src/screens/products/products_route.dart';
 import 'package:uailist/src/screens/profile/profile_route.dart';
-import 'package:uailist/src/shared/widgets/dashboard_scaffold.dart';
+import 'package:uailist/src/screens/supermarkets/supermarkets_route.dart';
+import 'package:uailist/src/shared/widgets/dashboard/dashboard_item.dart';
+import 'package:uailist/src/shared/widgets/dashboard/dashboard_scaffold.dart';
 
 void main() async {
-  Logger.level = kDebugMode ? Level.verbose : Level.info;
-
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  Logger.level = kDebugMode ? Level.verbose : Level.info;
 
   runApp(
     const ProviderScope(child: App()),
@@ -32,7 +35,6 @@ class App extends StatefulHookConsumerWidget {
 
 class AppState extends ConsumerState<App> {
   late final _userController = ref.read(userController);
-  late final _nhost = ref.read(nhostProvider);
 
   @override
   void initState() {
@@ -41,9 +43,6 @@ class AppState extends ConsumerState<App> {
   }
 
   void firstSignIn() async {
-    try {
-      await _nhost.auth.signInWithStoredCredentials();
-    } catch (e) {}
     final newRoute = await _userController.firstSignedIn ? '/lists' : '/login';
     FlutterNativeSplash.remove();
 
@@ -73,10 +72,36 @@ class AppState extends ConsumerState<App> {
       ),
       ShellRoute(
         builder: (context, state, child) {
-          return DashboardScaffold(page: child);
+          return DashboardScaffold(
+            page: child,
+            items: const [
+              DashboardItem(
+                path: '/lists',
+                name: 'Listas',
+                icon: Icons.home,
+              ),
+              DashboardItem(
+                path: '/supermarkets',
+                name: 'Supermercados',
+                icon: FontAwesomeIcons.cartShopping,
+              ),
+              DashboardItem(
+                path: '/products',
+                name: 'Listas',
+                icon: FontAwesomeIcons.cartShopping,
+              ),
+              DashboardItem(
+                path: '/profile',
+                name: 'Perfil',
+                icon: Icons.account_circle,
+              )
+            ],
+          );
         },
         routes: [
           listRoute,
+          supermarketsRoute,
+          productsRoute,
           profileRoute,
         ],
       ),
