@@ -15,10 +15,11 @@ class SharedAxisTransitionPage<T> extends CustomTransitionPage<T> {
         );
 
   static Widget _transitionsBuilder(
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-      Widget child) {
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
     final themeData = Theme.of(context);
 
     return SharedAxisTransition(

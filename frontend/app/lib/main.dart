@@ -1,35 +1,55 @@
-import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:uailist/firebase_options.dart';
+import 'package:logger/logger.dart';
+import 'package:uailist/src/core/controllers/user_controller.dart';
 import 'package:uailist/src/core/themes/light_theme.dart';
 import 'package:uailist/src/screens/auth/auth_route.dart';
-import 'package:uailist/src/screens/home/home_screen.dart';
-import 'package:uailist/src/screens/list/list_route.dart';
-import 'package:uailist/src/screens/list/list_screen.dart';
-import 'package:uailist/src/screens/list/widgets/new_list.dart';
+import 'package:uailist/src/screens/lists/lists_route.dart';
+import 'package:uailist/src/screens/products/products_route.dart';
 import 'package:uailist/src/screens/profile/profile_route.dart';
-import 'package:uailist/src/screens/profile/profile_screen.dart';
-import 'package:uailist/src/shared/widgets/dashboard_scaffold.dart';
-import 'package:uailist/src/shared/widgets/shared_axis_transition_page.dart';
+import 'package:uailist/src/screens/supermarkets/supermarkets_route.dart';
+import 'package:uailist/src/shared/widgets/dashboard/dashboard_item.dart';
+import 'package:uailist/src/shared/widgets/dashboard/dashboard_scaffold.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  FlutterNativeSplash.remove();
+  Logger.level = kDebugMode ? Level.verbose : Level.info;
 
   runApp(
-    ProviderScope(
-      child: App(),
-    ),
+    const ProviderScope(child: App()),
   );
 }
 
-class App extends StatelessWidget {
-  App({super.key});
+class App extends StatefulHookConsumerWidget {
+  const App({super.key});
+
+  @override
+  AppState createState() => AppState();
+}
+
+class AppState extends ConsumerState<App> {
+  late final _userController = ref.read(userController);
+
+  @override
+  void initState() {
+    super.initState();
+    firstSignIn();
+  }
+
+  void firstSignIn() async {
+    final newRoute = await _userController.firstSignedIn ? '/lists' : '/login';
+    FlutterNativeSplash.remove();
+
+    if (mounted) {
+      router.go(newRoute);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,37 +57,55 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Uailist',
       theme: lightTheme,
-      routeInformationProvider: _router.routeInformationProvider,
-      routeInformationParser: _router.routeInformationParser,
-      routerDelegate: _router.routerDelegate,
+      routeInformationProvider: router.routeInformationProvider,
+      routeInformationParser: router.routeInformationParser,
+      routerDelegate: router.routerDelegate,
     );
   }
 
-  late final GoRouter _router = GoRouter(
-    initialLocation: '/lists',
+  late final GoRouter router = GoRouter(
+    initialLocation: '/',
     routes: [
       GoRoute(
         path: '/',
         builder: (_, __) => const Scaffold(),
-        redirect: (context, state) async => '/login',
-        // redirect: (state) => '/auth',
       ),
       ShellRoute(
         builder: (context, state, child) {
-          return DashboardScaffold(page: child);
+          return DashboardScaffold(
+            page: child,
+            items: const [
+              DashboardItem(
+                path: '/lists',
+                name: 'Listas',
+                icon: Icons.home,
+              ),
+              DashboardItem(
+                path: '/supermarkets',
+                name: 'Supermercados',
+                icon: FontAwesomeIcons.cartShopping,
+              ),
+              DashboardItem(
+                path: '/products',
+                name: 'Listas',
+                icon: FontAwesomeIcons.cartShopping,
+              ),
+              DashboardItem(
+                path: '/profile',
+                name: 'Perfil',
+                icon: Icons.account_circle,
+              )
+            ],
+          );
         },
         routes: [
           listRoute,
+          supermarketsRoute,
+          productsRoute,
           profileRoute,
         ],
       ),
       authRoute,
-      // GoRoute(
-      //   path: '/lists',
-      //   builder: (BuildContext context, GoRouterState state) {
-      //     return const HomeScreen();
-      //   },
-      // ),
     ],
   );
 }

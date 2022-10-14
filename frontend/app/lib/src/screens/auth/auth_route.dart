@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:uailist/src/screens/auth/auth_screen.dart';
 import 'package:uailist/src/screens/auth/widgets/login_form.dart';
 import 'package:uailist/src/screens/auth/widgets/register_form.dart';
+import 'package:uailist/src/screens/auth/widgets/sign_out_widget.dart';
 import 'package:uailist/src/shared/widgets/shared_axis_transition_page.dart';
 
 final authRoute = ShellRoute(
@@ -32,5 +33,15 @@ final authRoute = ShellRoute(
         );
       },
     ),
+    GoRoute(
+      path: '/signOut',
+      pageBuilder: (context, state) {
+        return const SharedAxisTransitionPage(
+          key: ValueKey('SignOutScreen'),
+          transitionDuration: Duration(milliseconds: 300),
+          child: SignOutWidget(),
+        );
+      },
+    )
   ],
 );

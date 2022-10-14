@@ -1,0 +1,7 @@
+version: 3
+endpoint: https://xjdqpodncbmiwuowptdo.nhost.run
+admin_secret: ed6f45e2fa95ca8ebb5771868aae3293
+metadata_directory: metadata
+actions:
+  kind: synchronous
+  handler_webhook_baseurl: http://localhost:3000

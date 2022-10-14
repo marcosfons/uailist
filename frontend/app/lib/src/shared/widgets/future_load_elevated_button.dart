@@ -5,6 +5,7 @@ class FutureLoadElevatedButton extends StatefulWidget {
     super.key,
     required this.onPressed,
     required this.child,
+    this.style,
     this.loadingWidget = const Center(
       child: SizedBox(
         width: 18,
@@ -21,6 +22,7 @@ class FutureLoadElevatedButton extends StatefulWidget {
 
   final Widget child;
   final Widget loadingWidget;
+  final ButtonStyle? style;
 
   @override
   State<FutureLoadElevatedButton> createState() =>
@@ -44,6 +46,7 @@ class _FutureLoadElevatedButtonState extends State<FutureLoadElevatedButton> {
                   _future = widget.onPressed();
                   setState(() {});
                 },
+          style: widget.style,
           child: isLoading ? widget.loadingWidget : widget.child,
         );
       },
