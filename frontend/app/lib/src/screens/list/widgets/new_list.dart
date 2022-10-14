@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:uailist/src/screens/list/widgets/product_card.dart';
 
 class NewList extends StatefulWidget {
   const NewList({super.key});
@@ -46,6 +47,9 @@ class _NewListState extends State<NewList> {
               fontWeight: FontWeight.bold,
             ),
           ),
+          ProductCard(),
+          ProductCard(),
+          ProductCard(),
         ],
       ),
     );
