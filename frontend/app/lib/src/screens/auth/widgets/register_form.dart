@@ -79,6 +79,26 @@ class RegisterFormState extends ConsumerState<RegisterForm> {
             const SizedBox(
               height: 20,
             ),
+            ValueListenableBuilder(
+              valueListenable: _controller.errorListener,
+              builder: (BuildContext context, String? error, Widget? child) {
+                if (error == null) {
+                  return const SizedBox();
+                }
+
+                return Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18),
+                    child: Text(
+                      error,
+                      textAlign: TextAlign.right,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  ),
+                );
+              },
+            ),
             SizedBox(
               width: double.infinity,
               child: Padding(

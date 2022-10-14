@@ -949,6 +949,255 @@ class $ProductsBuyListTable extends ProductsBuyList
   }
 }
 
+class Supermarket extends DataClass implements Insertable<Supermarket> {
+  final String uuid;
+  final String name;
+  final String address;
+  final String? imageUrl;
+  const Supermarket(
+      {required this.uuid,
+      required this.name,
+      required this.address,
+      this.imageUrl});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['uuid'] = Variable<String>(uuid);
+    map['name'] = Variable<String>(name);
+    map['address'] = Variable<String>(address);
+    if (!nullToAbsent || imageUrl != null) {
+      map['image_url'] = Variable<String>(imageUrl);
+    }
+    return map;
+  }
+
+  SupermarketsCompanion toCompanion(bool nullToAbsent) {
+    return SupermarketsCompanion(
+      uuid: Value(uuid),
+      name: Value(name),
+      address: Value(address),
+      imageUrl: imageUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(imageUrl),
+    );
+  }
+
+  factory Supermarket.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Supermarket(
+      uuid: serializer.fromJson<String>(json['uuid']),
+      name: serializer.fromJson<String>(json['name']),
+      address: serializer.fromJson<String>(json['address']),
+      imageUrl: serializer.fromJson<String?>(json['imageUrl']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'uuid': serializer.toJson<String>(uuid),
+      'name': serializer.toJson<String>(name),
+      'address': serializer.toJson<String>(address),
+      'imageUrl': serializer.toJson<String?>(imageUrl),
+    };
+  }
+
+  Supermarket copyWith(
+          {String? uuid,
+          String? name,
+          String? address,
+          Value<String?> imageUrl = const Value.absent()}) =>
+      Supermarket(
+        uuid: uuid ?? this.uuid,
+        name: name ?? this.name,
+        address: address ?? this.address,
+        imageUrl: imageUrl.present ? imageUrl.value : this.imageUrl,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Supermarket(')
+          ..write('uuid: $uuid, ')
+          ..write('name: $name, ')
+          ..write('address: $address, ')
+          ..write('imageUrl: $imageUrl')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(uuid, name, address, imageUrl);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Supermarket &&
+          other.uuid == this.uuid &&
+          other.name == this.name &&
+          other.address == this.address &&
+          other.imageUrl == this.imageUrl);
+}
+
+class SupermarketsCompanion extends UpdateCompanion<Supermarket> {
+  final Value<String> uuid;
+  final Value<String> name;
+  final Value<String> address;
+  final Value<String?> imageUrl;
+  const SupermarketsCompanion({
+    this.uuid = const Value.absent(),
+    this.name = const Value.absent(),
+    this.address = const Value.absent(),
+    this.imageUrl = const Value.absent(),
+  });
+  SupermarketsCompanion.insert({
+    required String uuid,
+    required String name,
+    required String address,
+    this.imageUrl = const Value.absent(),
+  })  : uuid = Value(uuid),
+        name = Value(name),
+        address = Value(address);
+  static Insertable<Supermarket> custom({
+    Expression<String>? uuid,
+    Expression<String>? name,
+    Expression<String>? address,
+    Expression<String>? imageUrl,
+  }) {
+    return RawValuesInsertable({
+      if (uuid != null) 'uuid': uuid,
+      if (name != null) 'name': name,
+      if (address != null) 'address': address,
+      if (imageUrl != null) 'image_url': imageUrl,
+    });
+  }
+
+  SupermarketsCompanion copyWith(
+      {Value<String>? uuid,
+      Value<String>? name,
+      Value<String>? address,
+      Value<String?>? imageUrl}) {
+    return SupermarketsCompanion(
+      uuid: uuid ?? this.uuid,
+      name: name ?? this.name,
+      address: address ?? this.address,
+      imageUrl: imageUrl ?? this.imageUrl,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(uuid.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (address.present) {
+      map['address'] = Variable<String>(address.value);
+    }
+    if (imageUrl.present) {
+      map['image_url'] = Variable<String>(imageUrl.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SupermarketsCompanion(')
+          ..write('uuid: $uuid, ')
+          ..write('name: $name, ')
+          ..write('address: $address, ')
+          ..write('imageUrl: $imageUrl')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SupermarketsTable extends Supermarkets
+    with TableInfo<$SupermarketsTable, Supermarket> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SupermarketsTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  @override
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
+      'uuid', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  final VerificationMeta _addressMeta = const VerificationMeta('address');
+  @override
+  late final GeneratedColumn<String> address = GeneratedColumn<String>(
+      'address', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  final VerificationMeta _imageUrlMeta = const VerificationMeta('imageUrl');
+  @override
+  late final GeneratedColumn<String> imageUrl = GeneratedColumn<String>(
+      'image_url', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [uuid, name, address, imageUrl];
+  @override
+  String get aliasedName => _alias ?? 'supermarkets';
+  @override
+  String get actualTableName => 'supermarkets';
+  @override
+  VerificationContext validateIntegrity(Insertable<Supermarket> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('uuid')) {
+      context.handle(
+          _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
+    } else if (isInserting) {
+      context.missing(_uuidMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('address')) {
+      context.handle(_addressMeta,
+          address.isAcceptableOrUnknown(data['address']!, _addressMeta));
+    } else if (isInserting) {
+      context.missing(_addressMeta);
+    }
+    if (data.containsKey('image_url')) {
+      context.handle(_imageUrlMeta,
+          imageUrl.isAcceptableOrUnknown(data['image_url']!, _imageUrlMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {uuid};
+  @override
+  Supermarket map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Supermarket(
+      uuid: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!,
+      name: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      address: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}address'])!,
+      imageUrl: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}image_url']),
+    );
+  }
+
+  @override
+  $SupermarketsTable createAlias(String alias) {
+    return $SupermarketsTable(attachedDatabase, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   late final $SessionsTable sessions = $SessionsTable(this);
@@ -956,6 +1205,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $BuyListsTable buyLists = $BuyListsTable(this);
   late final $ProductsBuyListTable productsBuyList =
       $ProductsBuyListTable(this);
+  late final $SupermarketsTable supermarkets = $SupermarketsTable(this);
   late final AuthDAO authDAO = AuthDAO(this as AppDatabase);
   late final BuyListDAO buyListDAO = BuyListDAO(this as AppDatabase);
   @override
@@ -963,5 +1213,5 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [sessions, users, buyLists, productsBuyList];
+      [sessions, users, buyLists, productsBuyList, supermarkets];
 }

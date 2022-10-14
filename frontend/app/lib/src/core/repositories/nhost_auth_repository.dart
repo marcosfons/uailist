@@ -4,7 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:uailist/src/core/database/app_database.dart' as u;
 import 'package:uailist/src/core/failures/failure.dart';
-import 'package:uailist/src/core/failures/firebase_failures.dart';
+import 'package:uailist/src/core/failures/nhost_failures.dart';
 import 'package:uailist/src/core/logger/logger.dart';
 import 'package:uailist/src/core/repositories/auth_repository.dart';
 
@@ -55,6 +55,14 @@ class NhostAuthRepository extends AuthRepository {
       }
 
       return right(_mapUser(user)!);
+    } on ApiException catch (e) {
+      if (e.body is Map) {
+        if (e.body.containsKey('error') &&
+            e.body['error'] == 'email-already-in-use') {
+          return left(const EmailAlreadyUsedFailure());
+        }
+      }
+      return left(const UnknownFailure());
     } catch (e) {
       getLogger().e('api_register_error', e);
       return left(const UnknownFailure());
