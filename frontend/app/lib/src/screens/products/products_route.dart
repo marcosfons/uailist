@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:uailist/src/screens/new_prodct/new_product_route.dart';
 import 'package:uailist/src/screens/products/products_screen.dart';
 import 'package:uailist/src/shared/widgets/shared_axis_transition_page.dart';
 
@@ -11,4 +12,7 @@ final productsRoute = GoRoute(
       child: ProductsScreen(),
     );
   },
+  routes: [
+    newProductRoute,
+  ],
 );

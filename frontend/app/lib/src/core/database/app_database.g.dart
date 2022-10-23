@@ -1198,6 +1198,289 @@ class $SupermarketsTable extends Supermarkets
   }
 }
 
+class Product extends DataClass implements Insertable<Product> {
+  final String uuid;
+  final String name;
+  final String brand;
+  final String? imageUrl;
+  final double weight;
+  const Product(
+      {required this.uuid,
+      required this.name,
+      required this.brand,
+      this.imageUrl,
+      required this.weight});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['uuid'] = Variable<String>(uuid);
+    map['name'] = Variable<String>(name);
+    map['brand'] = Variable<String>(brand);
+    if (!nullToAbsent || imageUrl != null) {
+      map['image_url'] = Variable<String>(imageUrl);
+    }
+    map['weight'] = Variable<double>(weight);
+    return map;
+  }
+
+  ProductsCompanion toCompanion(bool nullToAbsent) {
+    return ProductsCompanion(
+      uuid: Value(uuid),
+      name: Value(name),
+      brand: Value(brand),
+      imageUrl: imageUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(imageUrl),
+      weight: Value(weight),
+    );
+  }
+
+  factory Product.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Product(
+      uuid: serializer.fromJson<String>(json['uuid']),
+      name: serializer.fromJson<String>(json['name']),
+      brand: serializer.fromJson<String>(json['brand']),
+      imageUrl: serializer.fromJson<String?>(json['imageUrl']),
+      weight: serializer.fromJson<double>(json['weight']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'uuid': serializer.toJson<String>(uuid),
+      'name': serializer.toJson<String>(name),
+      'brand': serializer.toJson<String>(brand),
+      'imageUrl': serializer.toJson<String?>(imageUrl),
+      'weight': serializer.toJson<double>(weight),
+    };
+  }
+
+  Product copyWith(
+          {String? uuid,
+          String? name,
+          String? brand,
+          Value<String?> imageUrl = const Value.absent(),
+          double? weight}) =>
+      Product(
+        uuid: uuid ?? this.uuid,
+        name: name ?? this.name,
+        brand: brand ?? this.brand,
+        imageUrl: imageUrl.present ? imageUrl.value : this.imageUrl,
+        weight: weight ?? this.weight,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Product(')
+          ..write('uuid: $uuid, ')
+          ..write('name: $name, ')
+          ..write('brand: $brand, ')
+          ..write('imageUrl: $imageUrl, ')
+          ..write('weight: $weight')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(uuid, name, brand, imageUrl, weight);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Product &&
+          other.uuid == this.uuid &&
+          other.name == this.name &&
+          other.brand == this.brand &&
+          other.imageUrl == this.imageUrl &&
+          other.weight == this.weight);
+}
+
+class ProductsCompanion extends UpdateCompanion<Product> {
+  final Value<String> uuid;
+  final Value<String> name;
+  final Value<String> brand;
+  final Value<String?> imageUrl;
+  final Value<double> weight;
+  const ProductsCompanion({
+    this.uuid = const Value.absent(),
+    this.name = const Value.absent(),
+    this.brand = const Value.absent(),
+    this.imageUrl = const Value.absent(),
+    this.weight = const Value.absent(),
+  });
+  ProductsCompanion.insert({
+    required String uuid,
+    required String name,
+    required String brand,
+    this.imageUrl = const Value.absent(),
+    required double weight,
+  })  : uuid = Value(uuid),
+        name = Value(name),
+        brand = Value(brand),
+        weight = Value(weight);
+  static Insertable<Product> custom({
+    Expression<String>? uuid,
+    Expression<String>? name,
+    Expression<String>? brand,
+    Expression<String>? imageUrl,
+    Expression<double>? weight,
+  }) {
+    return RawValuesInsertable({
+      if (uuid != null) 'uuid': uuid,
+      if (name != null) 'name': name,
+      if (brand != null) 'brand': brand,
+      if (imageUrl != null) 'image_url': imageUrl,
+      if (weight != null) 'weight': weight,
+    });
+  }
+
+  ProductsCompanion copyWith(
+      {Value<String>? uuid,
+      Value<String>? name,
+      Value<String>? brand,
+      Value<String?>? imageUrl,
+      Value<double>? weight}) {
+    return ProductsCompanion(
+      uuid: uuid ?? this.uuid,
+      name: name ?? this.name,
+      brand: brand ?? this.brand,
+      imageUrl: imageUrl ?? this.imageUrl,
+      weight: weight ?? this.weight,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(uuid.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (brand.present) {
+      map['brand'] = Variable<String>(brand.value);
+    }
+    if (imageUrl.present) {
+      map['image_url'] = Variable<String>(imageUrl.value);
+    }
+    if (weight.present) {
+      map['weight'] = Variable<double>(weight.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProductsCompanion(')
+          ..write('uuid: $uuid, ')
+          ..write('name: $name, ')
+          ..write('brand: $brand, ')
+          ..write('imageUrl: $imageUrl, ')
+          ..write('weight: $weight')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ProductsTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  @override
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
+      'uuid', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  final VerificationMeta _brandMeta = const VerificationMeta('brand');
+  @override
+  late final GeneratedColumn<String> brand = GeneratedColumn<String>(
+      'brand', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  final VerificationMeta _imageUrlMeta = const VerificationMeta('imageUrl');
+  @override
+  late final GeneratedColumn<String> imageUrl = GeneratedColumn<String>(
+      'image_url', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  final VerificationMeta _weightMeta = const VerificationMeta('weight');
+  @override
+  late final GeneratedColumn<double> weight = GeneratedColumn<double>(
+      'weight', aliasedName, false,
+      type: DriftSqlType.double, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [uuid, name, brand, imageUrl, weight];
+  @override
+  String get aliasedName => _alias ?? 'products';
+  @override
+  String get actualTableName => 'products';
+  @override
+  VerificationContext validateIntegrity(Insertable<Product> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('uuid')) {
+      context.handle(
+          _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
+    } else if (isInserting) {
+      context.missing(_uuidMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('brand')) {
+      context.handle(
+          _brandMeta, brand.isAcceptableOrUnknown(data['brand']!, _brandMeta));
+    } else if (isInserting) {
+      context.missing(_brandMeta);
+    }
+    if (data.containsKey('image_url')) {
+      context.handle(_imageUrlMeta,
+          imageUrl.isAcceptableOrUnknown(data['image_url']!, _imageUrlMeta));
+    }
+    if (data.containsKey('weight')) {
+      context.handle(_weightMeta,
+          weight.isAcceptableOrUnknown(data['weight']!, _weightMeta));
+    } else if (isInserting) {
+      context.missing(_weightMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {uuid};
+  @override
+  Product map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Product(
+      uuid: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!,
+      name: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      brand: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}brand'])!,
+      imageUrl: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}image_url']),
+      weight: attachedDatabase.options.types
+          .read(DriftSqlType.double, data['${effectivePrefix}weight'])!,
+    );
+  }
+
+  @override
+  $ProductsTable createAlias(String alias) {
+    return $ProductsTable(attachedDatabase, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   late final $SessionsTable sessions = $SessionsTable(this);
@@ -1206,6 +1489,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $ProductsBuyListTable productsBuyList =
       $ProductsBuyListTable(this);
   late final $SupermarketsTable supermarkets = $SupermarketsTable(this);
+  late final $ProductsTable products = $ProductsTable(this);
   late final AuthDAO authDAO = AuthDAO(this as AppDatabase);
   late final BuyListDAO buyListDAO = BuyListDAO(this as AppDatabase);
   @override
@@ -1213,5 +1497,5 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [sessions, users, buyLists, productsBuyList, supermarkets];
+      [sessions, users, buyLists, productsBuyList, supermarkets, products];
 }
