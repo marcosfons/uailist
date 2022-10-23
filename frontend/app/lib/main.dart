@@ -99,7 +99,7 @@ class AppState extends ConsumerState<App> {
           );
         },
         routes: [
-          listRoute,
+          listsRoute,
           supermarketsRoute,
           productsRoute,
           profileRoute,

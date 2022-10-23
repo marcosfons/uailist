@@ -7,8 +7,7 @@ class EmailAlreadyUsedFailure extends Failure {
 }
 
 class WrongEmailAndPasswordFailure extends Failure {
-  const WrongEmailAndPasswordFailure()
-      : super('Wrong email/password combination');
+  const WrongEmailAndPasswordFailure() : super('Email ou senha incorretos');
 }
 
 class UserNotFoundFailure extends Failure {

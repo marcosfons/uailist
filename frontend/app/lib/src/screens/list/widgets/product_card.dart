@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:path/path.dart';
 
 class ProductCard extends StatefulWidget {
   const ProductCard({super.key});
@@ -14,7 +11,8 @@ class _ProductCardState extends State<ProductCard> {
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
-    final ThemeData = Theme.of(context);
+    final themeData = Theme.of(context);
+
     return Row(
       children: [
         Checkbox(
@@ -27,7 +25,7 @@ class _ProductCardState extends State<ProductCard> {
           },
         ),
         IntrinsicWidth(child: TextFormField(initialValue: '1')),
-        Expanded(
+        const Expanded(
             child: Align(
           alignment: Alignment.centerLeft,
           child: TextField(
@@ -35,44 +33,10 @@ class _ProductCardState extends State<ProductCard> {
         )),
         IntrinsicWidth(child: TextFormField(initialValue: 'R\$0.00')),
         IconButton(
-          icon: Icon(Icons.delete),
+          icon: const Icon(Icons.delete),
           onPressed: () {},
         )
       ],
     );
   }
 }
-
-/*import 'package:flutter/material.dart';
-
-
-class ProductCard extends StatelessWidget {
-  final String productName;
-  final double totalProduct;
-  final double quantProduct;
-  
-
-  ProductCard({
-    super.key,
-    required this.productName,
-    required this.totalProduct,
-    required this.quantProduct,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return TextField(
-      decoration:
-        InputDecoration(border: InputBorder.none, 
-        icon: icon,
-        hintText: 'Nome do produto'
-      ),
-    );
-   
-        
-       
-  }
-}
-*/

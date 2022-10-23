@@ -14,4 +14,14 @@ class BuyListWithProducts {
       );
 
   double get progress => boughtProducts / totalItems;
+
+  BuyListWithProducts copyWith({
+    BuyList? buyList,
+    List<ProductBuyList>? products,
+  }) {
+    return BuyListWithProducts(
+      buyList ?? this.buyList,
+      products ?? this.products,
+    );
+  }
 }

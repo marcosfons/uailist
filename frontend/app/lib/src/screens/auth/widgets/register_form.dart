@@ -53,7 +53,9 @@ class RegisterFormState extends ConsumerState<RegisterForm> {
                           keyboardType: TextInputType.name,
                           validator: (String? value) {
                             if (value == null || value.isEmpty) {
-                              return 'O nome é obrigatório';
+                              return '*';
+                            } else if (!RegExp('[a-zA-Z]').hasMatch(value)) {
+                              return '*';
                             }
                             return null;
                           },

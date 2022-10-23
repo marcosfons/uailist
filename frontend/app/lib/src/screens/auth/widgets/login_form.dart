@@ -33,7 +33,7 @@ class LoginFormState extends ConsumerState<LoginForm> {
                 padding: const EdgeInsets.all(15.0),
                 child: Form(
                   key: formKey,
-                  autovalidateMode: AutovalidateMode.disabled,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: AutofillGroup(
                     onDisposeAction: AutofillContextAction.cancel,
                     child: Column(
@@ -42,10 +42,12 @@ class LoginFormState extends ConsumerState<LoginForm> {
                         EmailTextFormField(
                           textInputAction: TextInputAction.next,
                           onChanged: controller.changeEmail,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                         ),
                         const SizedBox(height: 10),
                         PasswordTextFormField(
                           textInputAction: TextInputAction.done,
+                          autovalidateMode: AutovalidateMode.disabled,
                           onChanged: controller.changePassword,
                         )
                       ],
@@ -83,6 +85,7 @@ class LoginFormState extends ConsumerState<LoginForm> {
                 padding: const EdgeInsets.all(15.0),
                 child: FutureLoadElevatedButton(
                   onPressed: () async {
+                    // TODO(marcosfons): Return with early login form validation
                     if (formKey.currentState?.validate() ?? false) {
                       final result =
                           await controller.signInWithEmailAndPassword();

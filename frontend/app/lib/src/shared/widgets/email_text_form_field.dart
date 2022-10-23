@@ -8,6 +8,7 @@ class EmailTextFormField extends StatelessWidget {
     this.initialValue,
     this.isRequired = true,
     this.controller,
+    this.autovalidateMode = AutovalidateMode.onUserInteraction,
   });
 
   final String? initialValue;
@@ -17,6 +18,8 @@ class EmailTextFormField extends StatelessWidget {
   final Function(String)? onChanged;
 
   final bool isRequired;
+
+  final AutovalidateMode autovalidateMode;
 
   final TextEditingController? controller;
 
@@ -32,13 +35,19 @@ class EmailTextFormField extends StatelessWidget {
       textInputAction: textInputAction,
       onChanged: onChanged,
       controller: controller,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
+      autovalidateMode: autovalidateMode,
       validator: (String? email) {
         if (isRequired && (email == null || email.isEmpty)) {
           return 'Email é obrigatório';
         }
         if (email != null ? !_emailRegex.hasMatch(email) : false) {
           return 'Email inválido';
+        }
+        if (isRequired && (email == null || email.isEmpty)) {
+          return 'Email é obrigatório';
+        }
+        if (email != null ? !_emailRegex.hasMatch(email) : false) {
+          return '*';
         }
 
         return null;

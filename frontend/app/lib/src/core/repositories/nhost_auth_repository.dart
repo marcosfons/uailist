@@ -87,9 +87,8 @@ class NhostAuthRepository extends AuthRepository {
 
       return right(_mapUser(user)!);
     } on ApiException catch (e) {
-      if (e.body is Map) {
-        if (e.body.containsKey('error') &&
-            e.body['error'] == 'invalid-email-password') {
+      if (e.body is Map && e.body.containsKey('error')) {
+        if (e.body['error'] == 'invalid-email-password') {
           return left(const WrongEmailAndPasswordFailure());
         }
       }

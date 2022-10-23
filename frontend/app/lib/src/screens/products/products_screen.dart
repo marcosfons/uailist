@@ -7,6 +7,7 @@ class ProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
+
     return Scaffold(
       body: SafeArea(
         bottom: false,

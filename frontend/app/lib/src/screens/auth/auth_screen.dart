@@ -12,7 +12,7 @@ class AuthScreen extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              flex: 4,
+              flex: 5,
               child: Center(
                 child: Text(
                   'UaiList',

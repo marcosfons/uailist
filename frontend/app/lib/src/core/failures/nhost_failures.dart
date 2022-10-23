@@ -1,15 +1,15 @@
 import 'package:uailist/src/core/failures/failure.dart';
 
 class EmailAlreadyUsedFailure extends Failure {
-  const EmailAlreadyUsedFailure() : super('Esse e-mail já está registrado');
+  const EmailAlreadyUsedFailure() : super('Email já cadastrado');
 }
 
 class WrongEmailAndPasswordFailure extends Failure {
-  const WrongEmailAndPasswordFailure() : super('E-mail ou senha invalidos');
+  const WrongEmailAndPasswordFailure() : super('Email ou senha incorretos');
 }
 
 class UserNotFoundFailure extends Failure {
-  const UserNotFoundFailure() : super('E-mail não encontrado');
+  const UserNotFoundFailure() : super('Email não encontrado');
 }
 
 class UserDisabledFailure extends Failure {
@@ -17,5 +17,5 @@ class UserDisabledFailure extends Failure {
 }
 
 class InvalidEmailFailure extends Failure {
-  const InvalidEmailFailure() : super('E-mail invalido');
+  const InvalidEmailFailure() : super('E-mail inválido');
 }

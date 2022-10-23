@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:uailist/src/core/database/entities/buy_list_with_products.dart';
 
 class ListCard extends StatelessWidget {
-  final String listName;
-  final DateTime listDate;
-  final double totalItems;
-  final double itemsTaken;
+  // final String listName;
+  // final DateTime listDate;
+  // final double totalItems;
+  // final double itemsTaken;
   final void Function() onPressed;
 
   const ListCard({
     super.key,
-    required this.totalItems,
-    required this.itemsTaken,
-    required this.listName,
-    required this.listDate,
+    // required this.totalItems,
+    // required this.itemsTaken,
+    // required this.listName,
+    // required this.listDate,
+    required this.buyList,
     required this.onPressed,
   });
+
+  final BuyListWithProducts buyList;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +42,7 @@ class ListCard extends StatelessWidget {
               padding:
                   const EdgeInsets.only(left: 10, top: 10, right: 0, bottom: 5),
               child: Text(
-                listName,
+                buyList.buyList.name,
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -50,7 +54,7 @@ class ListCard extends StatelessWidget {
               padding:
                   const EdgeInsets.only(left: 10, top: 0, right: 0, bottom: 0),
               child: Text(
-                DateFormat.yMd().format(listDate),
+                DateFormat.yMd().format(buyList.buyList.createdAt),
                 style: const TextStyle(
                   fontSize: 14,
                   color: Color(0xff8D8D8D),
@@ -81,11 +85,11 @@ class ListCard extends StatelessWidget {
                           ),
                           Container(
                             height: 10,
-                            constraints: BoxConstraints(
-                              maxWidth: 228 *
-                                  itemsTaken /
-                                  totalItems, /* MediaQuery.of(context).size.width * percent*/
-                            ),
+                            // constraints: BoxConstraints(
+                            //   maxWidth: 228 *
+                            //       itemsTaken /
+                            //       totalItems, /* MediaQuery.of(context).size.width * percent*/
+                            // ),
                             decoration: BoxDecoration(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(12)),
@@ -99,7 +103,7 @@ class ListCard extends StatelessWidget {
                   padding: const EdgeInsets.only(
                       left: 5, top: 0, right: 15, bottom: 14),
                   child: Text(
-                    '${itemsTaken.toInt()}/${totalItems.toInt()}',
+                    '${buyList.boughtProducts.toInt()}/${buyList.totalItems.toInt()}',
                   ),
                 ),
               ],

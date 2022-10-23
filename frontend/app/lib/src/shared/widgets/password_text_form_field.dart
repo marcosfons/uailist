@@ -7,6 +7,7 @@ class PasswordTextFormField extends StatefulWidget {
     this.onChanged,
     this.initialValue,
     this.isRequired = true,
+    this.autovalidateMode,
   });
 
   final String? initialValue;
@@ -14,6 +15,8 @@ class PasswordTextFormField extends StatefulWidget {
   final TextInputAction? textInputAction;
 
   final Function(String)? onChanged;
+
+  final AutovalidateMode? autovalidateMode;
 
   final bool isRequired;
 
@@ -30,6 +33,7 @@ class _PasswordTextFormFieldState extends State<PasswordTextFormField> {
       initialValue: widget.initialValue,
       autofillHints: const [AutofillHints.password],
       textInputAction: widget.textInputAction,
+      autovalidateMode: widget.autovalidateMode,
       decoration: InputDecoration(
         label: const Text('Senha'),
         suffixIcon: IconButton(
@@ -47,9 +51,21 @@ class _PasswordTextFormFieldState extends State<PasswordTextFormField> {
         if (widget.isRequired && (password == null || password.isEmpty)) {
           return 'A senha é obrigatória';
         }
+
+        const invalidPasswordMessage =
+            'Senha inválida\n  Ter pelo menos 8 caracteres;\n  Ter uma letra maiúscula;\n  Ter um símbolo;\n  Ter uma letra minúscula.';
         if (password != null && password.length < 8) {
-          return 'Senha curta';
+          return invalidPasswordMessage;
+        } else if (!RegExp(r'[A-Z]').hasMatch(password!)) {
+          return invalidPasswordMessage;
+        } else if (!RegExp(r'[a-z]').hasMatch(password)) {
+          return invalidPasswordMessage;
+        } else if (!RegExp(r'[#?!@$%^&*-]').hasMatch(password)) {
+          return invalidPasswordMessage;
+        } else if (!RegExp(r'[0-9]').hasMatch(password)) {
+          return invalidPasswordMessage;
         }
+
         return null;
       },
       onChanged: widget.onChanged,

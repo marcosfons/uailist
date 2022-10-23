@@ -565,7 +565,7 @@ class $BuyListsTable extends BuyLists with TableInfo<$BuyListsTable, BuyList> {
       'uuid', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => uuidClass.v4());
+      clientDefault: () => uuidObj.v4());
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -841,7 +841,7 @@ class $ProductsBuyListTable extends ProductsBuyList
       'uuid', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => uuidClass.v4());
+      clientDefault: () => uuidObj.v4());
   final VerificationMeta _buyListUuidMeta =
       const VerificationMeta('buyListUuid');
   @override
