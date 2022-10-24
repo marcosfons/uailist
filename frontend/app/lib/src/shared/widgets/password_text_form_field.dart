@@ -8,6 +8,7 @@ class PasswordTextFormField extends StatefulWidget {
     this.initialValue,
     this.isRequired = true,
     this.autovalidateMode,
+    this.onFieldSubmitted,
   });
 
   final String? initialValue;
@@ -17,6 +18,8 @@ class PasswordTextFormField extends StatefulWidget {
   final Function(String)? onChanged;
 
   final AutovalidateMode? autovalidateMode;
+
+  final Function(String)? onFieldSubmitted;
 
   final bool isRequired;
 
@@ -52,23 +55,25 @@ class _PasswordTextFormFieldState extends State<PasswordTextFormField> {
           return 'A senha é obrigatória';
         }
 
-        const invalidPasswordMessage =
-            'Senha inválida\n  Ter pelo menos 8 caracteres;\n  Ter uma letra maiúscula;\n  Ter um símbolo;\n  Ter uma letra minúscula.';
         if (password != null && password.length < 8) {
-          return invalidPasswordMessage;
-        } else if (!RegExp(r'[A-Z]').hasMatch(password!)) {
-          return invalidPasswordMessage;
-        } else if (!RegExp(r'[a-z]').hasMatch(password)) {
-          return invalidPasswordMessage;
-        } else if (!RegExp(r'[#?!@$%^&*-]').hasMatch(password)) {
-          return invalidPasswordMessage;
-        } else if (!RegExp(r'[0-9]').hasMatch(password)) {
-          return invalidPasswordMessage;
+          return 'Senha curta';
         }
+        // const invalidPasswordMessage =
+        //     'Senha inválida\n  Ter pelo menos 8 caracteres;\n  Ter uma letra maiúscula;\n  Ter um símbolo;\n  Ter uma letra minúscula.';
+        // } else if (!RegExp(r'[A-Z]').hasMatch(password!)) {
+        //   return invalidPasswordMessage;
+        // } else if (!RegExp(r'[a-z]').hasMatch(password)) {
+        //   return invalidPasswordMessage;
+        // } else if (!RegExp(r'[#?!@$%^&*-]').hasMatch(password)) {
+        //   return invalidPasswordMessage;
+        // } else if (!RegExp(r'[0-9]').hasMatch(password)) {
+        //   return invalidPasswordMessage;
+        // }
 
         return null;
       },
       onChanged: widget.onChanged,
+      onFieldSubmitted: widget.onFieldSubmitted,
       obscureText: _showPassword == false ? true : false,
     );
   }

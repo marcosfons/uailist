@@ -90,6 +90,12 @@ class ProfileScreenState extends ConsumerState<ProfileScreen> {
               label: 'Nome',
               onConfirm: controllerProfile.changeUserName,
             ),
+            // _EditableTextField(
+            //   initialValue: user.email,
+            //   icon: const Icon(Icons.person, size: 30),
+            //   label: 'Email',
+            //   onConfirm: controllerProfile.changeUserEmail,
+            // ),
             const SizedBox(
               height: 80,
             ),

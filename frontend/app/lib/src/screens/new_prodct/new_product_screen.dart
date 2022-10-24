@@ -1,8 +1,26 @@
+import 'package:drift/drift.dart' hide Column;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:uailist/src/core/database/app_database.dart';
+import 'package:uailist/src/screens/products/products_controller.dart';
 
-class NewProductScreen extends StatelessWidget {
+class NewProductScreen extends StatefulHookConsumerWidget {
   const NewProductScreen({super.key});
+
+  @override
+  NewProductScreenState createState() => NewProductScreenState();
+}
+
+class NewProductScreenState extends ConsumerState<NewProductScreen> {
+  late final _controller = ref.read(productsController);
+
+  ProductsCompanion newProduct = ProductsCompanion(
+    synced: const Value(false),
+    updatedAt: Value(DateTime.now()),
+    createdAt: Value(DateTime.now()),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -11,13 +29,13 @@ class NewProductScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Center(
               child: Stack(
                 alignment: AlignmentDirectional.bottomEnd,
-                children: [
+                children: const [
                   CircleAvatar(
                     radius: 35,
                     backgroundImage: null,
@@ -29,27 +47,46 @@ class NewProductScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: TextFormField(
-                decoration: InputDecoration(labelText: 'Nome'),
+                decoration: const InputDecoration(labelText: 'Nome'),
+                onChanged: (value) {
+                  newProduct = newProduct.copyWith(name: Value(value));
+                },
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(
                   left: 15, top: 0, right: 15, bottom: 15),
               child: TextFormField(
-                decoration: InputDecoration(labelText: 'Marca'),
-              ),
+                  decoration: const InputDecoration(labelText: 'Marca'),
+                  onChanged: (value) {
+                    newProduct = newProduct.copyWith(brand: Value(value));
+                  }),
             ),
             Padding(
               padding: const EdgeInsets.only(
                   left: 15, top: 0, right: 15, bottom: 30),
               child: TextFormField(
-                decoration: InputDecoration(labelText: 'Preço'),
+                decoration: const InputDecoration(labelText: 'Peso'),
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+                ],
+                onChanged: (value) {
+                  if (value.isNotEmpty) {
+                    newProduct =
+                        newProduct.copyWith(weight: Value(double.parse(value)));
+                  } else {
+                    newProduct =
+                        newProduct.copyWith(weight: const Value.absent());
+                  }
+                },
               ),
             ),
             Center(
               child: ElevatedButton(
                 onPressed: () async {
-                  GoRouter.of(context).go('/supermarkets');
+                  _controller.createProduct(newProduct);
+                  GoRouter.of(context).pop();
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: themeData.colorScheme.primary,

@@ -49,6 +49,12 @@ class ProfileController extends ChangeNotifier {
     );
   }
 
+  Future<void> changeUserEmail(String newUserName) async {
+    final result = await _profileService.changeUserEmail(
+      newUserName,
+    );
+  }
+
   Future<bool> deleteUser(String userId) async {
     final response = await _profileService.deleteUser(userId);
     return response == null;

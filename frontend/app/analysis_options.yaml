@@ -6,7 +6,7 @@ linter:
 
 analyzer:
   exclude:
-    - "lib/src/core/services/hasura/graphql_api.graphql.dart"
+    # - "lib/src/core/services/hasura/graphql_api.graphql.dart"
     - "lib/**/*.g.dart"
     - "ios/**"
     - "web/**"

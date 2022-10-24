@@ -87,7 +87,7 @@ class AppState extends ConsumerState<App> {
               ),
               DashboardItem(
                 path: '/products',
-                name: 'Listas',
+                name: 'Produtos',
                 icon: FontAwesomeIcons.cartShopping,
               ),
               DashboardItem(

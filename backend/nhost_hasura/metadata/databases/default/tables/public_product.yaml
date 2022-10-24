@@ -1,0 +1,49 @@
+table:
+  name: product
+  schema: public
+insert_permissions:
+  - role: user
+    permission:
+      check:
+        created_by_user_uuid:
+          _eq: X-Hasura-User-Id
+      columns:
+        - weight
+        - brand
+        - image_url
+        - name
+        - created_at
+        - updated_at
+        - created_by_user_uuid
+        - uuid
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - uuid
+        - name
+        - image_url
+        - brand
+        - weight
+        - updated_at
+        - created_at
+        - created_by_user_uuid
+      filter: {}
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - weight
+        - brand
+        - image_url
+        - name
+        - created_at
+        - updated_at
+        - created_by_user_uuid
+        - uuid
+      filter:
+        created_by_user_uuid:
+          _eq: X-Hasura-User-Id
+      check:
+        created_by_user_uuid:
+          _eq: X-Hasura-User-Id

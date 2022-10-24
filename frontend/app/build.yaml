@@ -25,3 +25,19 @@ targets:
             - custom_parser_import: 'package:uailist/src/core/services/hasura/parsers/custom_uuid_parser.dart'
               graphql_type: uuid
               dart_type: String
+
+            - custom_parser_import: 'package:uailist/src/core/services/hasura/parsers/custom_double_parser.dart'
+              graphql_type: float8
+              dart_type: double
+
+            - custom_parser_import: 'package:uailist/src/core/services/hasura/parsers/custom_citext_parser.dart'
+              graphql_type: citext
+              dart_type: String
+
+            - custom_parser_import: 'package:uailist/src/core/services/hasura/parsers/custom_jsonb_parser.dart'
+              graphql_type: jsonb
+              dart_type: Map
+            
+            - custom_parser_import: 'package:uailist/src/core/services/hasura/parsers/custom_bigint_parser.dart'
+              graphql_type: bigint
+              dart_type: double

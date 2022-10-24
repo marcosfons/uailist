@@ -1,0 +1,18 @@
+query GetProducts($lastSyncedAt: timestamptz!) {
+  product(where: {updated_at: {_gt: $lastSyncedAt}}) {
+    uuid
+    updated_at
+    name
+    image_url
+    created_at
+    weight
+    created_by_user_uuid
+    brand
+  }
+}
+
+mutation UpsertProducts($products: [product_insert_input!]!) {
+  insert_product(objects: $products, on_conflict: {constraint: product_pkey, update_columns: [name, image_url, weight, brand]}) {
+    affected_rows
+  }
+}

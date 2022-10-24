@@ -954,11 +954,21 @@ class Supermarket extends DataClass implements Insertable<Supermarket> {
   final String name;
   final String address;
   final String? imageUrl;
+  final double? latitude;
+  final double? longitude;
+  final DateTime? updatedAt;
+  final DateTime? createdAt;
+  final bool? synced;
   const Supermarket(
       {required this.uuid,
       required this.name,
       required this.address,
-      this.imageUrl});
+      this.imageUrl,
+      this.latitude,
+      this.longitude,
+      this.updatedAt,
+      this.createdAt,
+      this.synced});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -967,6 +977,21 @@ class Supermarket extends DataClass implements Insertable<Supermarket> {
     map['address'] = Variable<String>(address);
     if (!nullToAbsent || imageUrl != null) {
       map['image_url'] = Variable<String>(imageUrl);
+    }
+    if (!nullToAbsent || latitude != null) {
+      map['latitude'] = Variable<double>(latitude);
+    }
+    if (!nullToAbsent || longitude != null) {
+      map['longitude'] = Variable<double>(longitude);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    if (!nullToAbsent || createdAt != null) {
+      map['created_at'] = Variable<DateTime>(createdAt);
+    }
+    if (!nullToAbsent || synced != null) {
+      map['synced'] = Variable<bool>(synced);
     }
     return map;
   }
@@ -979,6 +1004,20 @@ class Supermarket extends DataClass implements Insertable<Supermarket> {
       imageUrl: imageUrl == null && nullToAbsent
           ? const Value.absent()
           : Value(imageUrl),
+      latitude: latitude == null && nullToAbsent
+          ? const Value.absent()
+          : Value(latitude),
+      longitude: longitude == null && nullToAbsent
+          ? const Value.absent()
+          : Value(longitude),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+      synced:
+          synced == null && nullToAbsent ? const Value.absent() : Value(synced),
     );
   }
 
@@ -989,7 +1028,12 @@ class Supermarket extends DataClass implements Insertable<Supermarket> {
       uuid: serializer.fromJson<String>(json['uuid']),
       name: serializer.fromJson<String>(json['name']),
       address: serializer.fromJson<String>(json['address']),
-      imageUrl: serializer.fromJson<String?>(json['imageUrl']),
+      imageUrl: serializer.fromJson<String?>(json['image_url']),
+      latitude: serializer.fromJson<double?>(json['latitude']),
+      longitude: serializer.fromJson<double?>(json['longitude']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updated_at']),
+      createdAt: serializer.fromJson<DateTime?>(json['created_at']),
+      synced: serializer.fromJson<bool?>(json['synced']),
     );
   }
   @override
@@ -999,7 +1043,12 @@ class Supermarket extends DataClass implements Insertable<Supermarket> {
       'uuid': serializer.toJson<String>(uuid),
       'name': serializer.toJson<String>(name),
       'address': serializer.toJson<String>(address),
-      'imageUrl': serializer.toJson<String?>(imageUrl),
+      'image_url': serializer.toJson<String?>(imageUrl),
+      'latitude': serializer.toJson<double?>(latitude),
+      'longitude': serializer.toJson<double?>(longitude),
+      'updated_at': serializer.toJson<DateTime?>(updatedAt),
+      'created_at': serializer.toJson<DateTime?>(createdAt),
+      'synced': serializer.toJson<bool?>(synced),
     };
   }
 
@@ -1007,12 +1056,22 @@ class Supermarket extends DataClass implements Insertable<Supermarket> {
           {String? uuid,
           String? name,
           String? address,
-          Value<String?> imageUrl = const Value.absent()}) =>
+          Value<String?> imageUrl = const Value.absent(),
+          Value<double?> latitude = const Value.absent(),
+          Value<double?> longitude = const Value.absent(),
+          Value<DateTime?> updatedAt = const Value.absent(),
+          Value<DateTime?> createdAt = const Value.absent(),
+          Value<bool?> synced = const Value.absent()}) =>
       Supermarket(
         uuid: uuid ?? this.uuid,
         name: name ?? this.name,
         address: address ?? this.address,
         imageUrl: imageUrl.present ? imageUrl.value : this.imageUrl,
+        latitude: latitude.present ? latitude.value : this.latitude,
+        longitude: longitude.present ? longitude.value : this.longitude,
+        updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+        createdAt: createdAt.present ? createdAt.value : this.createdAt,
+        synced: synced.present ? synced.value : this.synced,
       );
   @override
   String toString() {
@@ -1020,13 +1079,19 @@ class Supermarket extends DataClass implements Insertable<Supermarket> {
           ..write('uuid: $uuid, ')
           ..write('name: $name, ')
           ..write('address: $address, ')
-          ..write('imageUrl: $imageUrl')
+          ..write('imageUrl: $imageUrl, ')
+          ..write('latitude: $latitude, ')
+          ..write('longitude: $longitude, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('synced: $synced')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(uuid, name, address, imageUrl);
+  int get hashCode => Object.hash(uuid, name, address, imageUrl, latitude,
+      longitude, updatedAt, createdAt, synced);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1034,7 +1099,12 @@ class Supermarket extends DataClass implements Insertable<Supermarket> {
           other.uuid == this.uuid &&
           other.name == this.name &&
           other.address == this.address &&
-          other.imageUrl == this.imageUrl);
+          other.imageUrl == this.imageUrl &&
+          other.latitude == this.latitude &&
+          other.longitude == this.longitude &&
+          other.updatedAt == this.updatedAt &&
+          other.createdAt == this.createdAt &&
+          other.synced == this.synced);
 }
 
 class SupermarketsCompanion extends UpdateCompanion<Supermarket> {
@@ -1042,31 +1112,55 @@ class SupermarketsCompanion extends UpdateCompanion<Supermarket> {
   final Value<String> name;
   final Value<String> address;
   final Value<String?> imageUrl;
+  final Value<double?> latitude;
+  final Value<double?> longitude;
+  final Value<DateTime?> updatedAt;
+  final Value<DateTime?> createdAt;
+  final Value<bool?> synced;
   const SupermarketsCompanion({
     this.uuid = const Value.absent(),
     this.name = const Value.absent(),
     this.address = const Value.absent(),
     this.imageUrl = const Value.absent(),
+    this.latitude = const Value.absent(),
+    this.longitude = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.synced = const Value.absent(),
   });
   SupermarketsCompanion.insert({
-    required String uuid,
+    this.uuid = const Value.absent(),
     required String name,
     required String address,
     this.imageUrl = const Value.absent(),
-  })  : uuid = Value(uuid),
-        name = Value(name),
+    this.latitude = const Value.absent(),
+    this.longitude = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.synced = const Value.absent(),
+  })  : name = Value(name),
         address = Value(address);
   static Insertable<Supermarket> custom({
     Expression<String>? uuid,
     Expression<String>? name,
     Expression<String>? address,
     Expression<String>? imageUrl,
+    Expression<double>? latitude,
+    Expression<double>? longitude,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? createdAt,
+    Expression<bool>? synced,
   }) {
     return RawValuesInsertable({
       if (uuid != null) 'uuid': uuid,
       if (name != null) 'name': name,
       if (address != null) 'address': address,
       if (imageUrl != null) 'image_url': imageUrl,
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'longitude': longitude,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdAt != null) 'created_at': createdAt,
+      if (synced != null) 'synced': synced,
     });
   }
 
@@ -1074,12 +1168,22 @@ class SupermarketsCompanion extends UpdateCompanion<Supermarket> {
       {Value<String>? uuid,
       Value<String>? name,
       Value<String>? address,
-      Value<String?>? imageUrl}) {
+      Value<String?>? imageUrl,
+      Value<double?>? latitude,
+      Value<double?>? longitude,
+      Value<DateTime?>? updatedAt,
+      Value<DateTime?>? createdAt,
+      Value<bool?>? synced}) {
     return SupermarketsCompanion(
       uuid: uuid ?? this.uuid,
       name: name ?? this.name,
       address: address ?? this.address,
       imageUrl: imageUrl ?? this.imageUrl,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdAt: createdAt ?? this.createdAt,
+      synced: synced ?? this.synced,
     );
   }
 
@@ -1098,6 +1202,21 @@ class SupermarketsCompanion extends UpdateCompanion<Supermarket> {
     if (imageUrl.present) {
       map['image_url'] = Variable<String>(imageUrl.value);
     }
+    if (latitude.present) {
+      map['latitude'] = Variable<double>(latitude.value);
+    }
+    if (longitude.present) {
+      map['longitude'] = Variable<double>(longitude.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (synced.present) {
+      map['synced'] = Variable<bool>(synced.value);
+    }
     return map;
   }
 
@@ -1107,7 +1226,12 @@ class SupermarketsCompanion extends UpdateCompanion<Supermarket> {
           ..write('uuid: $uuid, ')
           ..write('name: $name, ')
           ..write('address: $address, ')
-          ..write('imageUrl: $imageUrl')
+          ..write('imageUrl: $imageUrl, ')
+          ..write('latitude: $latitude, ')
+          ..write('longitude: $longitude, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('synced: $synced')
           ..write(')'))
         .toString();
   }
@@ -1123,7 +1247,9 @@ class $SupermarketsTable extends Supermarkets
   @override
   late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
       'uuid', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      clientDefault: () => uuidObj.v4());
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -1139,8 +1265,46 @@ class $SupermarketsTable extends Supermarkets
   late final GeneratedColumn<String> imageUrl = GeneratedColumn<String>(
       'image_url', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  final VerificationMeta _latitudeMeta = const VerificationMeta('latitude');
   @override
-  List<GeneratedColumn> get $columns => [uuid, name, address, imageUrl];
+  late final GeneratedColumn<double> latitude = GeneratedColumn<double>(
+      'latitude', aliasedName, true,
+      type: DriftSqlType.double, requiredDuringInsert: false);
+  final VerificationMeta _longitudeMeta = const VerificationMeta('longitude');
+  @override
+  late final GeneratedColumn<double> longitude = GeneratedColumn<double>(
+      'longitude', aliasedName, true,
+      type: DriftSqlType.double, requiredDuringInsert: false);
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  final VerificationMeta _syncedMeta = const VerificationMeta('synced');
+  @override
+  late final GeneratedColumn<bool> synced = GeneratedColumn<bool>(
+      'synced', aliasedName, true,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (synced IN (0, 1))',
+      defaultValue: const Constant(true));
+  @override
+  List<GeneratedColumn> get $columns => [
+        uuid,
+        name,
+        address,
+        imageUrl,
+        latitude,
+        longitude,
+        updatedAt,
+        createdAt,
+        synced
+      ];
   @override
   String get aliasedName => _alias ?? 'supermarkets';
   @override
@@ -1153,8 +1317,6 @@ class $SupermarketsTable extends Supermarkets
     if (data.containsKey('uuid')) {
       context.handle(
           _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
-    } else if (isInserting) {
-      context.missing(_uuidMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
@@ -1171,6 +1333,26 @@ class $SupermarketsTable extends Supermarkets
     if (data.containsKey('image_url')) {
       context.handle(_imageUrlMeta,
           imageUrl.isAcceptableOrUnknown(data['image_url']!, _imageUrlMeta));
+    }
+    if (data.containsKey('latitude')) {
+      context.handle(_latitudeMeta,
+          latitude.isAcceptableOrUnknown(data['latitude']!, _latitudeMeta));
+    }
+    if (data.containsKey('longitude')) {
+      context.handle(_longitudeMeta,
+          longitude.isAcceptableOrUnknown(data['longitude']!, _longitudeMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('synced')) {
+      context.handle(_syncedMeta,
+          synced.isAcceptableOrUnknown(data['synced']!, _syncedMeta));
     }
     return context;
   }
@@ -1189,6 +1371,16 @@ class $SupermarketsTable extends Supermarkets
           .read(DriftSqlType.string, data['${effectivePrefix}address'])!,
       imageUrl: attachedDatabase.options.types
           .read(DriftSqlType.string, data['${effectivePrefix}image_url']),
+      latitude: attachedDatabase.options.types
+          .read(DriftSqlType.double, data['${effectivePrefix}latitude']),
+      longitude: attachedDatabase.options.types
+          .read(DriftSqlType.double, data['${effectivePrefix}longitude']),
+      updatedAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at']),
+      createdAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at']),
+      synced: attachedDatabase.options.types
+          .read(DriftSqlType.bool, data['${effectivePrefix}synced']),
     );
   }
 
@@ -1201,25 +1393,44 @@ class $SupermarketsTable extends Supermarkets
 class Product extends DataClass implements Insertable<Product> {
   final String uuid;
   final String name;
-  final String brand;
+  final String? brand;
   final String? imageUrl;
-  final double weight;
+  final double? weight;
+  final DateTime? updatedAt;
+  final DateTime? createdAt;
+  final bool? synced;
   const Product(
       {required this.uuid,
       required this.name,
-      required this.brand,
+      this.brand,
       this.imageUrl,
-      required this.weight});
+      this.weight,
+      this.updatedAt,
+      this.createdAt,
+      this.synced});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['uuid'] = Variable<String>(uuid);
     map['name'] = Variable<String>(name);
-    map['brand'] = Variable<String>(brand);
+    if (!nullToAbsent || brand != null) {
+      map['brand'] = Variable<String>(brand);
+    }
     if (!nullToAbsent || imageUrl != null) {
       map['image_url'] = Variable<String>(imageUrl);
     }
-    map['weight'] = Variable<double>(weight);
+    if (!nullToAbsent || weight != null) {
+      map['weight'] = Variable<double>(weight);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    if (!nullToAbsent || createdAt != null) {
+      map['created_at'] = Variable<DateTime>(createdAt);
+    }
+    if (!nullToAbsent || synced != null) {
+      map['synced'] = Variable<bool>(synced);
+    }
     return map;
   }
 
@@ -1227,11 +1438,21 @@ class Product extends DataClass implements Insertable<Product> {
     return ProductsCompanion(
       uuid: Value(uuid),
       name: Value(name),
-      brand: Value(brand),
+      brand:
+          brand == null && nullToAbsent ? const Value.absent() : Value(brand),
       imageUrl: imageUrl == null && nullToAbsent
           ? const Value.absent()
           : Value(imageUrl),
-      weight: Value(weight),
+      weight:
+          weight == null && nullToAbsent ? const Value.absent() : Value(weight),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+      synced:
+          synced == null && nullToAbsent ? const Value.absent() : Value(synced),
     );
   }
 
@@ -1241,9 +1462,12 @@ class Product extends DataClass implements Insertable<Product> {
     return Product(
       uuid: serializer.fromJson<String>(json['uuid']),
       name: serializer.fromJson<String>(json['name']),
-      brand: serializer.fromJson<String>(json['brand']),
-      imageUrl: serializer.fromJson<String?>(json['imageUrl']),
-      weight: serializer.fromJson<double>(json['weight']),
+      brand: serializer.fromJson<String?>(json['brand']),
+      imageUrl: serializer.fromJson<String?>(json['image_url']),
+      weight: serializer.fromJson<double?>(json['weight']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updated_at']),
+      createdAt: serializer.fromJson<DateTime?>(json['created_at']),
+      synced: serializer.fromJson<bool?>(json['synced']),
     );
   }
   @override
@@ -1252,24 +1476,33 @@ class Product extends DataClass implements Insertable<Product> {
     return <String, dynamic>{
       'uuid': serializer.toJson<String>(uuid),
       'name': serializer.toJson<String>(name),
-      'brand': serializer.toJson<String>(brand),
-      'imageUrl': serializer.toJson<String?>(imageUrl),
-      'weight': serializer.toJson<double>(weight),
+      'brand': serializer.toJson<String?>(brand),
+      'image_url': serializer.toJson<String?>(imageUrl),
+      'weight': serializer.toJson<double?>(weight),
+      'updated_at': serializer.toJson<DateTime?>(updatedAt),
+      'created_at': serializer.toJson<DateTime?>(createdAt),
+      'synced': serializer.toJson<bool?>(synced),
     };
   }
 
   Product copyWith(
           {String? uuid,
           String? name,
-          String? brand,
+          Value<String?> brand = const Value.absent(),
           Value<String?> imageUrl = const Value.absent(),
-          double? weight}) =>
+          Value<double?> weight = const Value.absent(),
+          Value<DateTime?> updatedAt = const Value.absent(),
+          Value<DateTime?> createdAt = const Value.absent(),
+          Value<bool?> synced = const Value.absent()}) =>
       Product(
         uuid: uuid ?? this.uuid,
         name: name ?? this.name,
-        brand: brand ?? this.brand,
+        brand: brand.present ? brand.value : this.brand,
         imageUrl: imageUrl.present ? imageUrl.value : this.imageUrl,
-        weight: weight ?? this.weight,
+        weight: weight.present ? weight.value : this.weight,
+        updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+        createdAt: createdAt.present ? createdAt.value : this.createdAt,
+        synced: synced.present ? synced.value : this.synced,
       );
   @override
   String toString() {
@@ -1278,13 +1511,17 @@ class Product extends DataClass implements Insertable<Product> {
           ..write('name: $name, ')
           ..write('brand: $brand, ')
           ..write('imageUrl: $imageUrl, ')
-          ..write('weight: $weight')
+          ..write('weight: $weight, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('synced: $synced')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(uuid, name, brand, imageUrl, weight);
+  int get hashCode => Object.hash(
+      uuid, name, brand, imageUrl, weight, updatedAt, createdAt, synced);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1293,38 +1530,50 @@ class Product extends DataClass implements Insertable<Product> {
           other.name == this.name &&
           other.brand == this.brand &&
           other.imageUrl == this.imageUrl &&
-          other.weight == this.weight);
+          other.weight == this.weight &&
+          other.updatedAt == this.updatedAt &&
+          other.createdAt == this.createdAt &&
+          other.synced == this.synced);
 }
 
 class ProductsCompanion extends UpdateCompanion<Product> {
   final Value<String> uuid;
   final Value<String> name;
-  final Value<String> brand;
+  final Value<String?> brand;
   final Value<String?> imageUrl;
-  final Value<double> weight;
+  final Value<double?> weight;
+  final Value<DateTime?> updatedAt;
+  final Value<DateTime?> createdAt;
+  final Value<bool?> synced;
   const ProductsCompanion({
     this.uuid = const Value.absent(),
     this.name = const Value.absent(),
     this.brand = const Value.absent(),
     this.imageUrl = const Value.absent(),
     this.weight = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.synced = const Value.absent(),
   });
   ProductsCompanion.insert({
-    required String uuid,
+    this.uuid = const Value.absent(),
     required String name,
-    required String brand,
+    this.brand = const Value.absent(),
     this.imageUrl = const Value.absent(),
-    required double weight,
-  })  : uuid = Value(uuid),
-        name = Value(name),
-        brand = Value(brand),
-        weight = Value(weight);
+    this.weight = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.synced = const Value.absent(),
+  }) : name = Value(name);
   static Insertable<Product> custom({
     Expression<String>? uuid,
     Expression<String>? name,
     Expression<String>? brand,
     Expression<String>? imageUrl,
     Expression<double>? weight,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? createdAt,
+    Expression<bool>? synced,
   }) {
     return RawValuesInsertable({
       if (uuid != null) 'uuid': uuid,
@@ -1332,21 +1581,30 @@ class ProductsCompanion extends UpdateCompanion<Product> {
       if (brand != null) 'brand': brand,
       if (imageUrl != null) 'image_url': imageUrl,
       if (weight != null) 'weight': weight,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdAt != null) 'created_at': createdAt,
+      if (synced != null) 'synced': synced,
     });
   }
 
   ProductsCompanion copyWith(
       {Value<String>? uuid,
       Value<String>? name,
-      Value<String>? brand,
+      Value<String?>? brand,
       Value<String?>? imageUrl,
-      Value<double>? weight}) {
+      Value<double?>? weight,
+      Value<DateTime?>? updatedAt,
+      Value<DateTime?>? createdAt,
+      Value<bool?>? synced}) {
     return ProductsCompanion(
       uuid: uuid ?? this.uuid,
       name: name ?? this.name,
       brand: brand ?? this.brand,
       imageUrl: imageUrl ?? this.imageUrl,
       weight: weight ?? this.weight,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdAt: createdAt ?? this.createdAt,
+      synced: synced ?? this.synced,
     );
   }
 
@@ -1368,6 +1626,15 @@ class ProductsCompanion extends UpdateCompanion<Product> {
     if (weight.present) {
       map['weight'] = Variable<double>(weight.value);
     }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (synced.present) {
+      map['synced'] = Variable<bool>(synced.value);
+    }
     return map;
   }
 
@@ -1378,7 +1645,10 @@ class ProductsCompanion extends UpdateCompanion<Product> {
           ..write('name: $name, ')
           ..write('brand: $brand, ')
           ..write('imageUrl: $imageUrl, ')
-          ..write('weight: $weight')
+          ..write('weight: $weight, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('synced: $synced')
           ..write(')'))
         .toString();
   }
@@ -1393,7 +1663,9 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
   @override
   late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
       'uuid', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      clientDefault: () => uuidObj.v4());
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -1402,8 +1674,8 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
   final VerificationMeta _brandMeta = const VerificationMeta('brand');
   @override
   late final GeneratedColumn<String> brand = GeneratedColumn<String>(
-      'brand', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      'brand', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   final VerificationMeta _imageUrlMeta = const VerificationMeta('imageUrl');
   @override
   late final GeneratedColumn<String> imageUrl = GeneratedColumn<String>(
@@ -1412,10 +1684,29 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
   final VerificationMeta _weightMeta = const VerificationMeta('weight');
   @override
   late final GeneratedColumn<double> weight = GeneratedColumn<double>(
-      'weight', aliasedName, false,
-      type: DriftSqlType.double, requiredDuringInsert: true);
+      'weight', aliasedName, true,
+      type: DriftSqlType.double, requiredDuringInsert: false);
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
-  List<GeneratedColumn> get $columns => [uuid, name, brand, imageUrl, weight];
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  final VerificationMeta _syncedMeta = const VerificationMeta('synced');
+  @override
+  late final GeneratedColumn<bool> synced = GeneratedColumn<bool>(
+      'synced', aliasedName, true,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (synced IN (0, 1))',
+      defaultValue: const Constant(true));
+  @override
+  List<GeneratedColumn> get $columns =>
+      [uuid, name, brand, imageUrl, weight, updatedAt, createdAt, synced];
   @override
   String get aliasedName => _alias ?? 'products';
   @override
@@ -1428,8 +1719,6 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
     if (data.containsKey('uuid')) {
       context.handle(
           _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
-    } else if (isInserting) {
-      context.missing(_uuidMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
@@ -1440,8 +1729,6 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
     if (data.containsKey('brand')) {
       context.handle(
           _brandMeta, brand.isAcceptableOrUnknown(data['brand']!, _brandMeta));
-    } else if (isInserting) {
-      context.missing(_brandMeta);
     }
     if (data.containsKey('image_url')) {
       context.handle(_imageUrlMeta,
@@ -1450,8 +1737,18 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
     if (data.containsKey('weight')) {
       context.handle(_weightMeta,
           weight.isAcceptableOrUnknown(data['weight']!, _weightMeta));
-    } else if (isInserting) {
-      context.missing(_weightMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('synced')) {
+      context.handle(_syncedMeta,
+          synced.isAcceptableOrUnknown(data['synced']!, _syncedMeta));
     }
     return context;
   }
@@ -1467,11 +1764,17 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
       name: attachedDatabase.options.types
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
       brand: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}brand'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}brand']),
       imageUrl: attachedDatabase.options.types
           .read(DriftSqlType.string, data['${effectivePrefix}image_url']),
       weight: attachedDatabase.options.types
-          .read(DriftSqlType.double, data['${effectivePrefix}weight'])!,
+          .read(DriftSqlType.double, data['${effectivePrefix}weight']),
+      updatedAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at']),
+      createdAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at']),
+      synced: attachedDatabase.options.types
+          .read(DriftSqlType.bool, data['${effectivePrefix}synced']),
     );
   }
 
@@ -1492,6 +1795,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $ProductsTable products = $ProductsTable(this);
   late final AuthDAO authDAO = AuthDAO(this as AppDatabase);
   late final BuyListDAO buyListDAO = BuyListDAO(this as AppDatabase);
+  late final SupermarketDAO supermarketDAO =
+      SupermarketDAO(this as AppDatabase);
+  late final ProductDAO productDAO = ProductDAO(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, dynamic>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

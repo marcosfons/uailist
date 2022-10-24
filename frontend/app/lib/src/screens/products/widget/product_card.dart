@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:uailist/src/core/database/app_database.dart';
 
@@ -9,11 +10,12 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(product.name),
-      subtitle: Text(product.brand),
+      subtitle: Text(product.brand ?? ''),
       leading: CircleAvatar(
         radius: 30,
-        backgroundImage:
-            product.imageUrl != null ? NetworkImage(product.imageUrl!) : null,
+        backgroundImage: product.imageUrl != null
+            ? CachedNetworkImageProvider(product.imageUrl!)
+            : null,
       ),
     );
   }

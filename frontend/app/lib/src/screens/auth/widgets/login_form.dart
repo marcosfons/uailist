@@ -14,13 +14,21 @@ class LoginForm extends StatefulHookConsumerWidget {
 }
 
 class LoginFormState extends ConsumerState<LoginForm> {
+  final _formKey = GlobalKey<FormState>();
   late final AuthController controller = ref.read(authController);
+
+  Future login() async {
+    // TODO(marcosfons): Return with early login form validation
+    if (_formKey.currentState?.validate() ?? false) {
+      final result = await controller.signInWithEmailAndPassword();
+      if (result && mounted) {
+        GoRouter.of(context).go('/lists');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
-    final router = GoRouter.of(context);
-
     return Align(
       alignment: Alignment.bottomCenter,
       child: ConstrainedBox(
@@ -32,7 +40,7 @@ class LoginFormState extends ConsumerState<LoginForm> {
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Form(
-                  key: formKey,
+                  key: _formKey,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: AutofillGroup(
                     onDisposeAction: AutofillContextAction.cancel,
@@ -49,6 +57,7 @@ class LoginFormState extends ConsumerState<LoginForm> {
                           textInputAction: TextInputAction.done,
                           autovalidateMode: AutovalidateMode.disabled,
                           onChanged: controller.changePassword,
+                          onFieldSubmitted: (_) => login(),
                         )
                       ],
                     ),
@@ -84,16 +93,7 @@ class LoginFormState extends ConsumerState<LoginForm> {
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: FutureLoadElevatedButton(
-                  onPressed: () async {
-                    // TODO(marcosfons): Return with early login form validation
-                    if (formKey.currentState?.validate() ?? false) {
-                      final result =
-                          await controller.signInWithEmailAndPassword();
-                      if (result && mounted) {
-                        router.go('/lists');
-                      }
-                    }
-                  },
+                  onPressed: login,
                   child: const Text('Entrar'),
                 ),
               ),
@@ -106,7 +106,7 @@ class LoginFormState extends ConsumerState<LoginForm> {
               children: [
                 const Text('Não possui uma conta?'),
                 TextButton(
-                  onPressed: () => router.go('/register'),
+                  onPressed: () => GoRouter.of(context).go('/register'),
                   child: const Text('Registre-se'),
                 )
               ],

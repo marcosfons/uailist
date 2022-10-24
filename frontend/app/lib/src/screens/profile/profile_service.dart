@@ -119,4 +119,14 @@ class ProfileService {
       return const UnknownFailure();
     }
   }
+
+  Future<Failure?> changeUserEmail(String newEmail) async {
+    try {
+      await _nhostClient.auth.changeEmail(newEmail);
+      return null;
+    } catch (e) {
+      getLogger().e(e);
+      return const UnknownFailure();
+    }
+  }
 }

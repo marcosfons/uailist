@@ -2564,6 +2564,23 @@ input files_variance_order_by {
   size: order_by
 }
 
+scalar float8
+
+"""
+Boolean expression to compare columns of type "float8". All fields are combined with logical 'AND'.
+"""
+input float8_comparison_exp {
+  _eq: float8
+  _gt: float8
+  _gte: float8
+  _in: [float8!]
+  _is_null: Boolean
+  _lt: float8
+  _lte: float8
+  _neq: float8
+  _nin: [float8!]
+}
+
 scalar jsonb
 
 input jsonb_cast_exp {
@@ -2732,6 +2749,32 @@ type mutation_root {
     """filter the rows which have to be deleted"""
     where: users_bool_exp!
   ): users_mutation_response
+
+  """
+  delete data from the table: "product"
+  """
+  delete_product(
+    """filter the rows which have to be deleted"""
+    where: product_bool_exp!
+  ): product_mutation_response
+
+  """
+  delete single row from the table: "product"
+  """
+  delete_product_by_pk(uuid: uuid!): product
+
+  """
+  delete data from the table: "supermarket"
+  """
+  delete_supermarket(
+    """filter the rows which have to be deleted"""
+    where: supermarket_bool_exp!
+  ): supermarket_mutation_response
+
+  """
+  delete single row from the table: "supermarket"
+  """
+  delete_supermarket_by_pk(uuid: uuid!): supermarket
 
   """
   insert a single row into the table: "auth.providers"
@@ -2952,6 +2995,50 @@ type mutation_root {
     """upsert condition"""
     on_conflict: users_on_conflict
   ): users_mutation_response
+
+  """
+  insert data into the table: "product"
+  """
+  insert_product(
+    """the rows to be inserted"""
+    objects: [product_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: product_on_conflict
+  ): product_mutation_response
+
+  """
+  insert a single row into the table: "product"
+  """
+  insert_product_one(
+    """the row to be inserted"""
+    object: product_insert_input!
+
+    """upsert condition"""
+    on_conflict: product_on_conflict
+  ): product
+
+  """
+  insert data into the table: "supermarket"
+  """
+  insert_supermarket(
+    """the rows to be inserted"""
+    objects: [supermarket_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: supermarket_on_conflict
+  ): supermarket_mutation_response
+
+  """
+  insert a single row into the table: "supermarket"
+  """
+  insert_supermarket_one(
+    """the row to be inserted"""
+    object: supermarket_insert_input!
+
+    """upsert condition"""
+    on_conflict: supermarket_on_conflict
+  ): supermarket
 
   """
   update single row of the table: "auth.providers"
@@ -3328,6 +3415,74 @@ type mutation_root {
   ): [files_mutation_response]
 
   """
+  update data of the table: "product"
+  """
+  update_product(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: product_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: product_set_input
+
+    """filter the rows which have to be updated"""
+    where: product_bool_exp!
+  ): product_mutation_response
+
+  """
+  update single row of the table: "product"
+  """
+  update_product_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: product_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: product_set_input
+    pk_columns: product_pk_columns_input!
+  ): product
+
+  """
+  update multiples rows of table: "product"
+  """
+  update_product_many(
+    """updates to execute, in order"""
+    updates: [product_updates!]!
+  ): [product_mutation_response]
+
+  """
+  update data of the table: "supermarket"
+  """
+  update_supermarket(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: supermarket_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: supermarket_set_input
+
+    """filter the rows which have to be updated"""
+    where: supermarket_bool_exp!
+  ): supermarket_mutation_response
+
+  """
+  update single row of the table: "supermarket"
+  """
+  update_supermarket_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: supermarket_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: supermarket_set_input
+    pk_columns: supermarket_pk_columns_input!
+  ): supermarket
+
+  """
+  update multiples rows of table: "supermarket"
+  """
+  update_supermarket_many(
+    """updates to execute, in order"""
+    updates: [supermarket_updates!]!
+  ): [supermarket_mutation_response]
+
+  """
   update multiples rows of table: "auth.users"
   """
   update_users_many(
@@ -3355,6 +3510,275 @@ enum order_by {
 
   """in descending order, nulls last"""
   desc_nulls_last
+}
+
+"""
+columns and relationships of "product"
+"""
+type product {
+  brand: String
+  created_at: timestamptz!
+  created_by_user_uuid: uuid
+  image_url: String!
+  name: String!
+  updated_at: timestamptz!
+  uuid: uuid!
+  weight: float8
+}
+
+"""
+aggregated selection of "product"
+"""
+type product_aggregate {
+  aggregate: product_aggregate_fields
+  nodes: [product!]!
+}
+
+"""
+aggregate fields of "product"
+"""
+type product_aggregate_fields {
+  avg: product_avg_fields
+  count(columns: [product_select_column!], distinct: Boolean): Int!
+  max: product_max_fields
+  min: product_min_fields
+  stddev: product_stddev_fields
+  stddev_pop: product_stddev_pop_fields
+  stddev_samp: product_stddev_samp_fields
+  sum: product_sum_fields
+  var_pop: product_var_pop_fields
+  var_samp: product_var_samp_fields
+  variance: product_variance_fields
+}
+
+"""aggregate avg on columns"""
+type product_avg_fields {
+  weight: Float
+}
+
+"""
+Boolean expression to filter rows from the table "product". All fields are combined with a logical 'AND'.
+"""
+input product_bool_exp {
+  _and: [product_bool_exp!]
+  _not: product_bool_exp
+  _or: [product_bool_exp!]
+  brand: String_comparison_exp
+  created_at: timestamptz_comparison_exp
+  created_by_user_uuid: uuid_comparison_exp
+  image_url: String_comparison_exp
+  name: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
+  uuid: uuid_comparison_exp
+  weight: float8_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "product"
+"""
+enum product_constraint {
+  """
+  unique or primary key constraint on columns "uuid"
+  """
+  product_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "product"
+"""
+input product_inc_input {
+  weight: float8
+}
+
+"""
+input type for inserting data into table "product"
+"""
+input product_insert_input {
+  brand: String
+  created_at: timestamptz
+  created_by_user_uuid: uuid
+  image_url: String
+  name: String
+  updated_at: timestamptz
+  uuid: uuid
+  weight: float8
+}
+
+"""aggregate max on columns"""
+type product_max_fields {
+  brand: String
+  created_at: timestamptz
+  created_by_user_uuid: uuid
+  image_url: String
+  name: String
+  updated_at: timestamptz
+  uuid: uuid
+  weight: float8
+}
+
+"""aggregate min on columns"""
+type product_min_fields {
+  brand: String
+  created_at: timestamptz
+  created_by_user_uuid: uuid
+  image_url: String
+  name: String
+  updated_at: timestamptz
+  uuid: uuid
+  weight: float8
+}
+
+"""
+response of any mutation on the table "product"
+"""
+type product_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [product!]!
+}
+
+"""
+on_conflict condition type for table "product"
+"""
+input product_on_conflict {
+  constraint: product_constraint!
+  update_columns: [product_update_column!]! = []
+  where: product_bool_exp
+}
+
+"""Ordering options when selecting data from "product"."""
+input product_order_by {
+  brand: order_by
+  created_at: order_by
+  created_by_user_uuid: order_by
+  image_url: order_by
+  name: order_by
+  updated_at: order_by
+  uuid: order_by
+  weight: order_by
+}
+
+"""primary key columns input for table: product"""
+input product_pk_columns_input {
+  uuid: uuid!
+}
+
+"""
+select columns of table "product"
+"""
+enum product_select_column {
+  """column name"""
+  brand
+
+  """column name"""
+  created_at
+
+  """column name"""
+  created_by_user_uuid
+
+  """column name"""
+  image_url
+
+  """column name"""
+  name
+
+  """column name"""
+  updated_at
+
+  """column name"""
+  uuid
+
+  """column name"""
+  weight
+}
+
+"""
+input type for updating data in table "product"
+"""
+input product_set_input {
+  brand: String
+  created_at: timestamptz
+  created_by_user_uuid: uuid
+  image_url: String
+  name: String
+  updated_at: timestamptz
+  uuid: uuid
+  weight: float8
+}
+
+"""aggregate stddev on columns"""
+type product_stddev_fields {
+  weight: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type product_stddev_pop_fields {
+  weight: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type product_stddev_samp_fields {
+  weight: Float
+}
+
+"""aggregate sum on columns"""
+type product_sum_fields {
+  weight: float8
+}
+
+"""
+update columns of table "product"
+"""
+enum product_update_column {
+  """column name"""
+  brand
+
+  """column name"""
+  created_at
+
+  """column name"""
+  created_by_user_uuid
+
+  """column name"""
+  image_url
+
+  """column name"""
+  name
+
+  """column name"""
+  updated_at
+
+  """column name"""
+  uuid
+
+  """column name"""
+  weight
+}
+
+input product_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: product_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: product_set_input
+  where: product_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type product_var_pop_fields {
+  weight: Float
+}
+
+"""aggregate var_samp on columns"""
+type product_var_samp_fields {
+  weight: Float
+}
+
+"""aggregate variance on columns"""
+type product_variance_fields {
+  weight: Float
 }
 
 type query_root {
@@ -3750,6 +4174,92 @@ type query_root {
     """filter the rows returned"""
     where: files_bool_exp
   ): files_aggregate!
+
+  """
+  fetch data from the table: "product"
+  """
+  product(
+    """distinct select on columns"""
+    distinct_on: [product_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_order_by!]
+
+    """filter the rows returned"""
+    where: product_bool_exp
+  ): [product!]!
+
+  """
+  fetch aggregated fields from the table: "product"
+  """
+  product_aggregate(
+    """distinct select on columns"""
+    distinct_on: [product_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_order_by!]
+
+    """filter the rows returned"""
+    where: product_bool_exp
+  ): product_aggregate!
+
+  """fetch data from the table: "product" using primary key columns"""
+  product_by_pk(uuid: uuid!): product
+
+  """
+  fetch data from the table: "supermarket"
+  """
+  supermarket(
+    """distinct select on columns"""
+    distinct_on: [supermarket_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [supermarket_order_by!]
+
+    """filter the rows returned"""
+    where: supermarket_bool_exp
+  ): [supermarket!]!
+
+  """
+  fetch aggregated fields from the table: "supermarket"
+  """
+  supermarket_aggregate(
+    """distinct select on columns"""
+    distinct_on: [supermarket_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [supermarket_order_by!]
+
+    """filter the rows returned"""
+    where: supermarket_bool_exp
+  ): supermarket_aggregate!
+
+  """fetch data from the table: "supermarket" using primary key columns"""
+  supermarket_by_pk(uuid: uuid!): supermarket
 
   """fetch data from the table: "auth.users" using primary key columns"""
   user(id: uuid!): users
@@ -4189,6 +4699,92 @@ type subscription_root {
     where: files_bool_exp
   ): files_aggregate!
 
+  """
+  fetch data from the table: "product"
+  """
+  product(
+    """distinct select on columns"""
+    distinct_on: [product_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_order_by!]
+
+    """filter the rows returned"""
+    where: product_bool_exp
+  ): [product!]!
+
+  """
+  fetch aggregated fields from the table: "product"
+  """
+  product_aggregate(
+    """distinct select on columns"""
+    distinct_on: [product_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_order_by!]
+
+    """filter the rows returned"""
+    where: product_bool_exp
+  ): product_aggregate!
+
+  """fetch data from the table: "product" using primary key columns"""
+  product_by_pk(uuid: uuid!): product
+
+  """
+  fetch data from the table: "supermarket"
+  """
+  supermarket(
+    """distinct select on columns"""
+    distinct_on: [supermarket_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [supermarket_order_by!]
+
+    """filter the rows returned"""
+    where: supermarket_bool_exp
+  ): [supermarket!]!
+
+  """
+  fetch aggregated fields from the table: "supermarket"
+  """
+  supermarket_aggregate(
+    """distinct select on columns"""
+    distinct_on: [supermarket_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [supermarket_order_by!]
+
+    """filter the rows returned"""
+    where: supermarket_bool_exp
+  ): supermarket_aggregate!
+
+  """fetch data from the table: "supermarket" using primary key columns"""
+  supermarket_by_pk(uuid: uuid!): supermarket
+
   """fetch data from the table: "auth.users" using primary key columns"""
   user(id: uuid!): users
 
@@ -4231,6 +4827,297 @@ type subscription_root {
     """filter the rows returned"""
     where: users_bool_exp
   ): users_aggregate!
+}
+
+"""
+columns and relationships of "supermarket"
+"""
+type supermarket {
+  address: String!
+  created_at: timestamptz!
+  created_by_user_uuid: uuid
+  image_url: String!
+  latitude: float8
+  longitude: float8
+  name: String!
+  updated_at: timestamptz!
+  uuid: uuid!
+}
+
+"""
+aggregated selection of "supermarket"
+"""
+type supermarket_aggregate {
+  aggregate: supermarket_aggregate_fields
+  nodes: [supermarket!]!
+}
+
+"""
+aggregate fields of "supermarket"
+"""
+type supermarket_aggregate_fields {
+  avg: supermarket_avg_fields
+  count(columns: [supermarket_select_column!], distinct: Boolean): Int!
+  max: supermarket_max_fields
+  min: supermarket_min_fields
+  stddev: supermarket_stddev_fields
+  stddev_pop: supermarket_stddev_pop_fields
+  stddev_samp: supermarket_stddev_samp_fields
+  sum: supermarket_sum_fields
+  var_pop: supermarket_var_pop_fields
+  var_samp: supermarket_var_samp_fields
+  variance: supermarket_variance_fields
+}
+
+"""aggregate avg on columns"""
+type supermarket_avg_fields {
+  latitude: Float
+  longitude: Float
+}
+
+"""
+Boolean expression to filter rows from the table "supermarket". All fields are combined with a logical 'AND'.
+"""
+input supermarket_bool_exp {
+  _and: [supermarket_bool_exp!]
+  _not: supermarket_bool_exp
+  _or: [supermarket_bool_exp!]
+  address: String_comparison_exp
+  created_at: timestamptz_comparison_exp
+  created_by_user_uuid: uuid_comparison_exp
+  image_url: String_comparison_exp
+  latitude: float8_comparison_exp
+  longitude: float8_comparison_exp
+  name: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
+  uuid: uuid_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "supermarket"
+"""
+enum supermarket_constraint {
+  """
+  unique or primary key constraint on columns "uuid"
+  """
+  supermarket_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "supermarket"
+"""
+input supermarket_inc_input {
+  latitude: float8
+  longitude: float8
+}
+
+"""
+input type for inserting data into table "supermarket"
+"""
+input supermarket_insert_input {
+  address: String
+  created_at: timestamptz
+  created_by_user_uuid: uuid
+  image_url: String
+  latitude: float8
+  longitude: float8
+  name: String
+  updated_at: timestamptz
+  uuid: uuid
+}
+
+"""aggregate max on columns"""
+type supermarket_max_fields {
+  address: String
+  created_at: timestamptz
+  created_by_user_uuid: uuid
+  image_url: String
+  latitude: float8
+  longitude: float8
+  name: String
+  updated_at: timestamptz
+  uuid: uuid
+}
+
+"""aggregate min on columns"""
+type supermarket_min_fields {
+  address: String
+  created_at: timestamptz
+  created_by_user_uuid: uuid
+  image_url: String
+  latitude: float8
+  longitude: float8
+  name: String
+  updated_at: timestamptz
+  uuid: uuid
+}
+
+"""
+response of any mutation on the table "supermarket"
+"""
+type supermarket_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [supermarket!]!
+}
+
+"""
+on_conflict condition type for table "supermarket"
+"""
+input supermarket_on_conflict {
+  constraint: supermarket_constraint!
+  update_columns: [supermarket_update_column!]! = []
+  where: supermarket_bool_exp
+}
+
+"""Ordering options when selecting data from "supermarket"."""
+input supermarket_order_by {
+  address: order_by
+  created_at: order_by
+  created_by_user_uuid: order_by
+  image_url: order_by
+  latitude: order_by
+  longitude: order_by
+  name: order_by
+  updated_at: order_by
+  uuid: order_by
+}
+
+"""primary key columns input for table: supermarket"""
+input supermarket_pk_columns_input {
+  uuid: uuid!
+}
+
+"""
+select columns of table "supermarket"
+"""
+enum supermarket_select_column {
+  """column name"""
+  address
+
+  """column name"""
+  created_at
+
+  """column name"""
+  created_by_user_uuid
+
+  """column name"""
+  image_url
+
+  """column name"""
+  latitude
+
+  """column name"""
+  longitude
+
+  """column name"""
+  name
+
+  """column name"""
+  updated_at
+
+  """column name"""
+  uuid
+}
+
+"""
+input type for updating data in table "supermarket"
+"""
+input supermarket_set_input {
+  address: String
+  created_at: timestamptz
+  created_by_user_uuid: uuid
+  image_url: String
+  latitude: float8
+  longitude: float8
+  name: String
+  updated_at: timestamptz
+  uuid: uuid
+}
+
+"""aggregate stddev on columns"""
+type supermarket_stddev_fields {
+  latitude: Float
+  longitude: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type supermarket_stddev_pop_fields {
+  latitude: Float
+  longitude: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type supermarket_stddev_samp_fields {
+  latitude: Float
+  longitude: Float
+}
+
+"""aggregate sum on columns"""
+type supermarket_sum_fields {
+  latitude: float8
+  longitude: float8
+}
+
+"""
+update columns of table "supermarket"
+"""
+enum supermarket_update_column {
+  """column name"""
+  address
+
+  """column name"""
+  created_at
+
+  """column name"""
+  created_by_user_uuid
+
+  """column name"""
+  image_url
+
+  """column name"""
+  latitude
+
+  """column name"""
+  longitude
+
+  """column name"""
+  name
+
+  """column name"""
+  updated_at
+
+  """column name"""
+  uuid
+}
+
+input supermarket_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: supermarket_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: supermarket_set_input
+  where: supermarket_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type supermarket_var_pop_fields {
+  latitude: Float
+  longitude: Float
+}
+
+"""aggregate var_samp on columns"""
+type supermarket_var_samp_fields {
+  latitude: Float
+  longitude: Float
+}
+
+"""aggregate variance on columns"""
+type supermarket_variance_fields {
+  latitude: Float
+  longitude: Float
 }
 
 scalar timestamptz

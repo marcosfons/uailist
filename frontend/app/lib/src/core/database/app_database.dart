@@ -6,7 +6,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:uailist/src/core/database/daos/buy_list/buy_list_dao.dart';
+import 'package:uailist/src/core/database/daos/product/product_dao.dart';
 import 'package:uailist/src/core/database/daos/session/auth_dao.dart';
+import 'package:uailist/src/core/database/daos/supermarket/supermarket_dao.dart';
 import 'package:uailist/src/core/database/tables/buy_lists_table.dart';
 import 'package:uailist/src/core/database/tables/products_buy_list.dart';
 import 'package:uailist/src/core/database/tables/products_table.dart';
@@ -21,7 +23,7 @@ final databaseProvider = Provider((ref) => AppDatabase());
 
 @DriftDatabase(
   tables: [Sessions, Users, BuyLists, ProductsBuyList, Supermarkets, Products],
-  daos: [AuthDAO, BuyListDAO],
+  daos: [AuthDAO, BuyListDAO, SupermarketDAO, ProductDAO],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
