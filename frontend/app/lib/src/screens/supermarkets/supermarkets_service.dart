@@ -3,6 +3,7 @@ import 'package:uailist/src/core/database/app_database.dart';
 import 'package:uailist/src/core/failures/failure.dart';
 import 'package:uailist/src/core/logger/logger.dart';
 import 'package:uailist/src/core/services/hasura/graphql_api.graphql.dart';
+import 'package:stream_transform/stream_transform.dart';
 
 class SupermarketsService {
   final ArtemisClient _hasuraClient;
@@ -12,6 +13,17 @@ class SupermarketsService {
 
   Stream<List<Supermarket>> supermarketsStream() =>
       _appDatabase.supermarketDAO.watchSupermarkets();
+
+  Stream<List<Supermarket>> supermarketsSearchStream(
+      Stream<String> searchStream) {
+    return _appDatabase.supermarketDAO
+        .watchSupermarkets()
+        .combineLatest(searchStream, (supermarkets, search) {
+      return supermarkets.where((supermarket) {
+        return supermarket.name.toLowerCase().contains(search.toLowerCase());
+      }).toList();
+    });
+  }
 
   Future<Failure?> loadSupermarkets() async {
     try {

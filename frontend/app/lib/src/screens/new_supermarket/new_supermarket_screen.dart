@@ -67,8 +67,22 @@ class NewSupermarketScreenState extends ConsumerState<NewSupermarketScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            const SizedBox(
-              height: 20,
+            Row(
+              children: [
+                SizedBox(
+                  width: 10,
+                ),
+                IconButton(
+                  iconSize: 20,
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    color: themeData.colorScheme.primary,
+                  ),
+                  onPressed: () {
+                    GoRouter.of(context).go('/supermarkets');
+                  },
+                ),
+              ],
             ),
             Center(
               child: Stack(

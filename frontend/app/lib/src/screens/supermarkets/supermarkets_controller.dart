@@ -32,6 +32,8 @@ class SupermarketsController extends ChangeNotifier {
 
   SupermarketsController(this._supermarketsService);
 
+  final _supermarketSearchController = StreamController<String>.broadcast();
+
   final bool _firstLoading = true;
 
   bool _loading = false;
@@ -39,6 +41,10 @@ class SupermarketsController extends ChangeNotifier {
 
   bool get loading => _loading;
   String? get error => _error;
+
+  void changeSearch(String text) {
+    _supermarketSearchController.add(text);
+  }
 
   Future<void> sync() {
     return _supermarketsService.uploadNotSyncedSupermarkets();
@@ -71,6 +77,9 @@ class SupermarketsController extends ChangeNotifier {
   }
 
   Stream<List<Supermarket>> supermarketsList() {
-    return _supermarketsService.supermarketsStream();
+    final test = _supermarketsService
+        .supermarketsSearchStream(_supermarketSearchController.stream);
+    scheduleMicrotask(() => _supermarketSearchController.add('')) ;
+    return test;
   }
 }

@@ -44,6 +44,19 @@ class SupermarketsScreenState extends ConsumerState<SupermarketsScreen> {
                 },
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.all(7.0),
+              child: TextField(
+                onChanged: controller.changeSearch,
+                //controller: editingController,
+                decoration: InputDecoration(
+                    labelText: "Procurar jogadores",
+                    hintText: "Informe o nome do jogador",
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+              ),
+            ),
             Expanded(
               child: StreamBuilder<List<Supermarket>>(
                 stream: controller.supermarketsList(),
