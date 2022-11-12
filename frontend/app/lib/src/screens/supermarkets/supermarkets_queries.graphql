@@ -16,3 +16,13 @@ mutation UpsertSupermarkets($supermarkets: [supermarket_insert_input!]!) {
     affected_rows
   }
 }
+
+mutation AppChangeSupermarketImageUrl($uuid: uuid!, $newImageUrl: String!){
+update_supermarket_by_pk(pk_columns:{
+  uuid: $uuid
+},_set:{
+  image_url: $newImageUrl
+}){
+  image_url
+}
+}

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uailist/src/screens/list/list_controller.dart';
 import 'package:uailist/src/screens/new_list/widgets/product_card.dart';
@@ -59,7 +60,12 @@ class ListScreenState extends ConsumerState<ListScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              controller.addProductBuyList();
+              //controller.addProductBuyList();
+              print(GoRouter.of(context).location);
+              GoRouter.of(context).go('/lists/new/selectProdut',
+                  extra: (products) {
+                print(products);
+              });
             },
             child: const Text('Adicionar produto'),
           ),

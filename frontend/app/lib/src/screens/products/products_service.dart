@@ -1,4 +1,5 @@
 import 'package:artemis/client.dart';
+import 'package:stream_transform/stream_transform.dart';
 import 'package:uailist/src/core/database/app_database.dart';
 import 'package:uailist/src/core/failures/failure.dart';
 import 'package:uailist/src/core/logger/logger.dart';
@@ -12,6 +13,15 @@ class ProductsService {
 
   Stream<List<Product>> productsStream() =>
       _appDatabase.productDAO.watchProducts();
+
+  Stream<List<Product>> productsSearchStream(Stream<String> searchStream) {
+    return _appDatabase.productDAO.watchProducts().combineLatest(searchStream,
+        (product, search) {
+      return product.where((product) {
+        return product.name.toLowerCase().contains(search.toLowerCase());
+      }).toList();
+    });
+  }
 
   Future<Failure?> loadSupermarkets() async {
     try {

@@ -7,6 +7,147 @@ part of 'graphql_api.graphql.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+GetSupermarkets$QueryRoot$Supermarket
+    _$GetSupermarkets$QueryRoot$SupermarketFromJson(
+            Map<String, dynamic> json) =>
+        GetSupermarkets$QueryRoot$Supermarket()
+          ..uuid = fromGraphQLUuidToDartString(json['uuid'] as String)
+          ..updatedAt =
+              fromGraphQLTimestamptzToDartDateTime(json['updated_at'] as String)
+          ..name = json['name'] as String
+          ..latitude = fromGraphQLFloat8NullableToDartdoubleNullable(
+              json['latitude'] as num?)
+          ..longitude = fromGraphQLFloat8NullableToDartdoubleNullable(
+              json['longitude'] as num?)
+          ..imageUrl = json['image_url'] as String
+          ..createdAt =
+              fromGraphQLTimestamptzToDartDateTime(json['created_at'] as String)
+          ..address = json['address'] as String;
+
+Map<String, dynamic> _$GetSupermarkets$QueryRoot$SupermarketToJson(
+        GetSupermarkets$QueryRoot$Supermarket instance) =>
+    <String, dynamic>{
+      'uuid': fromDartStringToGraphQLUuid(instance.uuid),
+      'updated_at': fromDartDateTimeToGraphQLTimestamptz(instance.updatedAt),
+      'name': instance.name,
+      'latitude':
+          fromDartdoubleNullableToGraphQLFloat8Nullable(instance.latitude),
+      'longitude':
+          fromDartdoubleNullableToGraphQLFloat8Nullable(instance.longitude),
+      'image_url': instance.imageUrl,
+      'created_at': fromDartDateTimeToGraphQLTimestamptz(instance.createdAt),
+      'address': instance.address,
+    };
+
+GetSupermarkets$QueryRoot _$GetSupermarkets$QueryRootFromJson(
+        Map<String, dynamic> json) =>
+    GetSupermarkets$QueryRoot()
+      ..supermarket = (json['supermarket'] as List<dynamic>)
+          .map((e) => GetSupermarkets$QueryRoot$Supermarket.fromJson(
+              e as Map<String, dynamic>))
+          .toList();
+
+Map<String, dynamic> _$GetSupermarkets$QueryRootToJson(
+        GetSupermarkets$QueryRoot instance) =>
+    <String, dynamic>{
+      'supermarket': instance.supermarket.map((e) => e.toJson()).toList(),
+    };
+
+UpsertSupermarkets$MutationRoot$SupermarketMutationResponse
+    _$UpsertSupermarkets$MutationRoot$SupermarketMutationResponseFromJson(
+            Map<String, dynamic> json) =>
+        UpsertSupermarkets$MutationRoot$SupermarketMutationResponse()
+          ..affectedRows = json['affected_rows'] as int;
+
+Map<String, dynamic>
+    _$UpsertSupermarkets$MutationRoot$SupermarketMutationResponseToJson(
+            UpsertSupermarkets$MutationRoot$SupermarketMutationResponse
+                instance) =>
+        <String, dynamic>{
+          'affected_rows': instance.affectedRows,
+        };
+
+UpsertSupermarkets$MutationRoot _$UpsertSupermarkets$MutationRootFromJson(
+        Map<String, dynamic> json) =>
+    UpsertSupermarkets$MutationRoot()
+      ..insertSupermarket = json['insert_supermarket'] == null
+          ? null
+          : UpsertSupermarkets$MutationRoot$SupermarketMutationResponse
+              .fromJson(json['insert_supermarket'] as Map<String, dynamic>);
+
+Map<String, dynamic> _$UpsertSupermarkets$MutationRootToJson(
+        UpsertSupermarkets$MutationRoot instance) =>
+    <String, dynamic>{
+      'insert_supermarket': instance.insertSupermarket?.toJson(),
+    };
+
+SupermarketInsertInput _$SupermarketInsertInputFromJson(
+        Map<String, dynamic> json) =>
+    SupermarketInsertInput(
+      address: json['address'] as String?,
+      createdAt: fromGraphQLTimestamptzNullableToDartDateTimeNullable(
+          json['created_at'] as String?),
+      createdByUserUuid: fromGraphQLUuidNullableToDartStringNullable(
+          json['created_by_user_uuid'] as String?),
+      imageUrl: json['image_url'] as String?,
+      latitude: fromGraphQLFloat8NullableToDartdoubleNullable(
+          json['latitude'] as num?),
+      longitude: fromGraphQLFloat8NullableToDartdoubleNullable(
+          json['longitude'] as num?),
+      name: json['name'] as String?,
+      updatedAt: fromGraphQLTimestamptzNullableToDartDateTimeNullable(
+          json['updated_at'] as String?),
+      uuid:
+          fromGraphQLUuidNullableToDartStringNullable(json['uuid'] as String?),
+    );
+
+Map<String, dynamic> _$SupermarketInsertInputToJson(
+        SupermarketInsertInput instance) =>
+    <String, dynamic>{
+      'address': instance.address,
+      'created_at': fromDartDateTimeNullableToGraphQLTimestamptzNullable(
+          instance.createdAt),
+      'created_by_user_uuid': fromDartStringNullableToGraphQLUuidNullable(
+          instance.createdByUserUuid),
+      'image_url': instance.imageUrl,
+      'latitude':
+          fromDartdoubleNullableToGraphQLFloat8Nullable(instance.latitude),
+      'longitude':
+          fromDartdoubleNullableToGraphQLFloat8Nullable(instance.longitude),
+      'name': instance.name,
+      'updated_at': fromDartDateTimeNullableToGraphQLTimestamptzNullable(
+          instance.updatedAt),
+      'uuid': fromDartStringNullableToGraphQLUuidNullable(instance.uuid),
+    };
+
+AppChangeSupermarketImageUrl$MutationRoot$Supermarket
+    _$AppChangeSupermarketImageUrl$MutationRoot$SupermarketFromJson(
+            Map<String, dynamic> json) =>
+        AppChangeSupermarketImageUrl$MutationRoot$Supermarket()
+          ..imageUrl = json['image_url'] as String;
+
+Map<String, dynamic>
+    _$AppChangeSupermarketImageUrl$MutationRoot$SupermarketToJson(
+            AppChangeSupermarketImageUrl$MutationRoot$Supermarket instance) =>
+        <String, dynamic>{
+          'image_url': instance.imageUrl,
+        };
+
+AppChangeSupermarketImageUrl$MutationRoot
+    _$AppChangeSupermarketImageUrl$MutationRootFromJson(
+            Map<String, dynamic> json) =>
+        AppChangeSupermarketImageUrl$MutationRoot()
+          ..updateSupermarketByPk = json['update_supermarket_by_pk'] == null
+              ? null
+              : AppChangeSupermarketImageUrl$MutationRoot$Supermarket.fromJson(
+                  json['update_supermarket_by_pk'] as Map<String, dynamic>);
+
+Map<String, dynamic> _$AppChangeSupermarketImageUrl$MutationRootToJson(
+        AppChangeSupermarketImageUrl$MutationRoot instance) =>
+    <String, dynamic>{
+      'update_supermarket_by_pk': instance.updateSupermarketByPk?.toJson(),
+    };
+
 AppDeleteUser$MutationRoot$Users _$AppDeleteUser$MutationRoot$UsersFromJson(
         Map<String, dynamic> json) =>
     AppDeleteUser$MutationRoot$Users()
@@ -200,117 +341,48 @@ Map<String, dynamic> _$ProductInsertInputToJson(ProductInsertInput instance) =>
       'weight': fromDartdoubleNullableToGraphQLFloat8Nullable(instance.weight),
     };
 
-GetSupermarkets$QueryRoot$Supermarket
-    _$GetSupermarkets$QueryRoot$SupermarketFromJson(
-            Map<String, dynamic> json) =>
-        GetSupermarkets$QueryRoot$Supermarket()
-          ..uuid = fromGraphQLUuidToDartString(json['uuid'] as String)
-          ..updatedAt =
-              fromGraphQLTimestamptzToDartDateTime(json['updated_at'] as String)
-          ..name = json['name'] as String
-          ..latitude = fromGraphQLFloat8NullableToDartdoubleNullable(
-              json['latitude'] as num?)
-          ..longitude = fromGraphQLFloat8NullableToDartdoubleNullable(
-              json['longitude'] as num?)
-          ..imageUrl = json['image_url'] as String
-          ..createdAt =
-              fromGraphQLTimestamptzToDartDateTime(json['created_at'] as String)
-          ..address = json['address'] as String;
-
-Map<String, dynamic> _$GetSupermarkets$QueryRoot$SupermarketToJson(
-        GetSupermarkets$QueryRoot$Supermarket instance) =>
-    <String, dynamic>{
-      'uuid': fromDartStringToGraphQLUuid(instance.uuid),
-      'updated_at': fromDartDateTimeToGraphQLTimestamptz(instance.updatedAt),
-      'name': instance.name,
-      'latitude':
-          fromDartdoubleNullableToGraphQLFloat8Nullable(instance.latitude),
-      'longitude':
-          fromDartdoubleNullableToGraphQLFloat8Nullable(instance.longitude),
-      'image_url': instance.imageUrl,
-      'created_at': fromDartDateTimeToGraphQLTimestamptz(instance.createdAt),
-      'address': instance.address,
-    };
-
-GetSupermarkets$QueryRoot _$GetSupermarkets$QueryRootFromJson(
+GetSupermarketsArguments _$GetSupermarketsArgumentsFromJson(
         Map<String, dynamic> json) =>
-    GetSupermarkets$QueryRoot()
-      ..supermarket = (json['supermarket'] as List<dynamic>)
-          .map((e) => GetSupermarkets$QueryRoot$Supermarket.fromJson(
-              e as Map<String, dynamic>))
-          .toList();
-
-Map<String, dynamic> _$GetSupermarkets$QueryRootToJson(
-        GetSupermarkets$QueryRoot instance) =>
-    <String, dynamic>{
-      'supermarket': instance.supermarket.map((e) => e.toJson()).toList(),
-    };
-
-UpsertSupermarkets$MutationRoot$SupermarketMutationResponse
-    _$UpsertSupermarkets$MutationRoot$SupermarketMutationResponseFromJson(
-            Map<String, dynamic> json) =>
-        UpsertSupermarkets$MutationRoot$SupermarketMutationResponse()
-          ..affectedRows = json['affected_rows'] as int;
-
-Map<String, dynamic>
-    _$UpsertSupermarkets$MutationRoot$SupermarketMutationResponseToJson(
-            UpsertSupermarkets$MutationRoot$SupermarketMutationResponse
-                instance) =>
-        <String, dynamic>{
-          'affected_rows': instance.affectedRows,
-        };
-
-UpsertSupermarkets$MutationRoot _$UpsertSupermarkets$MutationRootFromJson(
-        Map<String, dynamic> json) =>
-    UpsertSupermarkets$MutationRoot()
-      ..insertSupermarket = json['insert_supermarket'] == null
-          ? null
-          : UpsertSupermarkets$MutationRoot$SupermarketMutationResponse
-              .fromJson(json['insert_supermarket'] as Map<String, dynamic>);
-
-Map<String, dynamic> _$UpsertSupermarkets$MutationRootToJson(
-        UpsertSupermarkets$MutationRoot instance) =>
-    <String, dynamic>{
-      'insert_supermarket': instance.insertSupermarket?.toJson(),
-    };
-
-SupermarketInsertInput _$SupermarketInsertInputFromJson(
-        Map<String, dynamic> json) =>
-    SupermarketInsertInput(
-      address: json['address'] as String?,
-      createdAt: fromGraphQLTimestamptzNullableToDartDateTimeNullable(
-          json['created_at'] as String?),
-      createdByUserUuid: fromGraphQLUuidNullableToDartStringNullable(
-          json['created_by_user_uuid'] as String?),
-      imageUrl: json['image_url'] as String?,
-      latitude: fromGraphQLFloat8NullableToDartdoubleNullable(
-          json['latitude'] as num?),
-      longitude: fromGraphQLFloat8NullableToDartdoubleNullable(
-          json['longitude'] as num?),
-      name: json['name'] as String?,
-      updatedAt: fromGraphQLTimestamptzNullableToDartDateTimeNullable(
-          json['updated_at'] as String?),
-      uuid:
-          fromGraphQLUuidNullableToDartStringNullable(json['uuid'] as String?),
+    GetSupermarketsArguments(
+      lastSyncedAt:
+          fromGraphQLTimestamptzToDartDateTime(json['lastSyncedAt'] as String),
     );
 
-Map<String, dynamic> _$SupermarketInsertInputToJson(
-        SupermarketInsertInput instance) =>
+Map<String, dynamic> _$GetSupermarketsArgumentsToJson(
+        GetSupermarketsArguments instance) =>
     <String, dynamic>{
-      'address': instance.address,
-      'created_at': fromDartDateTimeNullableToGraphQLTimestamptzNullable(
-          instance.createdAt),
-      'created_by_user_uuid': fromDartStringNullableToGraphQLUuidNullable(
-          instance.createdByUserUuid),
-      'image_url': instance.imageUrl,
-      'latitude':
-          fromDartdoubleNullableToGraphQLFloat8Nullable(instance.latitude),
-      'longitude':
-          fromDartdoubleNullableToGraphQLFloat8Nullable(instance.longitude),
-      'name': instance.name,
-      'updated_at': fromDartDateTimeNullableToGraphQLTimestamptzNullable(
-          instance.updatedAt),
-      'uuid': fromDartStringNullableToGraphQLUuidNullable(instance.uuid),
+      'lastSyncedAt':
+          fromDartDateTimeToGraphQLTimestamptz(instance.lastSyncedAt),
+    };
+
+UpsertSupermarketsArguments _$UpsertSupermarketsArgumentsFromJson(
+        Map<String, dynamic> json) =>
+    UpsertSupermarketsArguments(
+      supermarkets: (json['supermarkets'] as List<dynamic>)
+          .map(
+              (e) => SupermarketInsertInput.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$UpsertSupermarketsArgumentsToJson(
+        UpsertSupermarketsArguments instance) =>
+    <String, dynamic>{
+      'supermarkets': instance.supermarkets.map((e) => e.toJson()).toList(),
+    };
+
+AppChangeSupermarketImageUrlArguments
+    _$AppChangeSupermarketImageUrlArgumentsFromJson(
+            Map<String, dynamic> json) =>
+        AppChangeSupermarketImageUrlArguments(
+          uuid: fromGraphQLUuidToDartString(json['uuid'] as String),
+          newImageUrl: json['newImageUrl'] as String,
+        );
+
+Map<String, dynamic> _$AppChangeSupermarketImageUrlArgumentsToJson(
+        AppChangeSupermarketImageUrlArguments instance) =>
+    <String, dynamic>{
+      'uuid': fromDartStringToGraphQLUuid(instance.uuid),
+      'newImageUrl': instance.newImageUrl,
     };
 
 AppDeleteUserArguments _$AppDeleteUserArgumentsFromJson(
@@ -379,33 +451,4 @@ Map<String, dynamic> _$UpsertProductsArgumentsToJson(
         UpsertProductsArguments instance) =>
     <String, dynamic>{
       'products': instance.products.map((e) => e.toJson()).toList(),
-    };
-
-GetSupermarketsArguments _$GetSupermarketsArgumentsFromJson(
-        Map<String, dynamic> json) =>
-    GetSupermarketsArguments(
-      lastSyncedAt:
-          fromGraphQLTimestamptzToDartDateTime(json['lastSyncedAt'] as String),
-    );
-
-Map<String, dynamic> _$GetSupermarketsArgumentsToJson(
-        GetSupermarketsArguments instance) =>
-    <String, dynamic>{
-      'lastSyncedAt':
-          fromDartDateTimeToGraphQLTimestamptz(instance.lastSyncedAt),
-    };
-
-UpsertSupermarketsArguments _$UpsertSupermarketsArgumentsFromJson(
-        Map<String, dynamic> json) =>
-    UpsertSupermarketsArguments(
-      supermarkets: (json['supermarkets'] as List<dynamic>)
-          .map(
-              (e) => SupermarketInsertInput.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$UpsertSupermarketsArgumentsToJson(
-        UpsertSupermarketsArguments instance) =>
-    <String, dynamic>{
-      'supermarkets': instance.supermarkets.map((e) => e.toJson()).toList(),
     };
