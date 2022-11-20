@@ -5,7 +5,7 @@ import 'package:uailist/src/core/controllers/user_controller.dart';
 import 'package:uailist/src/core/logger/logger.dart';
 import 'package:uailist/src/screens/profile/profile_controller.dart';
 import 'package:uailist/src/screens/profile/widgets/delete_account_confirm_dialog.dart';
-import 'package:uailist/src/screens/profile/widgets/select_image_dialog.dart';
+import 'package:uailist/src/shared/widgets/select_image_dialog.dart';
 import 'package:uailist/src/screens/profile/widgets/user_profile_image.dart';
 import 'package:uailist/src/shared/widgets/future_load_elevated_button.dart';
 import 'package:uailist/src/shared/widgets/main_screen_title.dart';

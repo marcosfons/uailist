@@ -14,6 +14,230 @@ import 'package:uailist/src/core/services/hasura/parsers/custom_uuid_parser.dart
 part 'graphql_api.graphql.g.dart';
 
 @JsonSerializable(explicitToJson: true)
+class GetSupermarkets$QueryRoot$Supermarket extends JsonSerializable
+    with EquatableMixin {
+  GetSupermarkets$QueryRoot$Supermarket();
+
+  factory GetSupermarkets$QueryRoot$Supermarket.fromJson(
+          Map<String, dynamic> json) =>
+      _$GetSupermarkets$QueryRoot$SupermarketFromJson(json);
+
+  @JsonKey(
+      fromJson: fromGraphQLUuidToDartString,
+      toJson: fromDartStringToGraphQLUuid)
+  late String uuid;
+
+  @JsonKey(
+      name: 'updated_at',
+      fromJson: fromGraphQLTimestamptzToDartDateTime,
+      toJson: fromDartDateTimeToGraphQLTimestamptz)
+  late DateTime updatedAt;
+
+  late String name;
+
+  @JsonKey(
+      fromJson: fromGraphQLFloat8NullableToDartdoubleNullable,
+      toJson: fromDartdoubleNullableToGraphQLFloat8Nullable)
+  double? latitude;
+
+  @JsonKey(
+      fromJson: fromGraphQLFloat8NullableToDartdoubleNullable,
+      toJson: fromDartdoubleNullableToGraphQLFloat8Nullable)
+  double? longitude;
+
+  @JsonKey(name: 'image_url')
+  late String imageUrl;
+
+  @JsonKey(
+      name: 'created_at',
+      fromJson: fromGraphQLTimestamptzToDartDateTime,
+      toJson: fromDartDateTimeToGraphQLTimestamptz)
+  late DateTime createdAt;
+
+  late String address;
+
+  @override
+  List<Object?> get props => [
+        uuid,
+        updatedAt,
+        name,
+        latitude,
+        longitude,
+        imageUrl,
+        createdAt,
+        address
+      ];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$GetSupermarkets$QueryRoot$SupermarketToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class GetSupermarkets$QueryRoot extends JsonSerializable with EquatableMixin {
+  GetSupermarkets$QueryRoot();
+
+  factory GetSupermarkets$QueryRoot.fromJson(Map<String, dynamic> json) =>
+      _$GetSupermarkets$QueryRootFromJson(json);
+
+  late List<GetSupermarkets$QueryRoot$Supermarket> supermarket;
+
+  @override
+  List<Object?> get props => [supermarket];
+  @override
+  Map<String, dynamic> toJson() => _$GetSupermarkets$QueryRootToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class UpsertSupermarkets$MutationRoot$SupermarketMutationResponse
+    extends JsonSerializable with EquatableMixin {
+  UpsertSupermarkets$MutationRoot$SupermarketMutationResponse();
+
+  factory UpsertSupermarkets$MutationRoot$SupermarketMutationResponse.fromJson(
+          Map<String, dynamic> json) =>
+      _$UpsertSupermarkets$MutationRoot$SupermarketMutationResponseFromJson(
+          json);
+
+  @JsonKey(name: 'affected_rows')
+  late int affectedRows;
+
+  @override
+  List<Object?> get props => [affectedRows];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$UpsertSupermarkets$MutationRoot$SupermarketMutationResponseToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class UpsertSupermarkets$MutationRoot extends JsonSerializable
+    with EquatableMixin {
+  UpsertSupermarkets$MutationRoot();
+
+  factory UpsertSupermarkets$MutationRoot.fromJson(Map<String, dynamic> json) =>
+      _$UpsertSupermarkets$MutationRootFromJson(json);
+
+  @JsonKey(name: 'insert_supermarket')
+  UpsertSupermarkets$MutationRoot$SupermarketMutationResponse?
+      insertSupermarket;
+
+  @override
+  List<Object?> get props => [insertSupermarket];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$UpsertSupermarkets$MutationRootToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class SupermarketInsertInput extends JsonSerializable with EquatableMixin {
+  SupermarketInsertInput({
+    this.address,
+    this.createdAt,
+    this.createdByUserUuid,
+    this.imageUrl,
+    this.latitude,
+    this.longitude,
+    this.name,
+    this.updatedAt,
+    this.uuid,
+  });
+
+  factory SupermarketInsertInput.fromJson(Map<String, dynamic> json) =>
+      _$SupermarketInsertInputFromJson(json);
+
+  String? address;
+
+  @JsonKey(
+      name: 'created_at',
+      fromJson: fromGraphQLTimestamptzNullableToDartDateTimeNullable,
+      toJson: fromDartDateTimeNullableToGraphQLTimestamptzNullable)
+  DateTime? createdAt;
+
+  @JsonKey(
+      name: 'created_by_user_uuid',
+      fromJson: fromGraphQLUuidNullableToDartStringNullable,
+      toJson: fromDartStringNullableToGraphQLUuidNullable)
+  String? createdByUserUuid;
+
+  @JsonKey(name: 'image_url')
+  String? imageUrl;
+
+  @JsonKey(
+      fromJson: fromGraphQLFloat8NullableToDartdoubleNullable,
+      toJson: fromDartdoubleNullableToGraphQLFloat8Nullable)
+  double? latitude;
+
+  @JsonKey(
+      fromJson: fromGraphQLFloat8NullableToDartdoubleNullable,
+      toJson: fromDartdoubleNullableToGraphQLFloat8Nullable)
+  double? longitude;
+
+  String? name;
+
+  @JsonKey(
+      name: 'updated_at',
+      fromJson: fromGraphQLTimestamptzNullableToDartDateTimeNullable,
+      toJson: fromDartDateTimeNullableToGraphQLTimestamptzNullable)
+  DateTime? updatedAt;
+
+  @JsonKey(
+      fromJson: fromGraphQLUuidNullableToDartStringNullable,
+      toJson: fromDartStringNullableToGraphQLUuidNullable)
+  String? uuid;
+
+  @override
+  List<Object?> get props => [
+        address,
+        createdAt,
+        createdByUserUuid,
+        imageUrl,
+        latitude,
+        longitude,
+        name,
+        updatedAt,
+        uuid
+      ];
+  @override
+  Map<String, dynamic> toJson() => _$SupermarketInsertInputToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class AppChangeSupermarketImageUrl$MutationRoot$Supermarket
+    extends JsonSerializable with EquatableMixin {
+  AppChangeSupermarketImageUrl$MutationRoot$Supermarket();
+
+  factory AppChangeSupermarketImageUrl$MutationRoot$Supermarket.fromJson(
+          Map<String, dynamic> json) =>
+      _$AppChangeSupermarketImageUrl$MutationRoot$SupermarketFromJson(json);
+
+  @JsonKey(name: 'image_url')
+  late String imageUrl;
+
+  @override
+  List<Object?> get props => [imageUrl];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$AppChangeSupermarketImageUrl$MutationRoot$SupermarketToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class AppChangeSupermarketImageUrl$MutationRoot extends JsonSerializable
+    with EquatableMixin {
+  AppChangeSupermarketImageUrl$MutationRoot();
+
+  factory AppChangeSupermarketImageUrl$MutationRoot.fromJson(
+          Map<String, dynamic> json) =>
+      _$AppChangeSupermarketImageUrl$MutationRootFromJson(json);
+
+  @JsonKey(name: 'update_supermarket_by_pk')
+  AppChangeSupermarketImageUrl$MutationRoot$Supermarket? updateSupermarketByPk;
+
+  @override
+  List<Object?> get props => [updateSupermarketByPk];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$AppChangeSupermarketImageUrl$MutationRootToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
 class AppDeleteUser$MutationRoot$Users extends JsonSerializable
     with EquatableMixin {
   AppDeleteUser$MutationRoot$Users();
@@ -317,189 +541,362 @@ class ProductInsertInput extends JsonSerializable with EquatableMixin {
 }
 
 @JsonSerializable(explicitToJson: true)
-class GetSupermarkets$QueryRoot$Supermarket extends JsonSerializable
-    with EquatableMixin {
-  GetSupermarkets$QueryRoot$Supermarket();
+class GetSupermarketsArguments extends JsonSerializable with EquatableMixin {
+  GetSupermarketsArguments({required this.lastSyncedAt});
 
-  factory GetSupermarkets$QueryRoot$Supermarket.fromJson(
+  @override
+  factory GetSupermarketsArguments.fromJson(Map<String, dynamic> json) =>
+      _$GetSupermarketsArgumentsFromJson(json);
+
+  @JsonKey(
+      fromJson: fromGraphQLTimestamptzToDartDateTime,
+      toJson: fromDartDateTimeToGraphQLTimestamptz)
+  late DateTime lastSyncedAt;
+
+  @override
+  List<Object?> get props => [lastSyncedAt];
+  @override
+  Map<String, dynamic> toJson() => _$GetSupermarketsArgumentsToJson(this);
+}
+
+final GET_SUPERMARKETS_QUERY_DOCUMENT_OPERATION_NAME = 'GetSupermarkets';
+final GET_SUPERMARKETS_QUERY_DOCUMENT = DocumentNode(definitions: [
+  OperationDefinitionNode(
+    type: OperationType.query,
+    name: NameNode(value: 'GetSupermarkets'),
+    variableDefinitions: [
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'lastSyncedAt')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'timestamptz'),
+          isNonNull: true,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      )
+    ],
+    directives: [],
+    selectionSet: SelectionSetNode(selections: [
+      FieldNode(
+        name: NameNode(value: 'supermarket'),
+        alias: null,
+        arguments: [
+          ArgumentNode(
+            name: NameNode(value: 'where'),
+            value: ObjectValueNode(fields: [
+              ObjectFieldNode(
+                name: NameNode(value: 'updated_at'),
+                value: ObjectValueNode(fields: [
+                  ObjectFieldNode(
+                    name: NameNode(value: '_gt'),
+                    value: VariableNode(name: NameNode(value: 'lastSyncedAt')),
+                  )
+                ]),
+              )
+            ]),
+          )
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+            name: NameNode(value: 'uuid'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'updated_at'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'name'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'latitude'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'longitude'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'image_url'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'created_at'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'address'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+        ]),
+      )
+    ]),
+  )
+]);
+
+class GetSupermarketsQuery
+    extends GraphQLQuery<GetSupermarkets$QueryRoot, GetSupermarketsArguments> {
+  GetSupermarketsQuery({required this.variables});
+
+  @override
+  final DocumentNode document = GET_SUPERMARKETS_QUERY_DOCUMENT;
+
+  @override
+  final String operationName = GET_SUPERMARKETS_QUERY_DOCUMENT_OPERATION_NAME;
+
+  @override
+  final GetSupermarketsArguments variables;
+
+  @override
+  List<Object?> get props => [document, operationName, variables];
+  @override
+  GetSupermarkets$QueryRoot parse(Map<String, dynamic> json) =>
+      GetSupermarkets$QueryRoot.fromJson(json);
+}
+
+@JsonSerializable(explicitToJson: true)
+class UpsertSupermarketsArguments extends JsonSerializable with EquatableMixin {
+  UpsertSupermarketsArguments({required this.supermarkets});
+
+  @override
+  factory UpsertSupermarketsArguments.fromJson(Map<String, dynamic> json) =>
+      _$UpsertSupermarketsArgumentsFromJson(json);
+
+  late List<SupermarketInsertInput> supermarkets;
+
+  @override
+  List<Object?> get props => [supermarkets];
+  @override
+  Map<String, dynamic> toJson() => _$UpsertSupermarketsArgumentsToJson(this);
+}
+
+final UPSERT_SUPERMARKETS_MUTATION_DOCUMENT_OPERATION_NAME =
+    'UpsertSupermarkets';
+final UPSERT_SUPERMARKETS_MUTATION_DOCUMENT = DocumentNode(definitions: [
+  OperationDefinitionNode(
+    type: OperationType.mutation,
+    name: NameNode(value: 'UpsertSupermarkets'),
+    variableDefinitions: [
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'supermarkets')),
+        type: ListTypeNode(
+          type: NamedTypeNode(
+            name: NameNode(value: 'supermarket_insert_input'),
+            isNonNull: true,
+          ),
+          isNonNull: true,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      )
+    ],
+    directives: [],
+    selectionSet: SelectionSetNode(selections: [
+      FieldNode(
+        name: NameNode(value: 'insert_supermarket'),
+        alias: null,
+        arguments: [
+          ArgumentNode(
+            name: NameNode(value: 'objects'),
+            value: VariableNode(name: NameNode(value: 'supermarkets')),
+          ),
+          ArgumentNode(
+            name: NameNode(value: 'on_conflict'),
+            value: ObjectValueNode(fields: [
+              ObjectFieldNode(
+                name: NameNode(value: 'constraint'),
+                value: EnumValueNode(name: NameNode(value: 'supermarket_pkey')),
+              ),
+              ObjectFieldNode(
+                name: NameNode(value: 'update_columns'),
+                value: ListValueNode(values: [
+                  EnumValueNode(name: NameNode(value: 'name')),
+                  EnumValueNode(name: NameNode(value: 'image_url')),
+                  EnumValueNode(name: NameNode(value: 'address')),
+                  EnumValueNode(name: NameNode(value: 'latitude')),
+                  EnumValueNode(name: NameNode(value: 'longitude')),
+                ]),
+              ),
+            ]),
+          ),
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+            name: NameNode(value: 'affected_rows'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          )
+        ]),
+      )
+    ]),
+  )
+]);
+
+class UpsertSupermarketsMutation extends GraphQLQuery<
+    UpsertSupermarkets$MutationRoot, UpsertSupermarketsArguments> {
+  UpsertSupermarketsMutation({required this.variables});
+
+  @override
+  final DocumentNode document = UPSERT_SUPERMARKETS_MUTATION_DOCUMENT;
+
+  @override
+  final String operationName =
+      UPSERT_SUPERMARKETS_MUTATION_DOCUMENT_OPERATION_NAME;
+
+  @override
+  final UpsertSupermarketsArguments variables;
+
+  @override
+  List<Object?> get props => [document, operationName, variables];
+  @override
+  UpsertSupermarkets$MutationRoot parse(Map<String, dynamic> json) =>
+      UpsertSupermarkets$MutationRoot.fromJson(json);
+}
+
+@JsonSerializable(explicitToJson: true)
+class AppChangeSupermarketImageUrlArguments extends JsonSerializable
+    with EquatableMixin {
+  AppChangeSupermarketImageUrlArguments({
+    required this.uuid,
+    required this.newImageUrl,
+  });
+
+  @override
+  factory AppChangeSupermarketImageUrlArguments.fromJson(
           Map<String, dynamic> json) =>
-      _$GetSupermarkets$QueryRoot$SupermarketFromJson(json);
+      _$AppChangeSupermarketImageUrlArgumentsFromJson(json);
 
   @JsonKey(
       fromJson: fromGraphQLUuidToDartString,
       toJson: fromDartStringToGraphQLUuid)
   late String uuid;
 
-  @JsonKey(
-      name: 'updated_at',
-      fromJson: fromGraphQLTimestamptzToDartDateTime,
-      toJson: fromDartDateTimeToGraphQLTimestamptz)
-  late DateTime updatedAt;
-
-  late String name;
-
-  @JsonKey(
-      fromJson: fromGraphQLFloat8NullableToDartdoubleNullable,
-      toJson: fromDartdoubleNullableToGraphQLFloat8Nullable)
-  double? latitude;
-
-  @JsonKey(
-      fromJson: fromGraphQLFloat8NullableToDartdoubleNullable,
-      toJson: fromDartdoubleNullableToGraphQLFloat8Nullable)
-  double? longitude;
-
-  @JsonKey(name: 'image_url')
-  late String imageUrl;
-
-  @JsonKey(
-      name: 'created_at',
-      fromJson: fromGraphQLTimestamptzToDartDateTime,
-      toJson: fromDartDateTimeToGraphQLTimestamptz)
-  late DateTime createdAt;
-
-  late String address;
+  late String newImageUrl;
 
   @override
-  List<Object?> get props => [
-        uuid,
-        updatedAt,
-        name,
-        latitude,
-        longitude,
-        imageUrl,
-        createdAt,
-        address
-      ];
+  List<Object?> get props => [uuid, newImageUrl];
   @override
   Map<String, dynamic> toJson() =>
-      _$GetSupermarkets$QueryRoot$SupermarketToJson(this);
+      _$AppChangeSupermarketImageUrlArgumentsToJson(this);
 }
 
-@JsonSerializable(explicitToJson: true)
-class GetSupermarkets$QueryRoot extends JsonSerializable with EquatableMixin {
-  GetSupermarkets$QueryRoot();
+final APP_CHANGE_SUPERMARKET_IMAGE_URL_MUTATION_DOCUMENT_OPERATION_NAME =
+    'AppChangeSupermarketImageUrl';
+final APP_CHANGE_SUPERMARKET_IMAGE_URL_MUTATION_DOCUMENT =
+    DocumentNode(definitions: [
+  OperationDefinitionNode(
+    type: OperationType.mutation,
+    name: NameNode(value: 'AppChangeSupermarketImageUrl'),
+    variableDefinitions: [
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'uuid')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'uuid'),
+          isNonNull: true,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      ),
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'newImageUrl')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'String'),
+          isNonNull: true,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      ),
+    ],
+    directives: [],
+    selectionSet: SelectionSetNode(selections: [
+      FieldNode(
+        name: NameNode(value: 'update_supermarket_by_pk'),
+        alias: null,
+        arguments: [
+          ArgumentNode(
+            name: NameNode(value: 'pk_columns'),
+            value: ObjectValueNode(fields: [
+              ObjectFieldNode(
+                name: NameNode(value: 'uuid'),
+                value: VariableNode(name: NameNode(value: 'uuid')),
+              )
+            ]),
+          ),
+          ArgumentNode(
+            name: NameNode(value: '_set'),
+            value: ObjectValueNode(fields: [
+              ObjectFieldNode(
+                name: NameNode(value: 'image_url'),
+                value: VariableNode(name: NameNode(value: 'newImageUrl')),
+              )
+            ]),
+          ),
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+            name: NameNode(value: 'image_url'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          )
+        ]),
+      )
+    ]),
+  )
+]);
 
-  factory GetSupermarkets$QueryRoot.fromJson(Map<String, dynamic> json) =>
-      _$GetSupermarkets$QueryRootFromJson(json);
-
-  late List<GetSupermarkets$QueryRoot$Supermarket> supermarket;
-
-  @override
-  List<Object?> get props => [supermarket];
-  @override
-  Map<String, dynamic> toJson() => _$GetSupermarkets$QueryRootToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class UpsertSupermarkets$MutationRoot$SupermarketMutationResponse
-    extends JsonSerializable with EquatableMixin {
-  UpsertSupermarkets$MutationRoot$SupermarketMutationResponse();
-
-  factory UpsertSupermarkets$MutationRoot$SupermarketMutationResponse.fromJson(
-          Map<String, dynamic> json) =>
-      _$UpsertSupermarkets$MutationRoot$SupermarketMutationResponseFromJson(
-          json);
-
-  @JsonKey(name: 'affected_rows')
-  late int affectedRows;
-
-  @override
-  List<Object?> get props => [affectedRows];
-  @override
-  Map<String, dynamic> toJson() =>
-      _$UpsertSupermarkets$MutationRoot$SupermarketMutationResponseToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class UpsertSupermarkets$MutationRoot extends JsonSerializable
-    with EquatableMixin {
-  UpsertSupermarkets$MutationRoot();
-
-  factory UpsertSupermarkets$MutationRoot.fromJson(Map<String, dynamic> json) =>
-      _$UpsertSupermarkets$MutationRootFromJson(json);
-
-  @JsonKey(name: 'insert_supermarket')
-  UpsertSupermarkets$MutationRoot$SupermarketMutationResponse?
-      insertSupermarket;
-
-  @override
-  List<Object?> get props => [insertSupermarket];
-  @override
-  Map<String, dynamic> toJson() =>
-      _$UpsertSupermarkets$MutationRootToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class SupermarketInsertInput extends JsonSerializable with EquatableMixin {
-  SupermarketInsertInput({
-    this.address,
-    this.createdAt,
-    this.createdByUserUuid,
-    this.imageUrl,
-    this.latitude,
-    this.longitude,
-    this.name,
-    this.updatedAt,
-    this.uuid,
-  });
-
-  factory SupermarketInsertInput.fromJson(Map<String, dynamic> json) =>
-      _$SupermarketInsertInputFromJson(json);
-
-  String? address;
-
-  @JsonKey(
-      name: 'created_at',
-      fromJson: fromGraphQLTimestamptzNullableToDartDateTimeNullable,
-      toJson: fromDartDateTimeNullableToGraphQLTimestamptzNullable)
-  DateTime? createdAt;
-
-  @JsonKey(
-      name: 'created_by_user_uuid',
-      fromJson: fromGraphQLUuidNullableToDartStringNullable,
-      toJson: fromDartStringNullableToGraphQLUuidNullable)
-  String? createdByUserUuid;
-
-  @JsonKey(name: 'image_url')
-  String? imageUrl;
-
-  @JsonKey(
-      fromJson: fromGraphQLFloat8NullableToDartdoubleNullable,
-      toJson: fromDartdoubleNullableToGraphQLFloat8Nullable)
-  double? latitude;
-
-  @JsonKey(
-      fromJson: fromGraphQLFloat8NullableToDartdoubleNullable,
-      toJson: fromDartdoubleNullableToGraphQLFloat8Nullable)
-  double? longitude;
-
-  String? name;
-
-  @JsonKey(
-      name: 'updated_at',
-      fromJson: fromGraphQLTimestamptzNullableToDartDateTimeNullable,
-      toJson: fromDartDateTimeNullableToGraphQLTimestamptzNullable)
-  DateTime? updatedAt;
-
-  @JsonKey(
-      fromJson: fromGraphQLUuidNullableToDartStringNullable,
-      toJson: fromDartStringNullableToGraphQLUuidNullable)
-  String? uuid;
+class AppChangeSupermarketImageUrlMutation extends GraphQLQuery<
+    AppChangeSupermarketImageUrl$MutationRoot,
+    AppChangeSupermarketImageUrlArguments> {
+  AppChangeSupermarketImageUrlMutation({required this.variables});
 
   @override
-  List<Object?> get props => [
-        address,
-        createdAt,
-        createdByUserUuid,
-        imageUrl,
-        latitude,
-        longitude,
-        name,
-        updatedAt,
-        uuid
-      ];
+  final DocumentNode document =
+      APP_CHANGE_SUPERMARKET_IMAGE_URL_MUTATION_DOCUMENT;
+
   @override
-  Map<String, dynamic> toJson() => _$SupermarketInsertInputToJson(this);
+  final String operationName =
+      APP_CHANGE_SUPERMARKET_IMAGE_URL_MUTATION_DOCUMENT_OPERATION_NAME;
+
+  @override
+  final AppChangeSupermarketImageUrlArguments variables;
+
+  @override
+  List<Object?> get props => [document, operationName, variables];
+  @override
+  AppChangeSupermarketImageUrl$MutationRoot parse(Map<String, dynamic> json) =>
+      AppChangeSupermarketImageUrl$MutationRoot.fromJson(json);
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -1084,246 +1481,4 @@ class UpsertProductsMutation
   @override
   UpsertProducts$MutationRoot parse(Map<String, dynamic> json) =>
       UpsertProducts$MutationRoot.fromJson(json);
-}
-
-@JsonSerializable(explicitToJson: true)
-class GetSupermarketsArguments extends JsonSerializable with EquatableMixin {
-  GetSupermarketsArguments({required this.lastSyncedAt});
-
-  @override
-  factory GetSupermarketsArguments.fromJson(Map<String, dynamic> json) =>
-      _$GetSupermarketsArgumentsFromJson(json);
-
-  @JsonKey(
-      fromJson: fromGraphQLTimestamptzToDartDateTime,
-      toJson: fromDartDateTimeToGraphQLTimestamptz)
-  late DateTime lastSyncedAt;
-
-  @override
-  List<Object?> get props => [lastSyncedAt];
-  @override
-  Map<String, dynamic> toJson() => _$GetSupermarketsArgumentsToJson(this);
-}
-
-final GET_SUPERMARKETS_QUERY_DOCUMENT_OPERATION_NAME = 'GetSupermarkets';
-final GET_SUPERMARKETS_QUERY_DOCUMENT = DocumentNode(definitions: [
-  OperationDefinitionNode(
-    type: OperationType.query,
-    name: NameNode(value: 'GetSupermarkets'),
-    variableDefinitions: [
-      VariableDefinitionNode(
-        variable: VariableNode(name: NameNode(value: 'lastSyncedAt')),
-        type: NamedTypeNode(
-          name: NameNode(value: 'timestamptz'),
-          isNonNull: true,
-        ),
-        defaultValue: DefaultValueNode(value: null),
-        directives: [],
-      )
-    ],
-    directives: [],
-    selectionSet: SelectionSetNode(selections: [
-      FieldNode(
-        name: NameNode(value: 'supermarket'),
-        alias: null,
-        arguments: [
-          ArgumentNode(
-            name: NameNode(value: 'where'),
-            value: ObjectValueNode(fields: [
-              ObjectFieldNode(
-                name: NameNode(value: 'updated_at'),
-                value: ObjectValueNode(fields: [
-                  ObjectFieldNode(
-                    name: NameNode(value: '_gt'),
-                    value: VariableNode(name: NameNode(value: 'lastSyncedAt')),
-                  )
-                ]),
-              )
-            ]),
-          )
-        ],
-        directives: [],
-        selectionSet: SelectionSetNode(selections: [
-          FieldNode(
-            name: NameNode(value: 'uuid'),
-            alias: null,
-            arguments: [],
-            directives: [],
-            selectionSet: null,
-          ),
-          FieldNode(
-            name: NameNode(value: 'updated_at'),
-            alias: null,
-            arguments: [],
-            directives: [],
-            selectionSet: null,
-          ),
-          FieldNode(
-            name: NameNode(value: 'name'),
-            alias: null,
-            arguments: [],
-            directives: [],
-            selectionSet: null,
-          ),
-          FieldNode(
-            name: NameNode(value: 'latitude'),
-            alias: null,
-            arguments: [],
-            directives: [],
-            selectionSet: null,
-          ),
-          FieldNode(
-            name: NameNode(value: 'longitude'),
-            alias: null,
-            arguments: [],
-            directives: [],
-            selectionSet: null,
-          ),
-          FieldNode(
-            name: NameNode(value: 'image_url'),
-            alias: null,
-            arguments: [],
-            directives: [],
-            selectionSet: null,
-          ),
-          FieldNode(
-            name: NameNode(value: 'created_at'),
-            alias: null,
-            arguments: [],
-            directives: [],
-            selectionSet: null,
-          ),
-          FieldNode(
-            name: NameNode(value: 'address'),
-            alias: null,
-            arguments: [],
-            directives: [],
-            selectionSet: null,
-          ),
-        ]),
-      )
-    ]),
-  )
-]);
-
-class GetSupermarketsQuery
-    extends GraphQLQuery<GetSupermarkets$QueryRoot, GetSupermarketsArguments> {
-  GetSupermarketsQuery({required this.variables});
-
-  @override
-  final DocumentNode document = GET_SUPERMARKETS_QUERY_DOCUMENT;
-
-  @override
-  final String operationName = GET_SUPERMARKETS_QUERY_DOCUMENT_OPERATION_NAME;
-
-  @override
-  final GetSupermarketsArguments variables;
-
-  @override
-  List<Object?> get props => [document, operationName, variables];
-  @override
-  GetSupermarkets$QueryRoot parse(Map<String, dynamic> json) =>
-      GetSupermarkets$QueryRoot.fromJson(json);
-}
-
-@JsonSerializable(explicitToJson: true)
-class UpsertSupermarketsArguments extends JsonSerializable with EquatableMixin {
-  UpsertSupermarketsArguments({required this.supermarkets});
-
-  @override
-  factory UpsertSupermarketsArguments.fromJson(Map<String, dynamic> json) =>
-      _$UpsertSupermarketsArgumentsFromJson(json);
-
-  late List<SupermarketInsertInput> supermarkets;
-
-  @override
-  List<Object?> get props => [supermarkets];
-  @override
-  Map<String, dynamic> toJson() => _$UpsertSupermarketsArgumentsToJson(this);
-}
-
-final UPSERT_SUPERMARKETS_MUTATION_DOCUMENT_OPERATION_NAME =
-    'UpsertSupermarkets';
-final UPSERT_SUPERMARKETS_MUTATION_DOCUMENT = DocumentNode(definitions: [
-  OperationDefinitionNode(
-    type: OperationType.mutation,
-    name: NameNode(value: 'UpsertSupermarkets'),
-    variableDefinitions: [
-      VariableDefinitionNode(
-        variable: VariableNode(name: NameNode(value: 'supermarkets')),
-        type: ListTypeNode(
-          type: NamedTypeNode(
-            name: NameNode(value: 'supermarket_insert_input'),
-            isNonNull: true,
-          ),
-          isNonNull: true,
-        ),
-        defaultValue: DefaultValueNode(value: null),
-        directives: [],
-      )
-    ],
-    directives: [],
-    selectionSet: SelectionSetNode(selections: [
-      FieldNode(
-        name: NameNode(value: 'insert_supermarket'),
-        alias: null,
-        arguments: [
-          ArgumentNode(
-            name: NameNode(value: 'objects'),
-            value: VariableNode(name: NameNode(value: 'supermarkets')),
-          ),
-          ArgumentNode(
-            name: NameNode(value: 'on_conflict'),
-            value: ObjectValueNode(fields: [
-              ObjectFieldNode(
-                name: NameNode(value: 'constraint'),
-                value: EnumValueNode(name: NameNode(value: 'supermarket_pkey')),
-              ),
-              ObjectFieldNode(
-                name: NameNode(value: 'update_columns'),
-                value: ListValueNode(values: [
-                  EnumValueNode(name: NameNode(value: 'name')),
-                  EnumValueNode(name: NameNode(value: 'image_url')),
-                  EnumValueNode(name: NameNode(value: 'address')),
-                  EnumValueNode(name: NameNode(value: 'latitude')),
-                  EnumValueNode(name: NameNode(value: 'longitude')),
-                ]),
-              ),
-            ]),
-          ),
-        ],
-        directives: [],
-        selectionSet: SelectionSetNode(selections: [
-          FieldNode(
-            name: NameNode(value: 'affected_rows'),
-            alias: null,
-            arguments: [],
-            directives: [],
-            selectionSet: null,
-          )
-        ]),
-      )
-    ]),
-  )
-]);
-
-class UpsertSupermarketsMutation extends GraphQLQuery<
-    UpsertSupermarkets$MutationRoot, UpsertSupermarketsArguments> {
-  UpsertSupermarketsMutation({required this.variables});
-
-  @override
-  final DocumentNode document = UPSERT_SUPERMARKETS_MUTATION_DOCUMENT;
-
-  @override
-  final String operationName =
-      UPSERT_SUPERMARKETS_MUTATION_DOCUMENT_OPERATION_NAME;
-
-  @override
-  final UpsertSupermarketsArguments variables;
-
-  @override
-  List<Object?> get props => [document, operationName, variables];
-  @override
-  UpsertSupermarkets$MutationRoot parse(Map<String, dynamic> json) =>
-      UpsertSupermarkets$MutationRoot.fromJson(json);
 }

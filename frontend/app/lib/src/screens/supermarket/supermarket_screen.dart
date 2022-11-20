@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
@@ -63,8 +64,22 @@ class SupermarketScreenState extends ConsumerState<SupermarketScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            const SizedBox(
-              height: 20,
+            Row(
+              children: [
+                SizedBox(
+                  width: 10,
+                ),
+                IconButton(
+                  iconSize: 20,
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    color: themeData.colorScheme.primary,
+                  ),
+                  onPressed: () {
+                    GoRouter.of(context).go('/supermarkets');
+                  },
+                ),
+              ],
             ),
             Center(
               child: Stack(

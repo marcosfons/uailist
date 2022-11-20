@@ -32,6 +32,7 @@ class ProductsController extends ChangeNotifier {
 
   ProductsController(this._productsService);
 
+  final _productSearchController = StreamController<String>.broadcast();
   final bool _firstLoading = true;
 
   bool _loading = false;
@@ -42,6 +43,10 @@ class ProductsController extends ChangeNotifier {
 
   Future<void> sync() {
     return _productsService.uploadNotSyncedProducts();
+  }
+
+  void changeSearch(String text) {
+    _productSearchController.add(text);
   }
 
   Future<void> loadProducts() async {
@@ -69,6 +74,9 @@ class ProductsController extends ChangeNotifier {
   }
 
   Stream<List<Product>> productsList() {
-    return _productsService.productsStream();
+    final text =
+        _productsService.productsSearchStream(_productSearchController.stream);
+    scheduleMicrotask(() => _productSearchController.add(''));
+    return text;
   }
 }

@@ -1,4 +1,10 @@
+import 'dart:io';
+
 import 'package:artemis/client.dart';
+import 'package:dartz/dartz.dart';
+import 'package:drift/drift.dart';
+import 'package:mime/mime.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:uailist/src/core/database/app_database.dart';
 import 'package:uailist/src/core/failures/failure.dart';
 import 'package:uailist/src/core/logger/logger.dart';
@@ -8,8 +14,69 @@ import 'package:stream_transform/stream_transform.dart';
 class SupermarketsService {
   final ArtemisClient _hasuraClient;
   final AppDatabase _appDatabase;
+  final NhostClient _nhostClient;
 
-  SupermarketsService(this._hasuraClient, this._appDatabase);
+  SupermarketsService(this._hasuraClient, this._appDatabase, this._nhostClient);
+
+  Future<Either<Failure, String>> changeSupermarketImage(
+    String supermarketId,
+    String imagePath, {
+    Function(double?)? onProgress,
+    Function(Uint8List imageBytes)? onImageBytes,
+  }) async {
+    try {
+      onProgress?.call(0);
+
+      final imageMimeType = lookupMimeType(imagePath);
+
+      final imageBytes = await File(imagePath).readAsBytes();
+      onImageBytes?.call(imageBytes);
+
+      final hash = Object.hash(supermarketId, imagePath, DateTime.now());
+
+      onProgress?.call(0.1);
+
+      final result = await _nhostClient.storage.uploadBytes(
+        fileName: '/supermarkets/$supermarketId/$hash',
+        fileContents: imageBytes,
+        mimeType: imageMimeType ?? 'image/jpeg',
+        onUploadProgress: (request, progress, total) {
+          onProgress?.call(0.1 + (progress / total * 0.8));
+        },
+      );
+      onProgress?.call(0.9);
+
+      final imageUrl =
+          '${_nhostClient.backendUrl}v1/storage/files/${result.id}';
+      final response = await _hasuraClient.execute(
+        AppChangeSupermarketImageUrlMutation(
+          variables: AppChangeSupermarketImageUrlArguments(
+            uuid: supermarketId,
+            newImageUrl: imageUrl,
+          ),
+        ),
+      );
+      onProgress?.call(0.98);
+
+      await _appDatabase.authDAO.updateUser(
+        UsersCompanion(
+          id: Value(supermarketId),
+          avatarUrl: Value(imageUrl),
+        ),
+      );
+      onProgress?.call(1);
+
+      if (response.hasErrors) {
+        getLogger().e(response.errors);
+      } else {}
+      onProgress?.call(null);
+      return right(imageUrl);
+    } catch (e) {
+      getLogger().e(e);
+      onProgress?.call(null);
+      return left(const UnknownFailure());
+    }
+  }
 
   Stream<List<Supermarket>> supermarketsStream() =>
       _appDatabase.supermarketDAO.watchSupermarkets();

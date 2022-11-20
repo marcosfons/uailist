@@ -44,6 +44,20 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                 },
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 15, top: 10, right: 15, bottom: 10),
+              child: TextField(
+                onChanged: controller.changeSearch,
+                //controller: editingController,
+                decoration: const InputDecoration(
+                    labelText: 'Procurar Produto',
+                    hintText: 'Informe o nome do Produto',
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+              ),
+            ),
             Expanded(
               child: StreamBuilder<List<Product>>(
                 stream: controller.productsList(),
@@ -54,7 +68,13 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                       child: ListView.builder(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return ProductCard(product: snapshot.data![index]);
+                          return ProductCard(
+                            product: snapshot.data![index],
+                            onTap: () {
+                              GoRouter.of(context).push('/products/product',
+                                  extra: snapshot.data![index]);
+                            },
+                          );
                         },
                       ),
                     );

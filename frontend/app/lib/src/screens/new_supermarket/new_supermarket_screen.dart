@@ -10,7 +10,10 @@ import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
 import 'package:uailist/src/core/database/app_database.dart';
 import 'package:uailist/src/screens/supermarkets/supermarkets_controller.dart';
+import 'package:uailist/src/screens/supermarkets/supermarkets_route.dart';
 import 'package:uailist/src/shared/widgets/future_load_elevated_button.dart';
+
+import '../../shared/widgets/select_image_dialog.dart';
 
 class NewSupermarketScreen extends StatefulHookConsumerWidget {
   const NewSupermarketScreen({super.key});
@@ -87,12 +90,32 @@ class NewSupermarketScreenState extends ConsumerState<NewSupermarketScreen> {
             Center(
               child: Stack(
                 alignment: AlignmentDirectional.bottomEnd,
-                children: const [
-                  CircleAvatar(
-                    radius: 35,
-                    backgroundImage: null,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      radius: 35,
+                      backgroundImage: null,
+                    ),
                   ),
-                  Icon(Icons.photo_camera, size: 25),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.photo_camera,
+                    ),
+                    iconSize: 25,
+                    onPressed: () {
+                      showDialog<String?>(
+                        context: context,
+                        builder: (context) {
+                          return const SelectImageDialog();
+                        },
+                      ).then((value) {
+                        if (value != null) {
+                          //_controller.changeImage(supermarket.id, value);
+                        }
+                      });
+                    },
+                  ),
                 ],
               ),
             ),

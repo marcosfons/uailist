@@ -4,14 +4,13 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uailist/src/core/database/app_database.dart';
 import 'package:uailist/src/core/services/hasura/hasura_client.dart';
+import 'package:uailist/src/screens/auth/auth_controller.dart';
 import 'package:uailist/src/screens/supermarkets/supermarkets_service.dart';
 
 final supermarketController = ChangeNotifierProvider((ref) {
   final controller = SupermarketsController(
-    SupermarketsService(
-      ref.read(hasuraClientProvider),
-      ref.read(databaseProvider),
-    ),
+    SupermarketsService(ref.read(hasuraClientProvider),
+        ref.read(databaseProvider), ref.read(nhostProvider)),
   );
 
   Timer synctimer = Timer.periodic(const Duration(seconds: 10), (timer) {
@@ -28,6 +27,9 @@ final supermarketController = ChangeNotifierProvider((ref) {
 });
 
 class SupermarketsController extends ChangeNotifier {
+  double? _progress;
+  Uint8List? _sendingImageBytes;
+
   final SupermarketsService _supermarketsService;
 
   SupermarketsController(this._supermarketsService);
@@ -41,6 +43,21 @@ class SupermarketsController extends ChangeNotifier {
 
   bool get loading => _loading;
   String? get error => _error;
+
+  Future<void> changeImage(String supermarketId, String imagePath) async {
+    final result = await _supermarketsService.changeSupermarketImage(
+      supermarketId,
+      imagePath,
+      onProgress: (progress) {
+        _progress = progress;
+        notifyListeners();
+      },
+      onImageBytes: (imageBytes) {
+        _sendingImageBytes = imageBytes;
+        notifyListeners();
+      },
+    );
+  }
 
   void changeSearch(String text) {
     _supermarketSearchController.add(text);
@@ -79,7 +96,7 @@ class SupermarketsController extends ChangeNotifier {
   Stream<List<Supermarket>> supermarketsList() {
     final test = _supermarketsService
         .supermarketsSearchStream(_supermarketSearchController.stream);
-    scheduleMicrotask(() => _supermarketSearchController.add('')) ;
+    scheduleMicrotask(() => _supermarketSearchController.add(''));
     return test;
   }
 }
