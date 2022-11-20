@@ -36,7 +36,7 @@ class ListScreenState extends ConsumerState<ListScreen> {
                 Expanded(
                   child: TextFormField(
                     decoration: InputDecoration(
-                      hintText: 'Insira aqui o nome da lista',
+                      hintText: 'Insira o nome da lista',
                       filled: false,
                       hintStyle: TextStyle(
                         color: Colors.grey.shade600,
@@ -57,11 +57,19 @@ class ListScreenState extends ConsumerState<ListScreen> {
               ],
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              controller.addProductBuyList();
-            },
-            child: const Text('Adicionar produto'),
+          Row(
+            children: [
+              SizedBox(width: 20.0),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    controller.addProductBuyList();
+                  },
+                  child: const Text('Adicionar produto'),
+                ),
+              ),
+              SizedBox(width: 20.0),
+            ],
           ),
           Expanded(
             child: ListView.builder(
