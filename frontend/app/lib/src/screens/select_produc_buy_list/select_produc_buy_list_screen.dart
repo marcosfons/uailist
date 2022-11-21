@@ -16,7 +16,7 @@ class SelectProductcBuyListScreen extends StatefulHookConsumerWidget {
 }
 
 class ProductsScreenState extends ConsumerState<SelectProductcBuyListScreen> {
-  final _selectedProducts = Set<Product>();
+  final _selectedProducts = <Product>{};
 
   @override
   void initState() {
