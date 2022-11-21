@@ -58,21 +58,6 @@ class ListScreenState extends ConsumerState<ListScreen> {
               ],
             ),
           ),
-<<<<<<< HEAD
-          Row(
-            children: [
-              SizedBox(width: 20.0),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    controller.addProductBuyList();
-                  },
-                  child: const Text('Adicionar produto'),
-                ),
-              ),
-              SizedBox(width: 20.0),
-            ],
-=======
           ElevatedButton(
             onPressed: () {
               //controller.addProductBuyList();
@@ -83,7 +68,6 @@ class ListScreenState extends ConsumerState<ListScreen> {
               });
             },
             child: const Text('Adicionar produto'),
->>>>>>> 53177b422e0c0e6958b9d75bdcf6e12dee9ac565
           ),
           Expanded(
             child: ListView.builder(
