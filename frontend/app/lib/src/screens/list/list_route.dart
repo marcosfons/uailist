@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:uailist/src/screens/list/list_screen.dart';
-import 'package:uailist/src/screens/select_produc_buy_list/select_product_buy_list_route.dart';
+import 'package:uailist/src/screens/select_product_buy_list/select_product_buy_list_route.dart';
 
 final editListRoute = GoRoute(
     path: 'new/:uuid',

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:uailist/src/core/database/app_database.dart';
 
@@ -30,20 +31,26 @@ class _ProductCardState extends State<ProductCard> {
         IntrinsicWidth(
           child: TextFormField(
             initialValue: widget.product.quantity.toString(),
-          ),
-        ),
-        Expanded(
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: widget.product.name,
-              ),
+            decoration: const InputDecoration(
+              fillColor: Colors.white,
+              filled: true,
             ),
           ),
         ),
+        Expanded(
+          child: AutoSizeText(
+            widget.product.name,
+            maxLines: 1,
+          ),
+        ),
         IntrinsicWidth(
-          child: TextFormField(initialValue: 'R\$0.00'),
+          child: TextFormField(
+            initialValue: 'R\$0.00',
+            decoration: const InputDecoration(
+              fillColor: Colors.white,
+              filled: true,
+            ),
+          ),
         ),
         IconButton(
           icon: const Icon(Icons.delete),

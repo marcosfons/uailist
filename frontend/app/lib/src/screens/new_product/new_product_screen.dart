@@ -29,22 +29,12 @@ class NewProductScreenState extends ConsumerState<NewProductScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            Row(
-              children: [
-                SizedBox(
-                  width: 10,
-                ),
-                IconButton(
-                  iconSize: 20,
-                  icon: Icon(
-                    Icons.arrow_back_ios,
-                    color: themeData.colorScheme.primary,
-                  ),
-                  onPressed: () {
-                    GoRouter.of(context).go('/products');
-                  },
-                ),
-              ],
+            const Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: EdgeInsets.only(left: 10, top: 10),
+                child: BackButton(),
+              ),
             ),
             Center(
               child: Stack(

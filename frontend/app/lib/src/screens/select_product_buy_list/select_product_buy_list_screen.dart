@@ -36,6 +36,7 @@ class ProductsScreenState extends ConsumerState<SelectProductcBuyListScreen> {
             MainScreenTitle(
               title: 'Produtos',
               centered: false,
+              leading: const BackButton(),
               trailing: IconButton(
                 iconSize: 30,
                 icon: Icon(

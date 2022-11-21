@@ -1,11 +1,14 @@
 import 'package:drift/drift.dart';
 import 'package:uailist/src/core/database/tables/buy_lists_table.dart';
+import 'package:uailist/src/core/database/tables/products_table.dart';
 
 @DataClassName('ProductBuyList')
 class ProductsBuyList extends Table {
   TextColumn get uuid => text().clientDefault(() => uuidObj.v4())();
 
   TextColumn get buyListUuid => text().references(BuyLists, #uuid)();
+
+  TextColumn get productUuid => text().references(Products, #uuid)();
 
   TextColumn get name => text()();
 

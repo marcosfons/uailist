@@ -13,29 +13,25 @@ class NewListScreen extends ConsumerWidget {
     return Scaffold(
       body: Column(
         children: [
-          Padding(
-            padding:
-                const EdgeInsets.only(left: 10, top: 35, right: 0, bottom: 0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      hintText: 'Nome da lista',
-                    ),
-                    onChanged: (String newName) {
-                      controller.changeBuyListName(newName);
-                    },
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  decoration: const InputDecoration(
+                    hintText: 'Nome da lista',
                   ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    controller.save();
+                  onChanged: (String newName) {
+                    controller.changeBuyListName(newName);
                   },
-                  icon: const Icon(Icons.save),
-                )
-              ],
-            ),
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  controller.save();
+                },
+                icon: const Icon(Icons.save),
+              )
+            ],
           ),
           // Padding(
           //   padding:

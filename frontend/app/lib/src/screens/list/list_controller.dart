@@ -8,13 +8,9 @@ import 'package:uailist/src/core/database/entities/buy_list_with_products.dart';
 import 'package:uuid/uuid.dart';
 
 final listController = ChangeNotifierProvider.autoDispose((ref) {
-  final controller = ListController(
+  return ListController(
     ref.read(databaseProvider),
   );
-
-  ref.onDispose(controller.dispose);
-
-  return controller;
 });
 
 class ListController extends ChangeNotifier {
@@ -75,10 +71,15 @@ class ListController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addProductBuyList() async {
+  void addProductBuyList(Product product) async {
     await _appDatabase.buyListDAO.addProductToBuyList(
       ProductsBuyListCompanion.insert(
-          buyListUuid: _currentBuyList!.buyList.uuid, name: ''),
+        buyListUuid: _currentBuyList!.buyList.uuid,
+        name: product.name,
+        productUuid: product.uuid,
+        quantity: const Value(1),
+        bought: const Value(false),
+      ),
     );
   }
 

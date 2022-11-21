@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 class MainScreenTitle extends StatelessWidget {
   const MainScreenTitle({
     super.key,
-    required this.title,
+    this.title,
+    this.titleWidget,
     this.leading,
     this.trailing,
     this.centered = true,
-  }) : assert(centered || leading == null);
+  });
 
-  final String title;
+  final String? title;
+  final Widget? titleWidget;
 
   final bool centered;
 
@@ -21,6 +23,14 @@ class MainScreenTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
+
+    Widget widget = titleWidget ??
+        AutoSizeText(
+          title!,
+          textAlign: centered ? TextAlign.center : TextAlign.left,
+          maxLines: 1,
+          style: themeData.textTheme.headline6,
+        );
 
     return Padding(
       padding: const EdgeInsets.only(
@@ -43,12 +53,7 @@ class MainScreenTitle extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 6),
-              child: AutoSizeText(
-                title,
-                textAlign: centered ? TextAlign.center : TextAlign.left,
-                maxLines: 1,
-                style: themeData.textTheme.headline6,
-              ),
+              child: widget,
             ),
           ),
           if (trailing != null)
