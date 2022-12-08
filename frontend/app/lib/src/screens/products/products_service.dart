@@ -23,15 +23,15 @@ class ProductsService {
     });
   }
 
-  Future<Failure?> loadSupermarkets() async {
+  Future<Failure?> loadProducts() async {
     try {
-      final lastSupermarketUpdated =
+      final lastProductUpdated =
           await _appDatabase.productDAO.getLastUpdatedAt();
 
       final response = await _hasuraClient.execute(
-        GetSupermarketsQuery(
-          variables: GetSupermarketsArguments(
-            lastSyncedAt: lastSupermarketUpdated,
+        GetProductsQuery(
+          variables: GetProductsArguments(
+            lastSyncedAt: lastProductUpdated,
           ),
         ),
       );
@@ -41,12 +41,12 @@ class ProductsService {
         return const UnknownFailure();
       }
 
-      final updatedSupermarkets = response.data!.supermarket
-          .map((supermarket) =>
-              Supermarket.fromJson(supermarket.toJson()).toCompanion(false))
+      final updatedProducts = response.data!.product
+          .map((product) =>
+              Product.fromJson(product.toJson()).toCompanion(false))
           .toList();
 
-      await _appDatabase.supermarketDAO.insertSupermarkets(updatedSupermarkets);
+      await _appDatabase.productDAO.insertProducts(updatedProducts);
 
       return null;
     } catch (e) {

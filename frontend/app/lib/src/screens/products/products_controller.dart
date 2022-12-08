@@ -56,7 +56,7 @@ class ProductsController extends ChangeNotifier {
       notifyListeners();
     }
 
-    final result = await _productsService.loadSupermarkets();
+    final result = await _productsService.loadProducts();
     _loading = false;
 
     if (result != null) {

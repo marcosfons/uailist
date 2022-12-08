@@ -63,6 +63,13 @@ class ListController extends ChangeNotifier {
     }
   }
 
+  Future<void> delete() async {
+    if (_currentBuyList != null) {
+      await _appDatabase.buyListDAO
+          .removeBuyList(_currentBuyList!.buyList.uuid);
+    }
+  }
+
   void changeBuyListName(String buyListName) {
     _currentBuyList = _currentBuyList?.copyWith(
       buyList: _currentBuyList?.buyList.copyWith(name: buyListName),
@@ -81,6 +88,36 @@ class ListController extends ChangeNotifier {
         bought: const Value(false),
       ),
     );
+  }
+
+  void updateProductBuyListBought(
+    ProductBuyList product,
+    bool? bought,
+  ) async {
+    await _appDatabase.buyListDAO.updateProductBuyList(
+      product.uuid,
+      ProductsBuyListCompanion(
+        bought: Value(bought ?? false),
+        buyListUuid: Value(_currentBuyList!.buyList.uuid),
+      ),
+    );
+  }
+
+  void updateProductBuyListQuantity(
+    ProductBuyList product,
+    int? quantity,
+  ) async {
+    await _appDatabase.buyListDAO.updateProductBuyList(
+      product.uuid,
+      ProductsBuyListCompanion(
+        quantity: Value(quantity ?? 1),
+        buyListUuid: Value(_currentBuyList!.buyList.uuid),
+      ),
+    );
+  }
+
+  void removeProductBuyList(ProductBuyList product) async {
+    await _appDatabase.buyListDAO.removeProductOfBuyList(product);
   }
 
   @override

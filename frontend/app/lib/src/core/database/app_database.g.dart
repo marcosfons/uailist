@@ -428,14 +428,30 @@ class BuyList extends DataClass implements Insertable<BuyList> {
   final String uuid;
   final String name;
   final DateTime createdAt;
+  final DateTime? syncedAt;
+  final DateTime? deletedAt;
+  final bool synced;
+  final bool deleted;
   const BuyList(
-      {required this.uuid, required this.name, required this.createdAt});
+      {required this.uuid,
+      required this.name,
+      required this.createdAt,
+      this.syncedAt,
+      this.deletedAt,
+      required this.synced,
+      required this.deleted});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['uuid'] = Variable<String>(uuid);
     map['name'] = Variable<String>(name);
     map['created_at'] = Variable<DateTime>(createdAt);
+    if (!nullToAbsent || syncedAt != null) {
+      map['synced_at'] = Variable<DateTime>(syncedAt);
+    }
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
     return map;
   }
 
@@ -444,6 +460,12 @@ class BuyList extends DataClass implements Insertable<BuyList> {
       uuid: Value(uuid),
       name: Value(name),
       createdAt: Value(createdAt),
+      syncedAt: syncedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
     );
   }
 
@@ -454,6 +476,10 @@ class BuyList extends DataClass implements Insertable<BuyList> {
       uuid: serializer.fromJson<String>(json['uuid']),
       name: serializer.fromJson<String>(json['name']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      syncedAt: serializer.fromJson<DateTime?>(json['syncedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      synced: serializer.fromJson<bool>(json['synced']),
+      deleted: serializer.fromJson<bool>(json['deleted']),
     );
   }
   @override
@@ -463,68 +489,108 @@ class BuyList extends DataClass implements Insertable<BuyList> {
       'uuid': serializer.toJson<String>(uuid),
       'name': serializer.toJson<String>(name),
       'createdAt': serializer.toJson<DateTime>(createdAt),
+      'syncedAt': serializer.toJson<DateTime?>(syncedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'synced': serializer.toJson<bool>(synced),
+      'deleted': serializer.toJson<bool>(deleted),
     };
   }
 
-  BuyList copyWith({String? uuid, String? name, DateTime? createdAt}) =>
+  BuyList copyWith(
+          {String? uuid,
+          String? name,
+          DateTime? createdAt,
+          Value<DateTime?> syncedAt = const Value.absent(),
+          Value<DateTime?> deletedAt = const Value.absent(),
+          bool? synced,
+          bool? deleted}) =>
       BuyList(
         uuid: uuid ?? this.uuid,
         name: name ?? this.name,
         createdAt: createdAt ?? this.createdAt,
+        syncedAt: syncedAt.present ? syncedAt.value : this.syncedAt,
+        deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+        synced: synced ?? this.synced,
+        deleted: deleted ?? this.deleted,
       );
   @override
   String toString() {
     return (StringBuffer('BuyList(')
           ..write('uuid: $uuid, ')
           ..write('name: $name, ')
-          ..write('createdAt: $createdAt')
+          ..write('createdAt: $createdAt, ')
+          ..write('syncedAt: $syncedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('synced: $synced, ')
+          ..write('deleted: $deleted')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(uuid, name, createdAt);
+  int get hashCode =>
+      Object.hash(uuid, name, createdAt, syncedAt, deletedAt, synced, deleted);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is BuyList &&
           other.uuid == this.uuid &&
           other.name == this.name &&
-          other.createdAt == this.createdAt);
+          other.createdAt == this.createdAt &&
+          other.syncedAt == this.syncedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.synced == this.synced &&
+          other.deleted == this.deleted);
 }
 
 class BuyListsCompanion extends UpdateCompanion<BuyList> {
   final Value<String> uuid;
   final Value<String> name;
   final Value<DateTime> createdAt;
+  final Value<DateTime?> syncedAt;
+  final Value<DateTime?> deletedAt;
   const BuyListsCompanion({
     this.uuid = const Value.absent(),
     this.name = const Value.absent(),
     this.createdAt = const Value.absent(),
+    this.syncedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
   });
   BuyListsCompanion.insert({
     this.uuid = const Value.absent(),
     required String name,
     this.createdAt = const Value.absent(),
+    this.syncedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
   }) : name = Value(name);
   static Insertable<BuyList> custom({
     Expression<String>? uuid,
     Expression<String>? name,
     Expression<DateTime>? createdAt,
+    Expression<DateTime>? syncedAt,
+    Expression<DateTime>? deletedAt,
   }) {
     return RawValuesInsertable({
       if (uuid != null) 'uuid': uuid,
       if (name != null) 'name': name,
       if (createdAt != null) 'created_at': createdAt,
+      if (syncedAt != null) 'synced_at': syncedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
     });
   }
 
   BuyListsCompanion copyWith(
-      {Value<String>? uuid, Value<String>? name, Value<DateTime>? createdAt}) {
+      {Value<String>? uuid,
+      Value<String>? name,
+      Value<DateTime>? createdAt,
+      Value<DateTime?>? syncedAt,
+      Value<DateTime?>? deletedAt}) {
     return BuyListsCompanion(
       uuid: uuid ?? this.uuid,
       name: name ?? this.name,
       createdAt: createdAt ?? this.createdAt,
+      syncedAt: syncedAt ?? this.syncedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
     );
   }
 
@@ -540,6 +606,12 @@ class BuyListsCompanion extends UpdateCompanion<BuyList> {
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
+    if (syncedAt.present) {
+      map['synced_at'] = Variable<DateTime>(syncedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
     return map;
   }
 
@@ -548,7 +620,9 @@ class BuyListsCompanion extends UpdateCompanion<BuyList> {
     return (StringBuffer('BuyListsCompanion(')
           ..write('uuid: $uuid, ')
           ..write('name: $name, ')
-          ..write('createdAt: $createdAt')
+          ..write('createdAt: $createdAt, ')
+          ..write('syncedAt: $syncedAt, ')
+          ..write('deletedAt: $deletedAt')
           ..write(')'))
         .toString();
   }
@@ -578,8 +652,35 @@ class $BuyListsTable extends BuyLists with TableInfo<$BuyListsTable, BuyList> {
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
       defaultValue: currentDateAndTime);
+  final VerificationMeta _syncedAtMeta = const VerificationMeta('syncedAt');
   @override
-  List<GeneratedColumn> get $columns => [uuid, name, createdAt];
+  late final GeneratedColumn<DateTime> syncedAt = GeneratedColumn<DateTime>(
+      'synced_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  final VerificationMeta _deletedAtMeta = const VerificationMeta('deletedAt');
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+      'deleted_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  final VerificationMeta _syncedMeta = const VerificationMeta('synced');
+  @override
+  late final GeneratedColumn<bool> synced = GeneratedColumn<bool>(
+      'synced', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (synced IN (0, 1))',
+      generatedAs: GeneratedAs(syncedAt.isNotNull(), false));
+  final VerificationMeta _deletedMeta = const VerificationMeta('deleted');
+  @override
+  late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
+      'deleted', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (deleted IN (0, 1))',
+      generatedAs: GeneratedAs(deletedAt.isNotNull(), false));
+  @override
+  List<GeneratedColumn> get $columns =>
+      [uuid, name, createdAt, syncedAt, deletedAt, synced, deleted];
   @override
   String get aliasedName => _alias ?? 'buy_lists';
   @override
@@ -603,6 +704,22 @@ class $BuyListsTable extends BuyLists with TableInfo<$BuyListsTable, BuyList> {
       context.handle(_createdAtMeta,
           createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
     }
+    if (data.containsKey('synced_at')) {
+      context.handle(_syncedAtMeta,
+          syncedAt.isAcceptableOrUnknown(data['synced_at']!, _syncedAtMeta));
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(_deletedAtMeta,
+          deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta));
+    }
+    if (data.containsKey('synced')) {
+      context.handle(_syncedMeta,
+          synced.isAcceptableOrUnknown(data['synced']!, _syncedMeta));
+    }
+    if (data.containsKey('deleted')) {
+      context.handle(_deletedMeta,
+          deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta));
+    }
     return context;
   }
 
@@ -618,6 +735,14 @@ class $BuyListsTable extends BuyLists with TableInfo<$BuyListsTable, BuyList> {
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
       createdAt: attachedDatabase.options.types
           .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      syncedAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}synced_at']),
+      deletedAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}deleted_at']),
+      synced: attachedDatabase.options.types
+          .read(DriftSqlType.bool, data['${effectivePrefix}synced'])!,
+      deleted: attachedDatabase.options.types
+          .read(DriftSqlType.bool, data['${effectivePrefix}deleted'])!,
     );
   }
 

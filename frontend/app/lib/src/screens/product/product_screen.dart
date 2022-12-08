@@ -31,7 +31,7 @@ class NewProductScreenState extends ConsumerState<ProductScreen> {
           children: [
             Row(
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 IconButton(

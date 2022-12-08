@@ -33,11 +33,11 @@ class ProductDAO extends DatabaseAccessor<AppDatabase> with _$ProductDAOMixin {
     final defaultDate = DateTime(1990);
 
     try {
-      final lastSupermarketUpdated = await (select(products)
+      final lastProductUpdated = await (select(products)
             ..orderBy([(tbl) => OrderingTerm.desc(tbl.updatedAt)])
             ..limit(1))
           .getSingleOrNull();
-      return lastSupermarketUpdated?.updatedAt ?? defaultDate;
+      return lastProductUpdated?.updatedAt ?? defaultDate;
     } catch (e) {
       getLogger().e(e);
       return defaultDate;

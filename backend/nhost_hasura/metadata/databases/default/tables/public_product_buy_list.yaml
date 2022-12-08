@@ -1,0 +1,62 @@
+table:
+  name: product_buy_list
+  schema: public
+object_relationships:
+  - name: buy_list
+    using:
+      foreign_key_constraint_on: buy_list_uuid
+  - name: product
+    using:
+      foreign_key_constraint_on: product_uuid
+insert_permissions:
+  - role: user
+    permission:
+      check:
+        buy_list:
+          user_uuid:
+            _eq: X-Hasura-User-Id
+      columns:
+        - bought
+        - quantity
+        - created_at
+        - updated_at
+        - buy_list_uuid
+        - price_uuid
+        - product_uuid
+        - uuid
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - bought
+        - quantity
+        - created_at
+        - updated_at
+        - buy_list_uuid
+        - price_uuid
+        - product_uuid
+        - uuid
+      filter:
+        buy_list:
+          user_uuid:
+            _eq: X-Hasura-User-Id
+      allow_aggregations: true
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - bought
+        - price_uuid
+        - quantity
+      filter:
+        buy_list:
+          user_uuid:
+            _eq: X-Hasura-User-Id
+      check: null
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        buy_list:
+          user_uuid:
+            _eq: X-Hasura-User-Id

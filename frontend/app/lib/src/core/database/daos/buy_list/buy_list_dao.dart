@@ -14,7 +14,7 @@ class BuyListDAO extends DatabaseAccessor<AppDatabase> with _$BuyListDAOMixin {
 
   Stream<List<BuyListWithProducts>> watchBuyLists() async* {
     yield [];
-    yield* select(buyLists)
+    yield* (select(buyLists)..where((tbl) => tbl.deleted.not()))
         .join(
           [
             leftOuterJoin(
@@ -45,13 +45,17 @@ class BuyListDAO extends DatabaseAccessor<AppDatabase> with _$BuyListDAOMixin {
                   );
                 })
                 .values
+                .where((buyList) =>
+                    (buyList.buyList.name.isNotEmpty) ||
+                    (buyList.products.isNotEmpty))
                 .toList();
           },
         );
   }
 
   Stream<BuyListWithProducts?> watchBuyList(String buyListUuid) async* {
-    yield* select(buyLists)
+    yield* (select(buyLists)
+          ..where((tbl) => tbl.uuid.equals(buyListUuid) & tbl.deleted.not()))
         .join([
           leftOuterJoin(
             productsBuyList,
@@ -79,6 +83,41 @@ class BuyListDAO extends DatabaseAccessor<AppDatabase> with _$BuyListDAOMixin {
         );
   }
 
+  Future<List<BuyListWithProducts>> getNotSyncedBuyLists() async {
+    final rows =
+        await (select(buyLists)..where((tbl) => tbl.synced.not())).join(
+      [
+        leftOuterJoin(
+          productsBuyList,
+          productsBuyList.buyListUuid.equalsExp(buyLists.uuid),
+        )
+      ],
+    ).get();
+
+    final groupedRows = _groupBy(
+      rows,
+      (row) => row.readTable(buyLists),
+    );
+
+    return groupedRows
+        .map((BuyList buyList, List<TypedResult> rows) {
+          final products = rows
+              .map((row) => row.readTableOrNull(productsBuyList))
+              .where((product) => product != null)
+              .cast<ProductBuyList>()
+              .toList();
+
+          return MapEntry(
+            buyList,
+            BuyListWithProducts(buyList, products),
+          );
+        })
+        .values
+        .where((buyList) =>
+            (buyList.buyList.name.isNotEmpty) && (buyList.products.isNotEmpty))
+        .toList();
+  }
+
   Future<Failure?> createBuyList(BuyListsCompanion buyList) async {
     try {
       await into(buyLists).insert(buyList);
@@ -96,7 +135,7 @@ class BuyListDAO extends DatabaseAccessor<AppDatabase> with _$BuyListDAOMixin {
               ..where(
                 (tbl) => tbl.uuid.equals(buyList.buyList.uuid),
               ))
-            .write(buyList.buyList);
+            .write(buyList.buyList.copyWith(syncedAt: const Value(null)));
 
         await (delete(productsBuyList)
               ..where((tbl) => tbl.buyListUuid.equals(buyList.buyList.uuid)))
@@ -117,7 +156,55 @@ class BuyListDAO extends DatabaseAccessor<AppDatabase> with _$BuyListDAOMixin {
     ProductsBuyListCompanion productBuyList,
   ) async {
     try {
-      await into(productsBuyList).insert(productBuyList);
+      transaction(() async {
+        await into(productsBuyList).insert(productBuyList);
+        await (update(buyLists)
+              ..where(
+                  (tbl) => tbl.uuid.equals(productBuyList.buyListUuid.value)))
+            .write(const BuyListsCompanion(syncedAt: Value(null)));
+      });
+      return null;
+    } catch (e) {
+      getLogger().e(e);
+      return const UnknownFailure();
+    }
+  }
+
+  Future<Failure?> updateProductBuyList(
+    String productBuyListUuid,
+    ProductsBuyListCompanion editCompanion,
+  ) async {
+    try {
+      transaction(() async {
+        await (update(productsBuyList)
+              ..where((tbl) => tbl.uuid.equals(productBuyListUuid)))
+            .write(editCompanion);
+
+        await (update(buyLists)
+              ..where(
+                  (tbl) => tbl.uuid.equals(editCompanion.buyListUuid.value)))
+            .write(const BuyListsCompanion(syncedAt: Value(null)));
+      });
+
+      return null;
+    } catch (e) {
+      getLogger().e(e);
+      return const UnknownFailure();
+    }
+  }
+
+  Future<Failure?> removeProductOfBuyList(
+    ProductBuyList productBuyList,
+  ) async {
+    try {
+      transaction(() async {
+        await (delete(productsBuyList)
+              ..where((tbl) => tbl.uuid.equals(productBuyList.uuid)))
+            .go();
+        await (update(buyLists)
+              ..where((tbl) => tbl.uuid.equals(productBuyList.buyListUuid)))
+            .write(const BuyListsCompanion(syncedAt: Value(null)));
+      });
       return null;
     } catch (e) {
       getLogger().e(e);
@@ -132,5 +219,18 @@ class BuyListDAO extends DatabaseAccessor<AppDatabase> with _$BuyListDAOMixin {
       (map[key(element)] ??= []).add(element);
     }
     return map;
+  }
+
+  Future<Failure?> removeBuyList(String buyListUuid) async {
+    try {
+      await transaction(() async {
+        await (update(buyLists)..where((tbl) => tbl.uuid.equals(buyListUuid)))
+            .write(BuyListsCompanion(deletedAt: Value(DateTime.now())));
+      });
+    } catch (e) {
+      getLogger().e(e);
+      return const UnknownFailure();
+    }
+    return null;
   }
 }

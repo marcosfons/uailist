@@ -1,6 +1,5 @@
 import 'package:uuid/uuid.dart';
 
-
 String fromGraphQLUuidToDartString(String uuid) {
   Uuid.isValidOrThrow(fromString: uuid);
   return uuid;
@@ -18,3 +17,15 @@ String? fromGraphQLUuidNullableToDartStringNullable(String? uuid) {
 }
 
 String? fromDartStringNullableToGraphQLUuidNullable(String? uuid) => uuid;
+
+List<String>? fromGraphQLListNullableUuidToDartListNullableString(
+  List<String>? uuids,
+) {
+  return uuids;
+}
+
+List<String>? fromDartListNullableStringToGraphQLListNullableUuid(
+  List<String>? uuids,
+) {
+  return uuids;
+}

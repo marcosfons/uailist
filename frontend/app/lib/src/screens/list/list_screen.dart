@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uailist/src/core/database/app_database.dart';
@@ -28,32 +29,60 @@ class ListScreenState extends ConsumerState<ListScreen> {
     final themeData = Theme.of(context);
     final controller = ref.watch(listController);
 
+    String? name = controller.buyList?.buyList.name;
+
+    if (name == null && widget.buyList is BuyList?) {
+      name = (widget.buyList as BuyList?)?.name;
+    }
+
     return Scaffold(
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 10, right: 0, bottom: 0),
-            child: MainScreenTitle(
-              leading: const BackButton(),
-              titleWidget: TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Insira o nome da lista',
-                  filled: false,
-                  hintStyle: TextStyle(
-                    color: Colors.grey.shade600,
-                  ),
+          MainScreenTitle(
+            leading: const BackButton(),
+            trailing: PopupMenuButton(
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem(
+                    onTap: () async {
+                      await controller.delete();
+                      GoRouter.of(context).pop();
+                    },
+                    textStyle: const TextStyle(color: Colors.red),
+                    child: Row(
+                      children: const [
+                        Icon(
+                          FontAwesomeIcons.remove,
+                          color: Colors.red,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text('Deletar lista'),
+                      ],
+                    ),
+                  )
+                ];
+              },
+            ),
+            titleWidget: TextFormField(
+              decoration: InputDecoration(
+                hintText: 'Insira o nome da lista',
+                filled: false,
+                hintStyle: TextStyle(
+                  color: Colors.grey.shade600,
                 ),
-                style: const TextStyle(
-                  fontSize: 32,
-                  color: Color(0xff717171),
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-                initialValue: controller.buyList?.buyList.name,
-                onChanged: (String newName) {
-                  controller.changeBuyListName(newName);
-                },
               ),
+              style: const TextStyle(
+                fontSize: 32,
+                color: Color(0xff717171),
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+              initialValue: name,
+              onChanged: (String newName) {
+                controller.changeBuyListName(newName);
+              },
             ),
           ),
           ElevatedButton(
@@ -74,8 +103,8 @@ class ListScreenState extends ConsumerState<ListScreen> {
               });
             },
             style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 18)),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+            ),
             child: const Text('Adicionar produto'),
           ),
           Expanded(

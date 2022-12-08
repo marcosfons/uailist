@@ -69,35 +69,21 @@ class ListCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 15, top: 5, right: 0, bottom: 15),
-                      child: Stack(
-                        children: [
-                          Container(
-                            height: 10,
-                            constraints:
-                                const BoxConstraints(maxWidth: double.infinity),
-                            decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
-                              color: Color(0xffd9d9d9),
-                            ),
-                          ),
-                          Container(
-                            height: 10,
-                            // constraints: BoxConstraints(
-                            //   maxWidth: 228 *
-                            //       itemsTaken /
-                            //       totalItems, /* MediaQuery.of(context).size.width * percent*/
-                            // ),
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(12)),
-                              color: theme.colorScheme.primary,
-                            ),
-                          ),
-                        ],
-                      )),
+                    padding: const EdgeInsets.only(
+                      left: 15,
+                      top: 5,
+                      right: 0,
+                      bottom: 15,
+                    ),
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(12)),
+                      child: LinearProgressIndicator(
+                        value: buyList.progress,
+                        backgroundColor: Colors.grey.withOpacity(0.4),
+                        minHeight: 10,
+                      ),
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(

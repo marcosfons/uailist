@@ -1,0 +1,7 @@
+mutation UpsertBuyList($buyList: [buy_list_insert_input!]!) {
+  insert_buy_list(objects: $buyList, on_conflict: {
+    constraint: buy_list_pkey, update_columns: [name]
+  }) {
+    affected_rows
+  }
+}
